@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="https://substance-flamingo.dev.java.net/webstart/"
+ href="substance-flamingo-core.jnlp">
+<information>
+  <title>Substance Flamingo core jars</title>
+  <vendor>https://substance-flamingo.dev.java.net/</vendor>
+  <offline-allowed/> 
+</information>
+<offline-allowed/>
+<security>
+  <all-permissions/>
+</security>
+<resources>
+  <property name="jnlp.packEnabled" value="true"/>
+  <j2se version="1.6+" />
+  <jar href="substance-flamingo.jar"/>
+</resources>
+<component-desc/>
+</jnlp>
