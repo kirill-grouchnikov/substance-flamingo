@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -43,6 +43,7 @@ import javax.swing.*;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.skin.GeminiSkin;
 import org.pushingpixels.substance.api.skin.OfficeBlack2007Skin;
 import org.pushingpixels.substance.flamingo.ribbon.gallery.oob.SubstanceRibbonTask;
 
@@ -178,7 +179,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				SubstanceLookAndFeel.setSkin(new OfficeBlack2007Skin());
+				SubstanceLookAndFeel.setSkin(new GeminiSkin());
 				NewCheckRibbon c = new NewCheckRibbon();
 				c.configureRibbon();
 				c.applyComponentOrientation(ComponentOrientation

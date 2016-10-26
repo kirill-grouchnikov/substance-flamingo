@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -37,6 +37,7 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -120,8 +121,8 @@ public class SubstanceDisabledResizableIcon implements ResizableIcon {
 
 		BufferedImage filtered = this.cachedImages.get(key);
 		if (filtered == null) {
-			BufferedImage offscreen = FlamingoUtilities.getBlankImage(this
-					.getIconWidth(), this.getIconHeight());
+			BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(
+					this.getIconWidth(), this.getIconHeight());
 			Graphics2D g2d = offscreen.createGraphics();
 			this.delegate.paintIcon(c, g2d, 0, 0);
 			g2d.dispose();
@@ -129,6 +130,9 @@ public class SubstanceDisabledResizableIcon implements ResizableIcon {
 					scheme, 0.5f);
 			this.cachedImages.put(key, filtered);
 		}
-		g.drawImage(filtered, x, y, null);
+		Graphics2D g2d = (Graphics2D) g.create();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(filtered, x, y, filtered.getWidth() / scaleFactor, filtered.getHeight() / scaleFactor, null);
+		g2d.dispose();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -37,7 +37,9 @@ import javax.swing.plaf.ComponentUI;
 import org.pushingpixels.flamingo.internal.ui.common.BasicRichTooltipPanelUI;
 import org.pushingpixels.flamingo.internal.ui.common.JRichTooltipPanel;
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 
 /**
@@ -51,6 +53,13 @@ public class SubstanceRichTooltipPanelUI extends BasicRichTooltipPanelUI {
 		return new SubstanceRichTooltipPanelUI();
 	}
 
+	@Override
+	protected void installDefaults() {
+		super.installDefaults();
+		SubstanceLookAndFeel.setDecorationType(this.richTooltipPanel,
+				DecorationAreaType.GENERAL);
+	}
+	
 	@Override
 	protected void paintBackground(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();

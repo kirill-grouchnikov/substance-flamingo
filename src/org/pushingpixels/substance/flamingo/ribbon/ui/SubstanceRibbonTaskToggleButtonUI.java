@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,6 +44,7 @@ import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonTaskToggleButtonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.ribbon.RibbonBackgroundDelegate;
@@ -163,8 +164,7 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 	 */
 	@Override
 	public void paint(Graphics g, JComponent c) {
-		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton,
-				g);
+		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton, g);
 
 		this.delegate.updateTaskToggleButtonBackground(g,
 				(JRibbonTaskToggleButton) this.commandButton);
@@ -180,7 +180,10 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
-		this.paint(g, c);
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		this.paint(g2d, c);
+		g2d.dispose();
 	}
 
 	/*

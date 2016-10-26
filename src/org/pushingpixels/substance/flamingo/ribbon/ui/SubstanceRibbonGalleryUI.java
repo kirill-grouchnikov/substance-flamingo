@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -29,20 +29,30 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonGalleryUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonGallery;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * UI delegate for {@link JRibbonGallery} component under Substance
@@ -117,7 +127,7 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						return SubstanceImageCreator
 								.getDoubleArrowIcon(
@@ -159,7 +169,7 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						return SubstanceImageCreator.getArrowIcon(width,
 								height, SubstanceSizeUtils
@@ -195,7 +205,7 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						return SubstanceImageCreator.getArrowIcon(width,
 								height, SubstanceSizeUtils
@@ -205,5 +215,11 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
 		return button;
+	}
+	
+	@Override
+	public void update(Graphics g, JComponent c) {
+		super.update(g, c);
+		GhostPaintingUtils.paintGhostImages(c, g);
 	}
 }

@@ -50,6 +50,7 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
 
@@ -189,8 +190,9 @@ public class CommandButtonBackgroundDelegate {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
 				height);
 		Graphics2D g2d = result.createGraphics();
+		int factor = UIUtil.isRetina() ? 2 : 1;
 
-		g2d.drawImage(baseLayer, 0, 0, null);
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / factor, baseLayer.getHeight() / factor, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -227,7 +229,7 @@ public class CommandButtonBackgroundDelegate {
 			}
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			g2d.drawImage(layer, 0, 0, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / factor, layer.getHeight() / factor, null);
 		}
 
 		g2d.dispose();
@@ -362,7 +364,9 @@ public class CommandButtonBackgroundDelegate {
 				.getBlankImage(fullAlphaBackground.getWidth(),
 						fullAlphaBackground.getHeight());
 		Graphics2D combinedGraphics = layers.createGraphics();
-		combinedGraphics.drawImage(fullAlphaBackground, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		combinedGraphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
+				fullAlphaBackground.getHeight() / scaleFactor, null);
 
 		ActionPopupTransitionAwareUI ui = (ActionPopupTransitionAwareUI) commandButton
 				.getUI();
@@ -381,7 +385,8 @@ public class CommandButtonBackgroundDelegate {
 							fillPainter, borderPainter, commandButton
 									.getWidth(), commandButton.getHeight(), ui
 									.getTransitionTracker(), false);
-			combinedGraphics.drawImage(rolloverBackground, 0, 0, null);
+			combinedGraphics.drawImage(rolloverBackground, 0, 0, rolloverBackground.getWidth() / scaleFactor,
+					rolloverBackground.getHeight() / scaleFactor, null);
 		}
 
 		// Shape currClip = combinedGraphics.getClip();
@@ -404,7 +409,8 @@ public class CommandButtonBackgroundDelegate {
 							borderPainter, commandButton.getWidth(),
 							commandButton.getHeight(), ui
 									.getActionTransitionTracker(), false);
-			graphicsAction.drawImage(actionAreaBackground, 0, 0, null);
+			graphicsAction.drawImage(actionAreaBackground, 0, 0, actionAreaBackground.getWidth() / scaleFactor,
+					actionAreaBackground.getHeight() / scaleFactor, null);
 			// graphicsAction.setColor(Color.red);
 			// graphicsAction.fill(toFill);
 			graphicsAction.dispose();
@@ -431,7 +437,8 @@ public class CommandButtonBackgroundDelegate {
 							borderPainter, commandButton.getWidth(),
 							commandButton.getHeight(), ui
 									.getPopupTransitionTracker(), false);
-			graphicsPopup.drawImage(popupAreaBackground, 0, 0, null);
+			graphicsPopup.drawImage(popupAreaBackground, 0, 0, popupAreaBackground.getWidth() / scaleFactor,
+					popupAreaBackground.getHeight() / scaleFactor, null);
 			// graphicsPopup.setColor(Color.blue);
 			// graphicsPopup.fill(toFill);
 			graphicsPopup.dispose();
@@ -467,14 +474,16 @@ public class CommandButtonBackgroundDelegate {
 				|| regular.getClass()
 						.isAnnotationPresent(TransitionAware.class);
 		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.translate(iconRect.x, iconRect.y);
 		if (useRegularVersion) {
-			regular.paintIcon(commandButton, g2d, iconRect.x, iconRect.y);
+			regular.paintIcon(commandButton, g2d, 0, 0);
 		} else {
 			if (stateTransitionTracker != null) {
 				float alpha = stateTransitionTracker.getActiveStrength();
+				int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 				if (alpha < 1.0f) {
 					// paint the themed image full opaque on a separate image
-					BufferedImage themedImage = FlamingoUtilities
+					BufferedImage themedImage = SubstanceCoreUtilities
 							.getBlankImage(themed.getIconWidth(), themed
 									.getIconHeight());
 					themed.paintIcon(commandButton, themedImage
@@ -482,12 +491,13 @@ public class CommandButtonBackgroundDelegate {
 					// and paint that image translucently
 					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
 							commandButton, 1.0f - alpha, g));
-					g2d.drawImage(themedImage, iconRect.x, iconRect.y, null);
+					g2d.drawImage(themedImage, 0, 0, themedImage.getWidth() / scaleFactor,
+							themedImage.getHeight() / scaleFactor, null);
 				}
 
 				if (alpha > 0.0f) {
 					// paint the regular image full opaque on a separate image
-					BufferedImage regularImage = FlamingoUtilities
+					BufferedImage regularImage = SubstanceCoreUtilities
 							.getBlankImage(regular.getIconWidth(), regular
 									.getIconHeight());
 					regular.paintIcon(commandButton, regularImage
@@ -495,16 +505,14 @@ public class CommandButtonBackgroundDelegate {
 					// and paint that image translucently
 					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
 							commandButton, alpha, g));
-					g2d.drawImage(regularImage, iconRect.x, iconRect.y, null);
+					g2d.drawImage(regularImage, 0, 0, regularImage.getWidth() / scaleFactor,
+							regularImage.getHeight() / scaleFactor, null);
 				}
 			} else {
 				if (model.isRollover()) {
-					regular.paintIcon(commandButton, g2d, iconRect.x,
-							iconRect.y);
+					regular.paintIcon(commandButton, g2d, 0, 0);
 				} else {
-					themed
-							.paintIcon(commandButton, g2d, iconRect.x,
-									iconRect.y);
+					themed.paintIcon(commandButton, g2d, 0, 0);
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -57,6 +57,7 @@ import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.utils.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
 
@@ -454,7 +455,9 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 			Graphics2D g2d = (Graphics2D) graphics.create();
 			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
 					this.commandButton, extraAlpha, graphics));
-			g2d.drawImage(fullAlphaBackground, 0, 0, null);
+			int factor = UIUtil.isRetina() ? 2 : 1;
+			g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor, 
+					fullAlphaBackground.getHeight() / factor, null);
 			g2d.dispose();
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -33,7 +33,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.EnumSet;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.common.JCommandButton;
@@ -41,11 +44,16 @@ import org.pushingpixels.flamingo.api.common.JScrollablePanel;
 import org.pushingpixels.flamingo.api.common.JScrollablePanel.ScrollType;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.common.BasicScrollablePanelUI;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * UI for {@link JScrollablePanel} components in <b>Substance</b> look and feel.
@@ -104,7 +112,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(result);
@@ -113,7 +121,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
 						if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
 							width--;
 						}
-						Icon doubleArrowIcon = SubstanceImageCreator
+						HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator
 								.getDoubleArrowIcon(
 										SubstanceSizeUtils
 												.getComponentFontSize(result),
@@ -157,7 +165,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(result);
@@ -166,7 +174,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
 						if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
 							width--;
 						}
-						Icon doubleArrowIcon = SubstanceImageCreator
+						HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator
 								.getDoubleArrowIcon(
 										SubstanceSizeUtils
 												.getComponentFontSize(result),

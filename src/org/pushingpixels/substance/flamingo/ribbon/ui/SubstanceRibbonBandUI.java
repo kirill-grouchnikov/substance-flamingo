@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,20 +29,40 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LinearGradientPaint;
+import java.awt.Rectangle;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
@@ -51,7 +71,13 @@ import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAware
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceInternalButton;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 
 /**
  * UI for ribbon bands in <b>Substance</b> look and feel.
@@ -344,7 +370,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						return SubstanceImageCreator
 								.getDoubleArrowIcon(
@@ -366,6 +392,15 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 	protected void syncExpandButtonIcon() {
 		ResizableIcon icon = getExpandButtonIcon(this.expandButton);
 		this.expandButton.setIcon(icon);
+	}
+
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		GhostPaintingUtils.paintGhostImages(c, g2d);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 
 	private class RibbonBandExpandButton extends JCommandButton implements

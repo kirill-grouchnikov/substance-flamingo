@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -48,6 +48,7 @@ import org.pushingpixels.substance.flamingo.ribbon.ui.RibbonBorderShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -135,8 +136,9 @@ public class RibbonBackgroundDelegate {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
 				height);
 		Graphics2D g2d = result.createGraphics();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
-		g2d.drawImage(baseLayer, 0, 0, null);
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor, baseLayer.getHeight() / scaleFactor, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -174,7 +176,7 @@ public class RibbonBackgroundDelegate {
 			}
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			g2d.drawImage(layer, 0, 0, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor, layer.getHeight() / scaleFactor, null);
 		}
 
 		g2d.dispose();
@@ -227,7 +229,9 @@ public class RibbonBackgroundDelegate {
 				&& (button.getContextualGroupHueColor() == null)) {
 			int fw = result.getWidth();
 			int fh = result.getHeight();
-			BufferedImage fade = SubstanceCoreUtilities.getBlankImage(fw, fh);
+			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			BufferedImage fade = SubstanceCoreUtilities.getBlankImage(
+					fw / scaleFactor, fh / scaleFactor);
 			Graphics2D fadeGraphics = fade.createGraphics();
 			JRibbon parent = (JRibbon) SwingUtilities.getAncestorOfClass(
 					JRibbon.class, button);
@@ -292,7 +296,9 @@ public class RibbonBackgroundDelegate {
 
 		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(button,
 				extraActionAlpha, g));
-		g2d.drawImage(ribbonBackground, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(ribbonBackground, 0, 0, ribbonBackground.getWidth() / scaleFactor,
+				ribbonBackground.getHeight() / scaleFactor, null);
 
 		g2d.dispose();
 	}

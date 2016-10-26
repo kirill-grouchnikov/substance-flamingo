@@ -44,6 +44,7 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -90,21 +91,16 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 		model.setEnabled(true);
 		model.setSelected(menuButton.getPopupModel().isSelected());
 		boolean popupShowing = menuButton.getPopupModel().isPopupShowing();
-		model.setRollover(menuButton.getPopupModel().isRollover()
-				&& !popupShowing);
-		model
-				.setPressed(menuButton.getPopupModel().isPressed()
-						|| popupShowing);
+		model.setRollover(menuButton.getPopupModel().isRollover() && !popupShowing);
+		model.setPressed(menuButton.getPopupModel().isPressed() || popupShowing);
 		model.setArmed(menuButton.getActionModel().isArmed() || popupShowing);
 
-		ActionPopupTransitionAwareUI ui = (ActionPopupTransitionAwareUI) menuButton
-				.getUI();
-		StateTransitionTracker popupStateTransitionTracker = ui
-				.getPopupTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = popupStateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
+		ActionPopupTransitionAwareUI ui = (ActionPopupTransitionAwareUI) menuButton.getUI();
+		StateTransitionTracker popupStateTransitionTracker = ui.getPopupTransitionTracker();
+		StateTransitionTracker.ModelStateInfo modelStateInfo = 
+				popupStateTransitionTracker.getModelStateInfo();
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
+				modelStateInfo.getStateContributionMap();
 		ComponentState currState = ComponentState.getState(model, menuButton);
 
 		SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities
@@ -132,11 +128,11 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 			return baseLayer;
 		}
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2d = result.createGraphics();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
-		g2d.drawImage(baseLayer, 0, 0, null);
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor, baseLayer.getHeight() / scaleFactor, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -168,7 +164,7 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 			}
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			g2d.drawImage(layer, 0, 0, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor, layer.getHeight() / scaleFactor, null);
 		}
 
 		g2d.dispose();

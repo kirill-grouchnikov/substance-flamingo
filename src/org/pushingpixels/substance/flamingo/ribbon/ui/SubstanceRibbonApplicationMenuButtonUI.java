@@ -47,6 +47,7 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.flamingo.utils.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -116,19 +117,18 @@ public class SubstanceRibbonApplicationMenuButtonUI extends
 	public void paint(Graphics g, JComponent c) {
 		JRibbonApplicationMenuButton b = (JRibbonApplicationMenuButton) c;
 
-		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton,
-				g);
+		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton, g);
 		commandButton.putClientProperty("icon.bounds", layoutInfo.iconRect);
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-				.getFillPainter(commandButton);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(commandButton);
+		SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(commandButton);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(commandButton);
 		BufferedImage fullAlphaBackground = RibbonApplicationMenuButtonBackgroundDelegate
 				.getFullAlphaBackground(b, fillPainter, borderPainter,
 						commandButton.getWidth(), commandButton.getHeight());
-		g2d.drawImage(fullAlphaBackground, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
+				fullAlphaBackground.getHeight() / scaleFactor, null);
 
 		// Paint the icon
 		Icon icon = b.getIcon();
@@ -152,8 +152,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends
 	 */
 	@Override
 	protected void paintButtonIcon(Graphics g, Rectangle iconRect) {
-		Icon regular = this.applicationMenuButton.isEnabled() ? this.applicationMenuButton
-				.getIcon()
+		Icon regular = this.applicationMenuButton.isEnabled() ? this.applicationMenuButton.getIcon()
 				: this.applicationMenuButton.getDisabledIcon();
 		if (regular == null)
 			return;
@@ -169,8 +168,8 @@ public class SubstanceRibbonApplicationMenuButtonUI extends
 					this.applicationMenuButton, g));
 
 			if (!useThemed) {
-				regular.paintIcon(this.applicationMenuButton, g2d, iconRect.x,
-						iconRect.y);
+				g2d.translate(iconRect.x, iconRect.y);
+				regular.paintIcon(this.applicationMenuButton, g2d, 0, 0);
 			} else {
 				CommandButtonBackgroundDelegate.paintThemedCommandButtonIcon(
 						g2d, iconRect, this.applicationMenuButton, regular,

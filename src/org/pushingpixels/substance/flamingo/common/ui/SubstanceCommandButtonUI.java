@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Flamingo / Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,20 +29,39 @@
  */
 package org.pushingpixels.substance.flamingo.common.ui;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.plaf.*;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.flamingo.api.bcb.JBreadcrumbBar;
-import org.pushingpixels.flamingo.api.common.*;
+import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
+import org.pushingpixels.flamingo.api.common.CommandButtonDisplayState;
+import org.pushingpixels.flamingo.api.common.CommandButtonLayoutManager;
 import org.pushingpixels.flamingo.api.common.CommandButtonLayoutManager.CommandButtonSeparatorOrientation;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonPopupOrientationKind;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
@@ -55,15 +74,30 @@ import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
-import org.pushingpixels.substance.flamingo.utils.*;
+import org.pushingpixels.substance.flamingo.utils.CommandButtonBackgroundDelegate;
+import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
+import org.pushingpixels.substance.flamingo.utils.SubstanceDisabledResizableIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.ButtonBackgroundDelegate;
+import org.pushingpixels.substance.internal.utils.RolloverControlListener;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
 
 /**
@@ -182,18 +216,16 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 
 		this.substanceVisualStateTracker.installListeners(this.commandButton);
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("actionModel".equals(evt.getPropertyName())) {
-					if (substanceModelChangeListener != null)
-						substanceModelChangeListener.unregisterListeners();
-					substanceModelChangeListener = new GhostingListener(
-							commandButton, commandButton.getActionModel());
-					substanceModelChangeListener.registerListeners();
-				}
-				if ("enabled".equals(evt.getPropertyName())) {
-					overallRolloverModel.setEnabled(commandButton.isEnabled());
-				}
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if ("actionModel".equals(evt.getPropertyName())) {
+				if (substanceModelChangeListener != null)
+					substanceModelChangeListener.unregisterListeners();
+				substanceModelChangeListener = new GhostingListener(
+						commandButton, commandButton.getActionModel());
+				substanceModelChangeListener.registerListeners();
+			}
+			if ("enabled".equals(evt.getPropertyName())) {
+				overallRolloverModel.setEnabled(commandButton.isEnabled());
 			}
 		};
 		this.commandButton
@@ -314,10 +346,11 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 			Graphics2D g2d = (Graphics2D) graphics.create();
 			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
 					this.commandButton, extraAlpha, graphics));
-			g2d.drawImage(fullAlphaBackground, 0, 0, null);
+			int factor = UIUtil.isRetina() ? 2 : 1;
+			graphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor, 
+					fullAlphaBackground.getHeight() / factor, null);
 			g2d.dispose();
 		}
-
 	}
 
 	/*
@@ -351,7 +384,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(jcb, g));
 
 			if (!useThemed) {
-				regular.paintIcon(jcb, g2d, iconRect.x, iconRect.y);
+				g2d.translate(iconRect.x, iconRect.y);
+				regular.paintIcon(jcb, g2d, 0, 0);
 			} else {
 				StateTransitionTracker tracker = this.substanceVisualStateTracker
 						.getActionStateTransitionTracker();
@@ -471,17 +505,17 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme,
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						CommandButtonPopupOrientationKind orientation = ((JCommandButton) commandButton)
 								.getPopupOrientationKind();
-						int direction = (orientation == CommandButtonPopupOrientationKind.DOWNWARD) ? SwingConstants.SOUTH
-								: (commandButton.getComponentOrientation()
-										.isLeftToRight() ? SwingConstants.EAST
+						int direction = (orientation == CommandButtonPopupOrientationKind.DOWNWARD) 
+								? SwingConstants.SOUTH
+								: (commandButton.getComponentOrientation().isLeftToRight() ? SwingConstants.EAST
 										: SwingConstants.WEST);
 						// System.out.println(direction + ":" + width + ":"
 						// + height);
-						Icon result = SubstanceImageCreator.getArrowIcon(width,
+						HiDpiAwareIcon result = SubstanceImageCreator.getArrowIcon(width,
 								height, SubstanceSizeUtils
 										.getArrowStrokeWidth(fontSize) - 0.5f,
 								direction, scheme);
