@@ -74,12 +74,13 @@ import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
@@ -88,7 +89,6 @@ import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracke
 import org.pushingpixels.substance.flamingo.utils.SubstanceDisabledResizableIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.ButtonBackgroundDelegate;
 import org.pushingpixels.substance.internal.utils.RolloverControlListener;
@@ -492,10 +492,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	protected ResizableIcon createPopupActionIcon() {
 		final int fontSize = SubstanceSizeUtils
 				.getComponentFontSize(this.commandButton);
-		int arrowIconHeight = (int) SubstanceSizeUtils
-				.getArrowIconHeight(fontSize);
-		int arrowIconWidth = (int) SubstanceSizeUtils
-				.getArrowIconWidth(fontSize);
+		int arrowIconHeight = (int) SubstanceSizeUtils.getArrowIconHeight(fontSize);
+		int arrowIconWidth = (int) SubstanceSizeUtils.getArrowIconWidth(fontSize);
 		ResizableIcon icon = new TransitionAwareResizableIcon(
 				this.commandButton,
 				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
@@ -516,8 +514,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 						// System.out.println(direction + ":" + width + ":"
 						// + height);
 						HiDpiAwareIcon result = SubstanceImageCreator.getArrowIcon(width,
-								height, SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize) - 0.5f,
+								height, SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f,
 								direction, scheme);
 						// System.out.println(" --> " + result.getIconWidth()
 						// + "*" + result.getIconHeight());

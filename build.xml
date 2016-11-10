@@ -163,19 +163,9 @@
 		<!-- Perform any build initialization in this target -->
 	</target>
 
-    <!-- classpath for the augment tasks -->
-    <property name="augment-class-path" value="${substance.basedir}/lib/build/laf-widget.jar;${substance.basedir}/lib/trident.jar;${substance.basedir}/lib/build/asm-all-2.2.2.jar;${flamingo.basedir}/drop/flamingo.jar;${substance.basedir}/drop/substance.jar" />
-	
-	<taskdef name="delegate-augment" classname="org.pushingpixels.lafwidget.ant.AugmentTask" classpath="${augment-class-path}" />
-
 	<target name="jar-bin" description="create runtime jar">
 		<mkdir dir="${substance-flamingo.drop.dir}" />
 		<delete file="${substance-flamingo.drop.dir}/substance-flamingo.jar" />
-
-		<!-- Delegate augmentation -->
-		<delegate-augment verbose="true" pattern=".*UI\u002Eclass">
-			<classpathset dir="${substance-flamingo.output.dir}" />
-		</delegate-augment>
 
 		<jar compress="true" destfile="${substance-flamingo.drop.dir}/substance-flamingo.jar">
 			<fileset dir="${substance-flamingo.output.dir}/" excludes="test/**" />
