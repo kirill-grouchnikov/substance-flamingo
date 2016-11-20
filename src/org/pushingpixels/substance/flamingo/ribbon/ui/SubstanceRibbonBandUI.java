@@ -403,8 +403,8 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 		g2d.dispose();
 	}
 
-	private class RibbonBandExpandButton extends JCommandButton implements
-			SubstanceInternalButton {
+	@SubstanceInternalButton
+	private class RibbonBandExpandButton extends JCommandButton {
 		public RibbonBandExpandButton() {
 			super(null, null);
 			this.setFocusable(false);
