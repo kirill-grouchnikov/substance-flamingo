@@ -29,9 +29,15 @@
  */
 package org.pushingpixels.substance.flamingo.common.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
@@ -44,6 +50,7 @@ import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
+import org.pushingpixels.substance.internal.utils.menu.SubstanceMenuBackgroundDelegate;
 
 /**
  * UI for {@link JCommandPopupMenu} components in <b>Substance</b> look and
@@ -81,12 +88,12 @@ public class SubstanceCommandPopupMenuUI extends BasicCommandPopupMenuUI {
 			if (fillKind != MenuGutterFillKind.NONE) {
 				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 						.getColorScheme(this, ComponentState.ENABLED);
-				Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.HARD)) ? scheme
-						.getUltraLightColor()
-						: scheme.getLightColor();
-				Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.SOFT)) ? scheme
-						.getUltraLightColor()
-						: scheme.getLightColor();
+				Color extraLight = SubstanceMenuBackgroundDelegate.getGutterHardFillColor(scheme);
+				Color ultraLight = SubstanceMenuBackgroundDelegate.getGutterSoftFillColor(scheme);
+				Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.HARD)) 
+						? ultraLight : extraLight;
+				Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.SOFT)) 
+						? ultraLight : extraLight;
 				g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this,
 						0.7f, g));
 

@@ -118,7 +118,7 @@ public class RibbonBackgroundDelegate {
 						.getBackground().getRGB(), button.getActionModel()
 						.isSelected(), button.getContextualGroupHueColor(),
 				button.getActionModel().isSelected(), ribbon.isMinimized(),
-				skin.getSelectedTabFadeStart(), skin.getSelectedTabFadeEnd(),
+				skin.getTabFadeStart(), skin.getTabFadeEnd(),
 				bgColor);
 		BufferedImage baseLayer = imageCache.get(baseKey);
 		if (baseLayer == null) {
@@ -159,13 +159,11 @@ public class RibbonBackgroundDelegate {
 
 			HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
 					fillScheme.getDisplayName(), borderScheme.getDisplayName(),
-					fillPainter.getDisplayName(), borderPainter
-							.getDisplayName(), button.getParent()
-							.getBackground().getRGB(), button.getActionModel()
-							.isSelected(), button.getContextualGroupHueColor(),
+					fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+					button.getParent().getBackground().getRGB(),
+					button.getActionModel().isSelected(), button.getContextualGroupHueColor(),
 					button.getActionModel().isSelected(), ribbon.isMinimized(),
-					skin.getSelectedTabFadeStart(), skin
-							.getSelectedTabFadeEnd(), bgColor);
+					skin.getTabFadeStart(), skin.getTabFadeEnd(), bgColor);
 
 			BufferedImage layer = imageCache.get(key);
 			if (layer == null) {
@@ -253,8 +251,7 @@ public class RibbonBackgroundDelegate {
 					contour, contourInner, borderScheme);
 
 			result = SubstanceCoreUtilities.blendImagesVertical(result, fade,
-					skin.getSelectedTabFadeStart(), skin
-							.getSelectedTabFadeEnd());
+					skin.getTabFadeStart(), skin.getTabFadeEnd());
 		}
 		return result;
 	}

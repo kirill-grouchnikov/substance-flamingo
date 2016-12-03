@@ -53,7 +53,7 @@
     <property name="flamingo.basedir" value="${module.substance-flamingo.basedir}/../flamingo" />
     <property name="substance.basedir" value="${module.substance-flamingo.basedir}/../substance" />
 	
-	<property name="substance.version" value="6.2dev Uruguay" />
+	<property name="substance.version" value="7.0dev Uruguay" />
 	<property name="flamingo.version" value="5.1dev Jileen" />
 
 	<path id="substance-flamingo.module.bootclasspath">
