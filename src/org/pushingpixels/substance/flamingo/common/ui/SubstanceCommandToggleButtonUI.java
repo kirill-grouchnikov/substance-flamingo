@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.EnumSet;
 import java.util.Map;
 
 import javax.swing.*;
@@ -95,8 +96,8 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 	 * 
 	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
 	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+	public static ComponentUI createUI(JComponent c) {
+		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
 		return new SubstanceCommandToggleButtonUI();
 	}
 

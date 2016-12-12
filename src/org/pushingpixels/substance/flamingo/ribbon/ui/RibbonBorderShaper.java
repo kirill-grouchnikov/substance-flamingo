@@ -48,60 +48,42 @@ public class RibbonBorderShaper {
 	}
 
 	public static GeneralPath getRibbonBorderOutline(JRibbon ribbon,
-			int startX, int endX, int startSelectedX, int endSelectedX,
-			int topY, int bandTopY, int bottomY, float radius) {
+			float startX, float endX, float startSelectedX, float endSelectedX,
+			float topY, float bandTopY, float bottomY, float radius) {
 
-		int height = bottomY - topY;
+		float height = bottomY - topY;
+		float borderThickness = SubstanceSizeUtils
+				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(ribbon));
 		GeneralPath result = new GeneralPath();
-		// float radius3 = SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils
-		// .getComponentFontSize(ribbon), 3.0f, 3, 1.0f);
 		float radius3 = (float) (radius / (1.5 * Math.pow(height, 0.5)));
-		float buttonRadius = getRibbonToggleButtonRadius(ribbon);
-		float buttonRadius3 = (float) (buttonRadius / (1.5 * Math.pow(height,
-				0.5)));
 
 		// start in the top left corner at the end of the curve
 		result.moveTo(startX + radius, bandTopY);
 
-		// move to the bottom start of the selected tab and curve up
-		result.lineTo(startSelectedX - radius, bandTopY);
-		result.quadTo(startSelectedX - radius3, bandTopY - radius3,
-				startSelectedX, bandTopY - radius);
+		// move to the bottom start of the selected tab
+		result.lineTo(startSelectedX, bandTopY);
 
-		// move to the top start of the selected tab and curve right
-		result.lineTo(startSelectedX, topY + buttonRadius);
-		result.quadTo(startSelectedX + buttonRadius3, topY + buttonRadius3,
-				startSelectedX + buttonRadius, topY);
-
-		// move to the top end of the selected tab and curve down
-		result.lineTo(endSelectedX - buttonRadius - 1, topY);
-		result.quadTo(endSelectedX + buttonRadius3 - 1, topY + buttonRadius3,
-				endSelectedX - 1, topY + buttonRadius);
-
-		// move to the bottom end of the selected tab and curve right
-		result.lineTo(endSelectedX - 1, bandTopY - radius);
-		result.quadTo(endSelectedX + radius3 - 1, bandTopY - radius3,
-				endSelectedX + radius - 1, bandTopY);
+		// jump to the bottom end of the selected tab
+		result.moveTo(endSelectedX,  bandTopY);
 
 		// move to the top right corner and curve down
-		result.lineTo(endX - radius - 1, bandTopY);
-		result.quadTo(endX - radius3 - 1, bandTopY + radius3, endX - 1,
+		result.lineTo(endX - radius - borderThickness, bandTopY);
+		result.quadTo(endX - radius3 - borderThickness, bandTopY + radius3, endX - borderThickness,
 				bandTopY + radius);
 
 		// move to the bottom right corner and curve left
-		result.lineTo(endX - 1, bottomY - radius - 1);
-		result.quadTo(endX - radius3 - 1, bottomY - 1 - radius3, endX - radius
-				- 1, bottomY - 1);
+		result.lineTo(endX - borderThickness, bottomY - radius - borderThickness);
+		result.quadTo(endX - radius3 - borderThickness, bottomY - borderThickness - radius3,
+				endX - radius - borderThickness, bottomY - borderThickness);
 
 		// move to the bottom left corner and curve up
-		result.lineTo(startX + radius, bottomY - 1);
-		result.quadTo(startX + radius3, bottomY - 1 - radius3, startX, bottomY
-				- radius - 1);
+		result.lineTo(startX + radius, bottomY - borderThickness);
+		result.quadTo(startX + radius3, bottomY - borderThickness - radius3, startX,
+				bottomY - radius - borderThickness);
 
 		// move to the top left corner and curve right
 		result.lineTo(startX, bandTopY + radius);
-		result.quadTo(startX + radius3, bandTopY + radius3, startX + radius,
-				bandTopY);
+		result.quadTo(startX + radius3, bandTopY + radius3, startX + radius, bandTopY);
 
 		return result;
 	}

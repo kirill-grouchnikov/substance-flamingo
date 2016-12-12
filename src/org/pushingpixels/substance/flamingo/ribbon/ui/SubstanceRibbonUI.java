@@ -249,29 +249,24 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	protected void paintTaskArea(Graphics g, int x, int y, int width, int height) {
 		if (this.ribbon.getTaskCount() == 0)
 			return;
-
+		
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		RibbonTask selectedTask = this.ribbon.getSelectedTask();
-		JRibbonTaskToggleButton selectedTaskButton = this.taskToggleButtons
-				.get(selectedTask);
+		JRibbonTaskToggleButton selectedTaskButton = this.taskToggleButtons.get(selectedTask);
 		Rectangle selectedTaskButtonBounds = selectedTaskButton.getBounds();
-		Point converted = SwingUtilities.convertPoint(selectedTaskButton
-				.getParent(), selectedTaskButtonBounds.getLocation(),
-				this.ribbon);
+		Point converted = SwingUtilities.convertPoint(selectedTaskButton.getParent(),
+				selectedTaskButtonBounds.getLocation(), this.ribbon);
 		float radius = SubstanceSizeUtils
-				.getClassicButtonCornerRadius(SubstanceSizeUtils
-						.getComponentFontSize(this.ribbon));
+				.getClassicButtonCornerRadius(SubstanceSizeUtils.getComponentFontSize(this.ribbon));
 
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.ribbon)) / 2.0);
+		float borderDelta = SubstanceSizeUtils
+				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(this.ribbon)) / 2.0f;
 
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 				.getBorderPainter(this.ribbon);
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.ribbon));
+		float borderThickness = SubstanceSizeUtils
+				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(this.ribbon));
 
 		AbstractRibbonBand band = (selectedTask.getBandCount() == 0) ? null
 				: selectedTask.getBand(0);
@@ -295,42 +290,47 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 		endSelectedX = Math.max(endSelectedX,
 				(int) taskToggleButtonsViewportBounds.getMinX());
 
-		Shape outerContour = RibbonBorderShaper.getRibbonBorderOutline(
-				this.ribbon, x + borderDelta, x + width - 2 * borderDelta - 1,
-				startSelectedX + borderDelta, endSelectedX - 2 * borderDelta,
-				converted.y + borderDelta, y + borderDelta, y + height - 2
-						* borderDelta, radius);
+		Shape outerContour = RibbonBorderShaper.getRibbonBorderOutline(this.ribbon, x + borderDelta,
+				x + width - borderDelta, startSelectedX - borderThickness,
+				endSelectedX + borderThickness, converted.y + borderDelta, y + borderDelta,
+				y + height - borderDelta, radius);
 
-		Shape innerContour = RibbonBorderShaper.getRibbonBorderOutline(
-				this.ribbon, x + borderDelta + borderThickness, x + width - 2
-						* (borderDelta + borderThickness) - 1, startSelectedX
-						+ borderDelta + borderThickness, endSelectedX - 2
-						* (borderDelta + borderThickness), converted.y
-						+ borderDelta + borderThickness, y + borderDelta
-						+ borderThickness, y + height - 2
-						* (borderDelta + borderThickness) + 1, radius);
+		Shape innerContour = RibbonBorderShaper.getRibbonBorderOutline(this.ribbon,
+				x + borderDelta + borderThickness,
+				x + width - borderThickness - borderDelta,
+				startSelectedX - borderThickness, endSelectedX + borderThickness,
+				converted.y + borderDelta + borderThickness, y + borderDelta + borderThickness,
+				y + height - borderThickness - borderDelta, radius);
 
 		g2d.setColor(SubstanceColorSchemeUtilities.getColorScheme(band,
 				ComponentState.ENABLED).getBackgroundFillColor());
 		g2d.clipRect(x, y, width, height + 2);
 		g2d.fill(outerContour);
 
-		borderPainter.paintBorder(g2d, this.ribbon, width, height
-				+ selectedTaskButtonBounds.height + 1, outerContour,
-				innerContour, borderScheme);
+//		g2d.setColor(Color.red);
+//		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//		RenderingHints.VALUE_ANTIALIAS_ON);
+//g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+//		RenderingHints.VALUE_STROKE_PURE);
+//g2d.setStroke(new BasicStroke(0.5f));
+//		g2d.draw(outerContour);
+//		g2d.setColor(Color.blue);
+//		g2d.draw(innerContour);
+		borderPainter.paintBorder(g2d, this.ribbon, width,
+				height + selectedTaskButtonBounds.height + 1, outerContour, innerContour,
+				borderScheme);
 
 		// check whether the currently selected task is a contextual task
 		RibbonTask selected = selectedTask;
-		RibbonContextualTaskGroup contextualGroup = selected
-				.getContextualGroup();
+		RibbonContextualTaskGroup contextualGroup = selected.getContextualGroup();
 		if (contextualGroup != null) {
 			// paint a small gradient directly below the task area
 			Insets ins = this.ribbon.getInsets();
 			int topY = ins.top + getTaskbarHeight();
 			int bottomY = topY + 5;
 			Color hueColor = contextualGroup.getHueColor();
-			Paint paint = new GradientPaint(0, topY, FlamingoUtilities
-					.getAlphaColor(hueColor,
+			Paint paint = new GradientPaint(0, topY,
+					FlamingoUtilities.getAlphaColor(hueColor,
 							(int) (255 * RibbonContextualTaskGroup.HUE_ALPHA)),
 					0, bottomY, FlamingoUtilities.getAlphaColor(hueColor, 0));
 			g2d.setPaint(paint);

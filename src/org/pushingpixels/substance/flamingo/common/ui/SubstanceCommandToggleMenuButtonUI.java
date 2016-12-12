@@ -31,6 +31,7 @@ package org.pushingpixels.substance.flamingo.common.ui;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
+import java.util.EnumSet;
 import java.util.Map;
 
 import javax.swing.Icon;
@@ -56,6 +57,9 @@ import org.pushingpixels.substance.internal.utils.*;
 public class SubstanceCommandToggleMenuButtonUI extends
 		SubstanceCommandToggleButtonUI {
 	public static ComponentUI createUI(JComponent c) {
+		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
+		c.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
+				EnumSet.allOf(SubstanceConstants.Side.class));
 		return new SubstanceCommandToggleMenuButtonUI();
 	}
 

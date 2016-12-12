@@ -29,31 +29,64 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.pushingpixels.flamingo.api.ribbon.*;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
+import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
+import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.RibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
 
 /**
  * Custom title pane for {@link JRibbonFrame} running under Substance
@@ -184,70 +217,89 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 		 *            Insets.
 		 * @return The outline of this taskbar panel.
 		 */
-		protected Shape getOutline(double insets) {
-			double width = this.getWidth() - 2 * insets - 1;
-			double height = this.getHeight() - 2 * insets - 1;
-			float radius = (float) height;
-
+		private Shape getOutline(boolean isOuter) {
 			if (getComponentCount() == 0) {
 				return null;
-			} else {
-				GeneralPath outline = new GeneralPath();
-				JRibbonApplicationMenuButton menuButton = FlamingoUtilities
-						.getApplicationMenuButton(SwingUtilities
-								.getWindowAncestor(this));
-
-				boolean ltr = getComponentOrientation().isLeftToRight();
-
-				double alpha = Math.asin((radius - insets / 2)
-						/ (radius + insets / 2));
-
-				if (ltr) {
-					// top right
-					outline.moveTo(insets + width - height / 2, insets);
-
-					// right arc
-					outline
-							.append(new Arc2D.Double(insets + width - height,
-									insets, height, height, 90, -180,
-									Arc2D.OPEN), true);
-					// bottom left
-					outline.lineTo(insets, insets + height);
-					if (menuButton != null) {
-						double arcSpan = 90;
-						if (insets != 0) {
-							arcSpan = 180.0 * alpha / Math.PI;
-						}
-						outline.append(new Arc2D.Double(insets - 2 * height,
-								insets, 2 * height, 2 * height, 0, arcSpan,
-								Arc2D.OPEN), true);
-					} else {
-						outline.lineTo(insets, insets);
-					}
-				} else {
-					// top left corner
-					outline.moveTo(insets + height / 2, 0);
-					// left arc
-					outline.append(new Arc2D.Double(insets, 0, height, height,
-							90, 180, Arc2D.OPEN), true);
-					// bottom right corner
-					outline.lineTo(width - 1, insets + height);
-					if (menuButton != null) {
-						double arcSpan = -90;
-						if (insets != 0) {
-							arcSpan = -180.0 * alpha / Math.PI;
-						}
-						outline.append(new Arc2D.Double(width - 1, 0,
-								2 * height, 2 * height, 180, arcSpan,
-								Arc2D.OPEN), true);
-					} else {
-						outline.lineTo(width - 1, 0);
-					}
-				}
-				outline.closePath();
-
-				return outline;
 			}
+			
+			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(
+					SubstanceSizeUtils.getComponentFontSize(taskbarPanel));
+			float insets = isOuter ? borderThickness / 2.0f : 1.5f * borderThickness;
+
+			//float outlineDelta = UIUtil.isRetina() ? 0.5f : 1.0f;
+			float width = this.getWidth() - 2 * insets - borderThickness;
+			float height = this.getHeight() - 2 * insets - borderThickness;
+			//float radius = height;
+			
+			float radiusBigOuter = getHeight() - 1.5f * borderThickness;
+			float radiusBigInner = radiusBigOuter + borderThickness;
+			float arcStartDeltaBigInner = (float) Math.toDegrees(
+					Math.atan(1.5 * borderThickness / radiusBigInner));
+			float arcEndDeltaBigInner = (float) Math.toDegrees(
+					Math.acos((getHeight() - 2.5 * borderThickness) / radiusBigInner));
+
+			GeneralPath outline = new GeneralPath();
+			JRibbonApplicationMenuButton menuButton = FlamingoUtilities
+					.getApplicationMenuButton(SwingUtilities.getWindowAncestor(this));
+
+			boolean ltr = getComponentOrientation().isLeftToRight();
+
+			if (ltr) {
+				// top right
+				outline.moveTo(insets + width - height / 2, insets);
+
+				// right arc
+				outline.append(new Arc2D.Double(insets + width - height, insets, height, height, 90,
+						-180, Arc2D.OPEN), true);
+				// bottom left
+				outline.lineTo(insets, insets + height);
+				if (menuButton != null) {
+					float arcStartBigOuter = 0;
+					float arcSpanBigOuter = 90;
+					float arcStartBigInner = arcStartDeltaBigInner;
+					float arcSpanBigInner = 90 - arcStartDeltaBigInner - arcEndDeltaBigInner;
+
+					float radius = isOuter ? radiusBigOuter : radiusBigInner;
+					float arcStart = isOuter ? arcStartBigOuter : arcStartBigInner;
+					float arcSpan = isOuter ? arcSpanBigOuter : arcSpanBigInner;
+					float centerX = -getHeight();
+					float centerY = getHeight() - borderThickness;
+					float startX = centerX - radius;
+					float startY = centerY - radius;
+					outline.append(new Arc2D.Float(startX, startY, 2 * radius, 2 * radius, arcStart,
+							arcSpan, Arc2D.OPEN), true);
+				} else {
+					outline.lineTo(insets, insets);
+				}
+			} else {
+				// top left corner
+				outline.moveTo(insets + height / 2, insets);
+				// left arc
+				outline.append(
+						new Arc2D.Double(insets, insets, height, height, 90, 180, Arc2D.OPEN),
+						true);
+				// bottom right corner
+				outline.lineTo(width - borderThickness, insets + height);
+				if (menuButton != null) {
+					float arcStartBigOuter = 180;
+					float arcSpanBigOuter = -90;
+					float arcStartBigInner = 180 - arcStartDeltaBigInner;
+					float arcSpanBigInner = -90 + arcStartDeltaBigInner + arcEndDeltaBigInner;
+
+					float radius = isOuter ? radiusBigOuter : radiusBigInner;
+					float arcStart = isOuter ? arcStartBigOuter : arcStartBigInner;
+					float arcSpan = isOuter ? arcSpanBigOuter : arcSpanBigInner;
+					float startX = width - borderThickness;
+					float startY = getHeight() - borderThickness - radius;
+					outline.append(new Arc2D.Float(startX, startY, 2 * radius, 2 * radius, arcStart,
+							arcSpan, Arc2D.OPEN), true);
+				} else {
+					outline.lineTo(width - borderThickness, insets);
+				}
+			}
+			outline.closePath();
+
+			return outline;
 		}
 
 		/*
@@ -683,14 +735,12 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 			// paint the outline of the taskbar panel to complete
 			// the correct appearance in the area behind the application
 			// menu button
-			// g2d.clipRect(0, 0, 20, 100);
 			paintTaskBarPanelOutline(g2d, this.taskbarPanel);
 			g2d.translate(-taskbarPanel.getX(), -taskbarPanel.getY());
 		}
 
 		if (SubstanceLookAndFeel.getCurrentSkin(this).getOverlayPainters(
 				DecorationAreaType.PRIMARY_TITLE_PANE).isEmpty()) {
-			// g2d.translate(0, this.getHeight() - 1);
 			SubstanceColorScheme compScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(this, ColorSchemeAssociationKind.SEPARATOR,
 							ComponentState.ENABLED);
@@ -698,11 +748,11 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 					.getSeparatorShadowColor(compScheme)
 					: SeparatorPainterUtils.getSeparatorDarkColor(compScheme);
 			g2d.setColor(sepColor);
-			g2d.drawLine(0, this.getHeight() - 1, this.getWidth(), this
-					.getHeight() - 1);
-			// SeparatorPainterUtils.paintSeparator(this, g2d, this.getWidth(),
-			// 0,
-			// JSeparator.HORIZONTAL, false, 0);
+			float separatorThickness = UIUtil.isRetina() ? 0.5f : 1.0f;
+			float separatorY = getHeight() - separatorThickness;
+			g2d.setStroke(new BasicStroke(separatorThickness, BasicStroke.CAP_BUTT,
+					BasicStroke.JOIN_ROUND));
+			g2d.draw(new Line2D.Double(0, separatorY, getWidth(), separatorY));
 		}
 		g2d.dispose();
 	}
@@ -715,18 +765,9 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 	 * @param taskbarPanel
 	 *            Taskbar panel.
 	 */
-	protected static void paintTaskBarPanelOutline(Graphics g,
-			TaskbarPanel taskbarPanel) {
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(taskbarPanel)) / 2.0);
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(taskbarPanel));
-
-		Shape contour = taskbarPanel.getOutline(borderDelta);
-		Shape contourInner = taskbarPanel.getOutline(borderDelta
-				+ borderThickness);
+	private void paintTaskBarPanelOutline(Graphics g, TaskbarPanel taskbarPanel) {
+		Shape contour = taskbarPanel.getOutline(true);
+		Shape contourInner = taskbarPanel.getOutline(false);
 
 		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(taskbarPanel, ComponentState.ENABLED);
@@ -756,6 +797,16 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 		}
 		borderPainter.paintBorder(g2d, taskbarPanel, taskbarPanel.getWidth(),
 				taskbarPanel.getHeight(), contour, contourInner, borderScheme);
+//		g2d.setColor(Color.red);
+//		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//				RenderingHints.VALUE_ANTIALIAS_ON);
+//		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+//				RenderingHints.VALUE_STROKE_PURE);
+//		g2d.setStroke(new BasicStroke(0.5f));
+//		g2d.draw(contour);
+//		g2d.setColor(Color.green);
+//		g2d.draw(contourInner);
+
 		g2d.dispose();
 	}
 }

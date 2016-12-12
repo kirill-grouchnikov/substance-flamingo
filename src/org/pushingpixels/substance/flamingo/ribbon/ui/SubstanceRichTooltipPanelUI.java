@@ -56,21 +56,18 @@ public class SubstanceRichTooltipPanelUI extends BasicRichTooltipPanelUI {
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		SubstanceLookAndFeel.setDecorationType(this.richTooltipPanel,
-				DecorationAreaType.GENERAL);
+		SubstanceLookAndFeel.setDecorationType(this.richTooltipPanel, DecorationAreaType.GENERAL);
 	}
-	
+
 	@Override
 	protected void paintBackground(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(this.richTooltipPanel, ComponentState.ENABLED);
-		g2d.setPaint(new GradientPaint(0, 0, colorScheme.getExtraLightColor(),
-				0, this.richTooltipPanel.getHeight(), colorScheme
-						.getLightColor()));
-		g2d.fillRect(0, 0, this.richTooltipPanel.getWidth(),
-				this.richTooltipPanel.getHeight());
+		g2d.setPaint(new GradientPaint(0, 0, colorScheme.getExtraLightColor(), 0,
+				this.richTooltipPanel.getHeight(), colorScheme.getLightColor()));
+		g2d.fillRect(0, 0, this.richTooltipPanel.getWidth(), this.richTooltipPanel.getHeight());
 
 		g2d.dispose();
 	}

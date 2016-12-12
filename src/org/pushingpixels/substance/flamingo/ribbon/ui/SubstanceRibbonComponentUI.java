@@ -59,8 +59,7 @@ public class SubstanceRibbonComponentUI extends BasicRibbonComponentUI {
 	 */
 	@Override
 	protected ResizableIcon createDisabledIcon() {
-		return new SubstanceDisabledResizableIcon(this.ribbonComponent
-				.getIcon());
+		return new SubstanceDisabledResizableIcon(this.ribbonComponent.getIcon());
 	}
 
 	/*
@@ -72,8 +71,7 @@ public class SubstanceRibbonComponentUI extends BasicRibbonComponentUI {
 	 * int, int)
 	 */
 	@Override
-	protected void paintIcon(Graphics g, JRibbonComponent ribbonComp,
-			Icon icon, int x, int y) {
+	protected void paintIcon(Graphics g, JRibbonComponent ribbonComp, Icon icon, int x, int y) {
 		if (ribbonComp.isEnabled() && (icon != null)
 				&& SubstanceCoreUtilities.useThemedDefaultIcon(ribbonComp)) {
 			icon = SubstanceCoreUtilities.getThemedIcon(ribbonComp, icon);

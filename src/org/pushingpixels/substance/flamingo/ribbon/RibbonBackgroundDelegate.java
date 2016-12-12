@@ -186,8 +186,7 @@ public class RibbonBackgroundDelegate {
 			SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme,
 			SubstanceFillPainter fillPainter,
 			SubstanceBorderPainter borderPainter) {
-		Set<Side> bottom = new HashSet<Side>();
-		bottom.add(Side.BOTTOM);
+		Set<Side> bottom = EnumSet.of(Side.BOTTOM);
 
 		Color contextualGroupHueColor = button.getContextualGroupHueColor();
 		if (contextualGroupHueColor != null) {
@@ -197,12 +196,12 @@ public class RibbonBackgroundDelegate {
 		}
 
 		float radius = RibbonBorderShaper.getRibbonToggleButtonRadius(button);
-		int borderDelta = (int) Math.ceil(2.0 * SubstanceSizeUtils
+		float borderDelta = 2.0f * SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)));
-		int borderInsets = (int) Math.floor(SubstanceSizeUtils
+						.getComponentFontSize(button));
+		float borderInsets = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)) / 2.0);
+						.getComponentFontSize(button)) / 2.0f;
 		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(width,
 				height + 2 + borderDelta, radius, bottom, borderInsets);
 
@@ -212,7 +211,7 @@ public class RibbonBackgroundDelegate {
 		fillPainter.paintContourBackground(graphics, button, width, height + 2
 				+ borderDelta, contour, false, fillScheme, true);
 
-		int borderThickness = (int) SubstanceSizeUtils
+		float borderThickness = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(button));
 		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(

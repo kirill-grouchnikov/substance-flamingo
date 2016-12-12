@@ -45,6 +45,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.skin.GeminiSkin;
 import org.pushingpixels.substance.api.skin.OfficeBlack2007Skin;
+import org.pushingpixels.substance.api.skin.OfficeBlue2007Skin;
 import org.pushingpixels.substance.flamingo.ribbon.gallery.oob.SubstanceRibbonTask;
 
 import test.ribbon.BasicCheckRibbon;
@@ -63,8 +64,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 	@Override
 	protected void configureStatusBar() {
 		super.configureStatusBar();
-		SubstanceLookAndFeel.setDecorationType(this.statusBar,
-				DecorationAreaType.FOOTER);
+		SubstanceLookAndFeel.setDecorationType(this.statusBar, DecorationAreaType.FOOTER);
 	}
 
 	@Override
@@ -76,14 +76,9 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						UIManager
-								.put(
-										SubstanceLookAndFeel.USE_THEMED_DEFAULT_ICONS,
-										useThemedDefaultIconsCheckBox
-												.isSelected() ? Boolean.TRUE
-												: null);
-						SwingUtilities
-								.updateComponentTreeUI(NewCheckRibbon.this);
+						UIManager.put(SubstanceLookAndFeel.USE_THEMED_DEFAULT_ICONS,
+								useThemedDefaultIconsCheckBox.isSelected() ? Boolean.TRUE : null);
+						SwingUtilities.updateComponentTreeUI(NewCheckRibbon.this);
 						repaint();
 					}
 				});
@@ -95,8 +90,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 		heapPanel.setSelected(false);
 		heapPanel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SubstanceLookAndFeel.setWidgetVisible(getRootPane(), heapPanel
-						.isSelected(),
+				SubstanceLookAndFeel.setWidgetVisible(getRootPane(), heapPanel.isSelected(),
 						SubstanceWidgetType.TITLE_PANE_HEAP_STATUS);
 			}
 		});
@@ -119,11 +113,9 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 			if (w instanceof JDialog) {
 				rootPane = ((JDialog) w).getRootPane();
 			}
-			System.out.println("Window '" + wTitle + "' of "
-					+ w.getClass().getName());
+			System.out.println("Window '" + wTitle + "' of " + w.getClass().getName());
 			if (rootPane != null) {
-				System.out.println("\troot pane UI:"
-						+ rootPane.getUI().getClass().getName());
+				System.out.println("\troot pane UI:" + rootPane.getUI().getClass().getName());
 			}
 		}
 
@@ -134,8 +126,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 					LookAndFeel oldLaf = (LookAndFeel) evt.getOldValue();
 					LookAndFeel newLaf = (LookAndFeel) evt.getNewValue();
 					System.out.println("Look-and-feel change from "
-							+ ((oldLaf == null) ? "null" : oldLaf.getName())
-							+ " to "
+							+ ((oldLaf == null) ? "null" : oldLaf.getName()) + " to "
 							+ ((newLaf == null) ? "null" : newLaf.getName()));
 				}
 			}
@@ -147,8 +138,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 			Set<String> timestampStrings = new HashSet<String>();
 			while (urls.hasMoreElements()) {
 				InputStream is = urls.nextElement().openStream();
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(is));
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 				while (true) {
 					String line = br.readLine();
 					if (line == null)
@@ -179,11 +169,11 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				SubstanceLookAndFeel.setSkin(new GeminiSkin());
+				SubstanceLookAndFeel.setSkin(new OfficeBlue2007Skin());
 				NewCheckRibbon c = new NewCheckRibbon();
 				c.configureRibbon();
-				c.applyComponentOrientation(ComponentOrientation
-						.getOrientation(Locale.getDefault()));
+				c.applyComponentOrientation(
+						ComponentOrientation.getOrientation(Locale.getDefault()));
 				Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment()
 						.getMaximumWindowBounds();
 				c.setPreferredSize(new Dimension(r.width, r.height / 2));

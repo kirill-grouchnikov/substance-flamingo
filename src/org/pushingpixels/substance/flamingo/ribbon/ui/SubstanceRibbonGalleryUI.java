@@ -32,6 +32,7 @@ package org.pushingpixels.substance.flamingo.ribbon.ui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.EnumSet;
 
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
@@ -46,6 +47,8 @@ import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -141,6 +144,9 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
+		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+				EnumSet.of(button.getComponentOrientation().isLeftToRight()
+					? SubstanceConstants.Side.LEFT : SubstanceConstants.Side.RIGHT));
 		return button;
 	}
 
@@ -155,10 +161,8 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 	protected JCommandButton createScrollDownButton() {
 		final JCommandButton button = super.createScrollDownButton();
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils
-				.getSmallArrowIconHeight(fontSize);
-		int arrowIconWidth = (int) SubstanceSizeUtils
-				.getSmallArrowIconWidth(fontSize);
+		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
+		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
 		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(
 				button,
 				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
@@ -172,12 +176,14 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
 							int width, int height) {
 						return SubstanceImageCreator.getArrowIcon(width,
-								height, SubstanceSizeUtils
-										.getDoubleArrowStrokeWidth(fontSize),
+								height, SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
 								SwingConstants.SOUTH, scheme);
 					}
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
+		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+				EnumSet.of(button.getComponentOrientation().isLeftToRight()
+					? SubstanceConstants.Side.LEFT : SubstanceConstants.Side.RIGHT));
 		return button;
 	}
 
@@ -214,6 +220,9 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
+		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+				EnumSet.of(button.getComponentOrientation().isLeftToRight()
+					? SubstanceConstants.Side.LEFT : SubstanceConstants.Side.RIGHT));
 		return button;
 	}
 	

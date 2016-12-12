@@ -80,10 +80,9 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 	 *            Button height.
 	 * @return Button background.
 	 */
-	public static BufferedImage getFullAlphaBackground(
-			JRibbonApplicationMenuButton menuButton,
-			SubstanceFillPainter painter, SubstanceBorderPainter borderPainter,
-			int width, int height) {
+	public static BufferedImage getFullAlphaBackground(JRibbonApplicationMenuButton menuButton,
+			SubstanceFillPainter painter, SubstanceBorderPainter borderPainter, int width,
+			int height) {
 
 		JRibbon ribbon = menuButton.getRibbon();
 
@@ -97,34 +96,31 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 
 		ActionPopupTransitionAwareUI ui = (ActionPopupTransitionAwareUI) menuButton.getUI();
 		StateTransitionTracker popupStateTransitionTracker = ui.getPopupTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = 
-				popupStateTransitionTracker.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
-				modelStateInfo.getStateContributionMap();
+		StateTransitionTracker.ModelStateInfo modelStateInfo = popupStateTransitionTracker
+				.getModelStateInfo();
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
+				.getStateContributionMap();
 		ComponentState currState = ComponentState.getState(model, menuButton);
 
 		SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(menuButton, currState);
-		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(ribbon, ColorSchemeAssociationKind.BORDER,
-						currState);
+		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(ribbon,
+				ColorSchemeAssociationKind.BORDER, currState);
 
 		HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(width, height,
-				baseFillScheme.getDisplayName(), baseBorderScheme
-						.getDisplayName(), painter.getDisplayName(),
-				borderPainter.getDisplayName(), SubstanceSizeUtils
-						.getComponentFontSize(menuButton));
+				baseFillScheme.getDisplayName(), baseBorderScheme.getDisplayName(),
+				painter.getDisplayName(), borderPainter.getDisplayName(),
+				SubstanceSizeUtils.getComponentFontSize(menuButton));
 
 		BufferedImage baseLayer = imageCache.get(baseKey);
 		if (baseLayer == null) {
-			baseLayer = getSingleLayer(menuButton, painter, borderPainter,
-					width, height, baseFillScheme, baseBorderScheme);
+			baseLayer = getSingleLayer(menuButton, painter, borderPainter, width, height,
+					baseFillScheme, baseBorderScheme);
 
 			imageCache.put(baseKey, baseLayer);
 		}
 
-		if (popupShowing || currState.isDisabled()
-				|| (activeStates.size() == 1)) {
+		if (popupShowing || currState.isDisabled() || (activeStates.size() == 1)) {
 			return baseLayer;
 		}
 
@@ -132,7 +128,8 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 		Graphics2D g2d = result.createGraphics();
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
-		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor, baseLayer.getHeight() / scaleFactor, null);
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
+				baseLayer.getHeight() / scaleFactor, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -146,9 +143,8 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 
 			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(menuButton, activeState);
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(ribbon, ColorSchemeAssociationKind.BORDER,
-							activeState);
+			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(ribbon,
+					ColorSchemeAssociationKind.BORDER, activeState);
 
 			HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
 					fillScheme.getDisplayName(), borderScheme.getDisplayName(),
@@ -157,53 +153,47 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 
 			BufferedImage layer = imageCache.get(key);
 			if (layer == null) {
-				layer = getSingleLayer(menuButton, painter, borderPainter,
-						width, height, fillScheme, borderScheme);
+				layer = getSingleLayer(menuButton, painter, borderPainter, width, height,
+						fillScheme, borderScheme);
 
 				imageCache.put(key, layer);
 			}
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor, layer.getHeight() / scaleFactor, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+					layer.getHeight() / scaleFactor, null);
 		}
 
 		g2d.dispose();
 		return result;
 	}
 
-	private static BufferedImage getSingleLayer(
-			JRibbonApplicationMenuButton menuButton,
-			SubstanceFillPainter painter, SubstanceBorderPainter borderPainter,
-			int width, int height, SubstanceColorScheme fillScheme,
-			SubstanceColorScheme borderScheme) {
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(menuButton)) / 2.0);
+	private static BufferedImage getSingleLayer(JRibbonApplicationMenuButton menuButton,
+			SubstanceFillPainter painter, SubstanceBorderPainter borderPainter, int width,
+			int height, SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme) {
+		float borderDelta = SubstanceSizeUtils
+				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(menuButton)) / 2.0f;
 
-		int outerRadius = Math.min(width - 2 * borderDelta - 2, height - 2
-				* borderDelta - 2);
-		int delta = (outerRadius % 2 == 1) ? 1 : 0;
-		Shape contour = new Ellipse2D.Double(borderDelta + delta, borderDelta
-				+ delta, outerRadius - delta, outerRadius - delta);
+		float outerRadius = Math.min(width - 2 * borderDelta, height - 2 * borderDelta);
+		int delta = 0;// (outerRadius % 2 == 1) ? 1 : 0;
+		Shape contour = new Ellipse2D.Double(borderDelta + delta, borderDelta + delta,
+				outerRadius - delta, outerRadius - delta);
 
-		BufferedImage newBackground = SubstanceCoreUtilities.getBlankImage(
-				width, height);
+		BufferedImage newBackground = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D finalGraphics = (Graphics2D) newBackground.getGraphics();
-		painter.paintContourBackground(finalGraphics, menuButton, width,
-				height, contour, false, fillScheme, true);
+		painter.paintContourBackground(finalGraphics, menuButton, width, height, contour, false,
+				fillScheme, true);
 
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(menuButton));
-		int innerRadius = Math.min(width - 2 * (borderDelta + borderThickness)
-				- 2, height - 2 * (borderDelta + borderThickness) - 2);
-		delta = (innerRadius % 2 == 1) ? 1 : 0;
-		Shape contourInner = new Ellipse2D.Double(borderDelta + borderThickness
-				+ delta, borderDelta + borderThickness + delta, innerRadius
-				- delta, innerRadius - delta);
+		float borderThickness = SubstanceSizeUtils
+				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(menuButton));
+		float innerRadius = Math.min(width - 2 * (borderDelta + borderThickness),
+				height - 2 * (borderDelta + borderThickness));
+		delta = 0;// (innerRadius % 2 == 1) ? 1 : 0;
+		Shape contourInner = new Ellipse2D.Double(borderDelta + borderThickness + delta,
+				borderDelta + borderThickness + delta, innerRadius - delta, innerRadius - delta);
 
-		borderPainter.paintBorder(finalGraphics, menuButton, width, height,
-				contour, contourInner, borderScheme);
+		borderPainter.paintBorder(finalGraphics, menuButton, width, height, contour, contourInner,
+				borderScheme);
 		return newBackground;
 	}
 }

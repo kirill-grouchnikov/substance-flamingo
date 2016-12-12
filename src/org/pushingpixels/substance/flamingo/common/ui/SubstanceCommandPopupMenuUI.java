@@ -37,7 +37,6 @@ import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
@@ -46,7 +45,7 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
-import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
+import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
@@ -72,60 +71,41 @@ public class SubstanceCommandPopupMenuUI extends BasicCommandPopupMenuUI {
 	protected static class SubstanceMenuPanel extends MenuPanel {
 		@Override
 		protected void paintIconGutterSeparator(Graphics g) {
-			Graphics2D g2d = (Graphics2D) g.create();
-			int sepX = this.getSeparatorX();
-			g2d.translate(sepX, 0);
-			SeparatorPainterUtils.paintSeparator(this, g2d, 2,
-					this.getHeight(), JSeparator.VERTICAL, true, 0, 0, false);
-			g2d.dispose();
 		}
 
 		@Override
 		protected void paintIconGutterBackground(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g.create();
-			MenuGutterFillKind fillKind = SubstanceCoreUtilities
-					.getMenuGutterFillKind();
+			MenuGutterFillKind fillKind = SubstanceCoreUtilities.getMenuGutterFillKind();
 			if (fillKind != MenuGutterFillKind.NONE) {
-				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this, ComponentState.ENABLED);
+				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(this,
+						ComponentState.ENABLED);
 				Color extraLight = SubstanceMenuBackgroundDelegate.getGutterHardFillColor(scheme);
 				Color ultraLight = SubstanceMenuBackgroundDelegate.getGutterSoftFillColor(scheme);
-				Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.HARD)) 
-						? ultraLight : extraLight;
-				Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.SOFT)) 
-						? ultraLight : extraLight;
-				g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this,
-						0.7f, g));
+				Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL)
+						|| (fillKind == MenuGutterFillKind.HARD)) ? ultraLight : extraLight;
+				Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL)
+						|| (fillKind == MenuGutterFillKind.SOFT)) ? ultraLight : extraLight;
+				g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, 0.7f, g));
 
 				int sepX = this.getSeparatorX();
 				if (this.getComponentOrientation().isLeftToRight()) {
-					GradientPaint gp = new GradientPaint(0, 0, leftColor,
-							sepX + 2, 0, rightColor);
+					GradientPaint gp = new GradientPaint(0, 0, leftColor, sepX + 2, 0, rightColor);
 					g2d.setPaint(gp);
 					g2d.fillRect(0, 0, sepX, this.getHeight());
 				} else {
-					GradientPaint gp = new GradientPaint(sepX, 0, leftColor,
-							this.getWidth(), 0, rightColor);
+					GradientPaint gp = new GradientPaint(sepX, 0, leftColor, this.getWidth(), 0,
+							rightColor);
 					g2d.setPaint(gp);
-					g2d.fillRect(sepX + 2, 0, this.getWidth() - sepX, this
-							.getHeight());
+					g2d.fillRect(sepX + 2, 0, this.getWidth() - sepX, this.getHeight());
 				}
 			}
 			g2d.dispose();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jvnet.flamingo.common.ui.BasicCommandPopupMenuUI#
-	 * createScrollableButtonPanel()
-	 */
 	@Override
-	protected ScrollableCommandButtonPanel createScrollableButtonPanel() {
-		ScrollableCommandButtonPanel result = super
-				.createScrollableButtonPanel();
-		result.setBorder(new SubstanceBorder(new Insets(0, 0, 1, 0)));
-		return result;
+	public void update(Graphics g, JComponent c) {
+		BackgroundPaintingUtils.update(g, c, false);
 	}
 }

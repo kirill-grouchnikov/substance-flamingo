@@ -37,6 +37,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 
+import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.BasicRibbonApplicationMenuButtonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
@@ -125,18 +126,18 @@ public class SubstanceRibbonApplicationMenuButtonUI extends
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(commandButton);
 		BufferedImage fullAlphaBackground = RibbonApplicationMenuButtonBackgroundDelegate
 				.getFullAlphaBackground(b, fillPainter, borderPainter,
-						commandButton.getWidth(), commandButton.getHeight());
+						commandButton.getWidth() - 2, commandButton.getHeight() - 2);
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
 				fullAlphaBackground.getHeight() / scaleFactor, null);
 
 		// Paint the icon
-		Icon icon = b.getIcon();
+		ResizableIcon icon = b.getIcon();
 		if (icon != null) {
 			int iconWidth = icon.getIconWidth();
 			int iconHeight = icon.getIconHeight();
-			Rectangle iconRect = new Rectangle((c.getWidth() - iconWidth) / 2,
-					(c.getHeight() - iconHeight) / 2, iconWidth, iconHeight);
+			Rectangle iconRect = new Rectangle((commandButton.getWidth() - iconWidth) / 2 - 1,
+					(commandButton.getHeight() - iconHeight) / 2 - 1, iconWidth, iconHeight);
 			paintButtonIcon(g2d, iconRect);
 		}
 
@@ -174,8 +175,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends
 				CommandButtonBackgroundDelegate.paintThemedCommandButtonIcon(
 						g2d, iconRect, this.applicationMenuButton, regular,
 						this.applicationMenuButton.getPopupModel(),
-						this.substanceVisualStateTracker
-								.getPopupStateTransitionTracker());
+						this.substanceVisualStateTracker.getPopupStateTransitionTracker());
 			}
 			g2d.dispose();
 		}

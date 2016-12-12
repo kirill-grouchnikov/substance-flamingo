@@ -29,8 +29,15 @@
  */
 package org.pushingpixels.substance.flamingo.common.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AWTEvent;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.EnumSet;
 
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
@@ -38,6 +45,9 @@ import javax.swing.plaf.ComponentUI;
 import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
 import org.pushingpixels.flamingo.api.common.RolloverActionListener;
 import org.pushingpixels.flamingo.internal.utils.KeyTipRenderingUtilities;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * UI for {@link JCommandMenuButton} components in <b>Substance</b> look and
@@ -52,6 +62,9 @@ public class SubstanceCommandMenuButtonUI extends SubstanceCommandButtonUI {
 	protected MouseListener rolloverMenuMouseListener;
 
 	public static ComponentUI createUI(JComponent c) {
+		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
+		c.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
+				EnumSet.allOf(SubstanceConstants.Side.class));
 		return new SubstanceCommandMenuButtonUI((JCommandMenuButton)c);
 	}
 	

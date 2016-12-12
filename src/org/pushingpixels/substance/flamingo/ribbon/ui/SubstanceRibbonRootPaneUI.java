@@ -75,17 +75,8 @@ public class SubstanceRibbonRootPaneUI extends SubstanceRootPaneUI {
 	protected void installListeners(final JRootPane root) {
 		super.installListeners(root);
 
-		this.substanceRibbonHierarchyListener = new HierarchyListener() {
-			@Override
-			public void hierarchyChanged(HierarchyEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						createAppMenuButton(root);
-					}
-				});
-			}
-		};
+		this.substanceRibbonHierarchyListener = (HierarchyEvent e) -> 
+			SwingUtilities.invokeLater(() -> createAppMenuButton(root));
 
 		root.addHierarchyListener(this.substanceRibbonHierarchyListener);
 	}

@@ -32,6 +32,7 @@ package org.pushingpixels.substance.flamingo;
 import java.awt.*;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIDefaults;
 import javax.swing.border.Border;
 import javax.swing.plaf.*;
 
@@ -41,6 +42,7 @@ import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
 import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
 import org.pushingpixels.flamingo.api.ribbon.*;
 import org.pushingpixels.flamingo.internal.ui.common.JRichTooltipPanel;
+import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorComponent;
 import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorPanel;
 import org.pushingpixels.flamingo.internal.ui.ribbon.*;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
@@ -80,12 +82,17 @@ public class FlamingoPlugin implements LafComponentPlugin {
 		SubstanceSkin skin = (SubstanceSkin) mSkin;
 		Border textBorder = new BorderUIResource(new SubstanceBorder());
 
-		SubstanceColorScheme mainActiveScheme = skin
-				.getActiveColorScheme(DecorationAreaType.NONE);
-		Color backgroundColor = new ColorUIResource(mainActiveScheme
-				.getBackgroundFillColor());
-		Color disabledForegroundColor = SubstanceColorUtilities
-				.getForegroundColor(mainActiveScheme);
+		SubstanceColorScheme mainActiveScheme = skin.getActiveColorScheme(DecorationAreaType.NONE);
+		Color backgroundColor = new ColorUIResource(mainActiveScheme.getBackgroundFillColor());
+		Color disabledForegroundColor = SubstanceColorUtilities.getForegroundColor(
+				mainActiveScheme);
+
+		Object richTooltipBorder = new UIDefaults.LazyValue() {
+			@Override
+			public Object createValue(UIDefaults table) {
+				return new SubstanceBorder(new Insets(3, 5, 4, 5));
+			}
+		};
 
 		Object[] defaults = new Object[] {
 				JCommandButtonPanel.uiClassID,
@@ -115,6 +122,9 @@ public class FlamingoPlugin implements LafComponentPlugin {
 				JColorSelectorPanel.uiClassID,
 				UI_COMMON_CLASSNAME_PREFIX + "ColorSelectorPanelUI",
 
+				JColorSelectorComponent.uiClassID,
+				UI_COMMON_CLASSNAME_PREFIX + "ColorSelectorComponentUI",
+
 				JBandControlPanel.uiClassID,
 				UI_RIBBON_CLASSNAME_PREFIX + "BandControlPanelUI",
 
@@ -137,8 +147,7 @@ public class FlamingoPlugin implements LafComponentPlugin {
 				UI_RIBBON_CLASSNAME_PREFIX + "RibbonApplicationMenuButtonUI",
 
 				JRibbonApplicationMenuPopupPanel.uiClassID,
-				UI_RIBBON_CLASSNAME_PREFIX
-						+ "RibbonApplicationMenuPopupPanelUI",
+				UI_RIBBON_CLASSNAME_PREFIX + "RibbonApplicationMenuPopupPanelUI",
 
 				JRibbonTaskToggleButton.uiClassID,
 				UI_RIBBON_CLASSNAME_PREFIX + "RibbonTaskToggleButtonUI",
@@ -191,6 +200,8 @@ public class FlamingoPlugin implements LafComponentPlugin {
 				new BorderUIResource.EmptyBorderUIResource(2, 2, 2, 2),
 
 				"RibbonGallery.margin", new Insets(3, 3, 3, 3),
+				
+				"RichTooltipPanel.border", richTooltipBorder,
 
 				"ToggleButton.background", backgroundColor,
 

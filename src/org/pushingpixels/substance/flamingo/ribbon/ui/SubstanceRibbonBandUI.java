@@ -52,6 +52,7 @@ import javax.swing.plaf.UIResource;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
@@ -159,7 +160,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 		// fix for issue 28 - empty ribbon band
 		if (titleRectangle.width <= 0)
 			return;
-
+		
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		g2d.setFont(UIManager.getFont("Ribbon.font"));
 
@@ -216,7 +217,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 		SubstanceFillPainter gradientPainter = new MatteFillPainter();
 
 		Graphics2D g2d = (Graphics2D) g.create();
-
+		
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(this.ribbonBand);
 		SubstanceColorScheme colorScheme = skin
 				.getBackgroundColorScheme(DecorationAreaType.HEADER);
@@ -232,21 +233,21 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 
 		GeneralPath outline = new GeneralPath();
 
+		float outlineDelta = UIUtil.isRetina() ? 0.5f : 1.0f;
 		// top left
 		outline.moveTo(0, 0);
 		// top right
-		outline.lineTo(titleRectangle.width, 0);
+		outline.lineTo(titleRectangle.width - outlineDelta, 0);
 		// bottom right
-		outline.lineTo(titleRectangle.width, titleRectangle.height
-				- cornerRadius - 1);
-		outline.append(new Arc2D.Double(titleRectangle.width - 2 * cornerRadius
-				- 1, titleRectangle.height - 1 - 2 * cornerRadius,
-				2 * cornerRadius, 2 * cornerRadius, 0, -90, Arc2D.OPEN), true);
+		outline.lineTo(titleRectangle.width - outlineDelta, 
+				titleRectangle.height - cornerRadius - outlineDelta);
+		outline.append(new Arc2D.Double(titleRectangle.width - 2 * cornerRadius - outlineDelta,
+				titleRectangle.height - outlineDelta - 2 * cornerRadius, 2 * cornerRadius, 
+				2 * cornerRadius, 0, -90, Arc2D.OPEN), true);
 		// bottom left
-		outline.lineTo(cornerRadius, titleRectangle.height - 1);
-		outline.append(new Arc2D.Double(0, titleRectangle.height - 2
-				* cornerRadius - 1, 2 * cornerRadius, 2 * cornerRadius, 270,
-				-90, Arc2D.OPEN), true);
+		outline.lineTo(cornerRadius, titleRectangle.height - outlineDelta);
+		outline.append(new Arc2D.Double(0, titleRectangle.height - 2 * cornerRadius - outlineDelta,
+				2 * cornerRadius, 2 * cornerRadius, 270, -90, Arc2D.OPEN), true);
 		// top left
 		outline.lineTo(0, 0);
 
@@ -258,7 +259,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 
 		// outline
 		g2d.setColor(colorScheme.getMidColor());
-		g2d.setStroke(new BasicStroke(1.2f));
+		g2d.setStroke(new BasicStroke(outlineDelta));
 		g2d.draw(outline);
 
 		// top line

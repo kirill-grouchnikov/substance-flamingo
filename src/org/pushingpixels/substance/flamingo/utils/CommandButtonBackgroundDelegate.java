@@ -248,9 +248,9 @@ public class CommandButtonBackgroundDelegate {
 			Set<SubstanceConstants.Side> straightSides,
 			AbstractCommandButton.CommandButtonLocationOrderKind locationOrderKind,
 			int dx, int dy, int dw, int dh, boolean isVertical) {
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
+		float borderDelta = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(commandButton)) / 2.0);
+						.getComponentFontSize(commandButton)) / 2.0f;
 
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width + dw,
 				height + dh, radius, straightSides, borderDelta);
@@ -261,7 +261,7 @@ public class CommandButtonBackgroundDelegate {
 		fillPainter.paintContourBackground(finalGraphics, commandButton, width
 				+ dw, height + dh, contour, false, fillScheme, true);
 
-		int borderThickness = (int) SubstanceSizeUtils
+		float borderThickness = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(commandButton));
 		Shape contourInner = SubstanceOutlineUtilities.getBaseOutline(width
@@ -274,10 +274,10 @@ public class CommandButtonBackgroundDelegate {
 			if ((locationOrderKind == AbstractCommandButton.CommandButtonLocationOrderKind.FIRST)
 					|| (locationOrderKind == CommandButtonLocationOrderKind.MIDDLE)) {
 				// outer/inner line at the bottom
-				int y = -dy + commandButton.getHeight() - borderDelta - 2
+				float y = -dy + commandButton.getHeight() - borderDelta - 2
 						* borderThickness;
-				int xs = borderDelta;
-				int xe = commandButton.getWidth() - 2 * borderDelta;
+				float xs = borderDelta;
+				float xe = commandButton.getWidth() - 2 * borderDelta;
 				Shape upper = new Line2D.Double(xs + borderThickness, y, xe - 2
 						* borderThickness, y);
 				y += borderThickness;
@@ -290,9 +290,9 @@ public class CommandButtonBackgroundDelegate {
 			if ((locationOrderKind == CommandButtonLocationOrderKind.MIDDLE)
 					|| (locationOrderKind == AbstractCommandButton.CommandButtonLocationOrderKind.LAST)) {
 				// inner line at the top
-				int y = -dy + borderDelta;
-				int xs = borderDelta;
-				int xe = commandButton.getWidth() - 2 * borderDelta;
+				float y = -dy + borderDelta;
+				float xs = borderDelta;
+				float xe = commandButton.getWidth() - 2 * borderDelta;
 				Shape upper = new Line2D.Double(xs + borderThickness, y, xe - 2
 						* borderThickness, y);
 				borderPainter.paintBorder(finalGraphics, commandButton, width
@@ -300,8 +300,7 @@ public class CommandButtonBackgroundDelegate {
 			}
 		} else {
 			// special case for leftmost (not FIRST!!!) and MIDDLE location
-			// order
-			// kinds
+			// order kinds
 			boolean ltr = commandButton.getComponentOrientation()
 					.isLeftToRight();
 			boolean leftmost = (ltr && (locationOrderKind == AbstractCommandButton.CommandButtonLocationOrderKind.FIRST))
@@ -309,10 +308,10 @@ public class CommandButtonBackgroundDelegate {
 			if (leftmost
 					|| (locationOrderKind == CommandButtonLocationOrderKind.MIDDLE)) {
 				// outer / inner line at the right
-				int x = -dx + commandButton.getWidth() - borderDelta - 2
+				float x = -dx + commandButton.getWidth() - borderDelta - 2
 						* borderThickness;
-				int ys = borderDelta;
-				int ye = commandButton.getHeight() - 2 * borderDelta;
+				float ys = borderDelta;
+				float ye = commandButton.getHeight() - 2 * borderDelta;
 				Shape upper = new Line2D.Double(x, ys + borderThickness, x, ye
 						- 2 * borderThickness);
 				x += borderThickness;
@@ -327,9 +326,9 @@ public class CommandButtonBackgroundDelegate {
 			if ((locationOrderKind == CommandButtonLocationOrderKind.MIDDLE)
 					|| rightmost) {
 				// inner line at the left
-				int x = -dx + borderDelta;
-				int ys = borderDelta;
-				int ye = commandButton.getHeight() - 2 * borderDelta;
+				float x = -dx + borderDelta;
+				float ys = borderDelta;
+				float ye = commandButton.getHeight() - 2 * borderDelta;
 				Shape upper = new Line2D.Double(x, ys + borderThickness, x, ye
 						- 2 * borderThickness);
 				borderPainter.paintBorder(finalGraphics, commandButton, width
