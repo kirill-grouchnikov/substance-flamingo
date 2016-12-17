@@ -29,10 +29,18 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.gallery.oob;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 
 /**
@@ -143,6 +151,12 @@ public class ColorSchemeResizableIcon implements ResizableIcon {
 		Color color6 = (this.scheme == null) ? Color.magenta : this.scheme
 				.getUltraLightColor();
 
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+				RenderingHints.VALUE_STROKE_PURE);
+		graphics.setStroke(new BasicStroke(UIUtil.isRetina() ? 0.5f : 1.0f, 
+				BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		this.paintCircle(graphics, cx, R, R, color1, true);
 		if (this.currHeight > 16)
 			this.paintCircle(graphics, cx + dx, R + 0.5 * s, R, color2, true);

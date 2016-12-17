@@ -37,8 +37,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;

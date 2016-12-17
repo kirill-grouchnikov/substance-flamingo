@@ -1,14 +1,22 @@
 package test.substance;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import org.pushingpixels.flamingo.api.common.*;
+import org.pushingpixels.flamingo.api.common.CommandButtonDisplayState;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
+import org.pushingpixels.flamingo.api.common.JCommandButtonPanel;
 import org.pushingpixels.flamingo.api.common.icon.EmptyResizableIcon;
 import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
@@ -35,8 +43,6 @@ public class ButtonRunner extends JFrame {
 					Logger.getLogger(ButtonRunner.class.getName()).log(
 							Level.SEVERE, null, ex);
 				}
-
-				ButtonRunner test = new ButtonRunner();
 
 				Thread heapThread = new Thread() {
 					@Override

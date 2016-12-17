@@ -43,12 +43,10 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Paint;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -222,8 +220,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 				return null;
 			}
 			
-			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(
-					SubstanceSizeUtils.getComponentFontSize(taskbarPanel));
+			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 			float insets = isOuter ? borderThickness / 2.0f : 1.5f * borderThickness;
 
 			//float outlineDelta = UIUtil.isRetina() ? 0.5f : 1.0f;
@@ -341,9 +338,12 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 	 */
 	public SubstanceRibbonFrameTitlePane(JRootPane root, SubstanceRootPaneUI ui) {
 		super(root, ui);
-		this.taskComponentMap = new HashMap<RibbonContextualTaskGroup, SubstanceContextualGroupComponent>();
+		this.taskComponentMap = new HashMap<>();
 		this.taskbarPanel = new TaskbarPanel();
 		this.markExtraComponent(this.taskbarPanel, ExtraComponentKind.LEADING);
+		// Mark this with HEADER decoration area type even though it is in the primary title pane.
+		// Otherwise the background fill on the popup menu doesn't look good.
+		SubstanceLookAndFeel.setDecorationType(this.taskbarPanel, DecorationAreaType.HEADER);
 		this.add(this.taskbarPanel);
 	}
 

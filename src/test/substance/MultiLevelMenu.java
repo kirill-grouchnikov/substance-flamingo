@@ -5,14 +5,20 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.flamingo.api.common.*;
+import org.pushingpixels.flamingo.api.common.CommandButtonDisplayState;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonPopupOrientationKind;
-import org.pushingpixels.flamingo.api.common.popup.*;
+import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
+import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GeminiSkin;
 
-import test.svg.transcoded.*;
+import test.svg.transcoded.edit_copy;
+import test.svg.transcoded.edit_cut;
+import test.svg.transcoded.edit_find;
+import test.svg.transcoded.edit_find_replace;
+import test.svg.transcoded.edit_paste;
 
 public class MultiLevelMenu extends JFrame {
 
@@ -25,43 +31,31 @@ public class MultiLevelMenu extends JFrame {
 		main.setFlat(false);
 
 		// first level menu
-		main.setPopupCallback(new PopupPanelCallback() {
-			@Override
-			public JPopupPanel getPopupPanel(JCommandButton commandButton) {
-				JCommandPopupMenu result = new JCommandPopupMenu();
+		main.setPopupCallback((JCommandButton commandButton) -> {
+			JCommandPopupMenu result = new JCommandPopupMenu();
 
-				result.addMenuButton(new JCommandMenuButton("Copy",
-						new edit_copy()));
-				result.addMenuButton(new JCommandMenuButton("Cut",
-						new edit_cut()));
-				result.addMenuButton(new JCommandMenuButton("Paste",
-						new edit_paste()));
+			result.addMenuButton(new JCommandMenuButton("Copy", new edit_copy()));
+			result.addMenuButton(new JCommandMenuButton("Cut", new edit_cut()));
+			result.addMenuButton(new JCommandMenuButton("Paste", new edit_paste()));
 
-				result.addMenuSeparator();
+			result.addMenuSeparator();
 
-				JCommandMenuButton second = new JCommandMenuButton("Find", null);
-				second.setCommandButtonKind(CommandButtonKind.POPUP_ONLY);
-				// second level
-				second.setPopupCallback(new PopupPanelCallback() {
-					@Override
-					public JPopupPanel getPopupPanel(
-							JCommandButton commandButton) {
-						JCommandPopupMenu result = new JCommandPopupMenu();
+			JCommandMenuButton second = new JCommandMenuButton("Find", null);
+			second.setCommandButtonKind(CommandButtonKind.POPUP_ONLY);
+			// second level
+			second.setPopupCallback((JCommandButton commandButton2) -> {
+				JCommandPopupMenu result2 = new JCommandPopupMenu();
 
-						result.addMenuButton(new JCommandMenuButton("Find",
-								new edit_find()));
-						result.addMenuButton(new JCommandMenuButton(
-								"Find replace", new edit_find_replace()));
+				result2.addMenuButton(new JCommandMenuButton("Find", new edit_find()));
+				result2.addMenuButton(
+						new JCommandMenuButton("Find replace", new edit_find_replace()));
 
-						return result;
-					}
-				});
-				second
-						.setPopupOrientationKind(CommandButtonPopupOrientationKind.SIDEWARD);
-				result.addMenuButton(second);
+				return result2;
+			});
+			second.setPopupOrientationKind(CommandButtonPopupOrientationKind.SIDEWARD);
+			result.addMenuButton(second);
 
-				return result;
-			}
+			return result;
 		});
 
 		this.setLayout(new FlowLayout(FlowLayout.LEADING));

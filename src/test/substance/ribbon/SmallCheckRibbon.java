@@ -29,26 +29,35 @@
  */
 package test.substance.ribbon;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.flamingo.api.ribbon.*;
+import org.pushingpixels.flamingo.api.ribbon.JFlowRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
+import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.OfficeBlue2007Skin;
-
-import test.ribbon.BasicCheckRibbon;
-import test.svg.transcoded.help_browser;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
-public class SmallCheckRibbon extends BasicCheckRibbon {
-	private JLabel saveLabel;
+import test.ribbon.BasicCheckRibbon;
+import test.svg.transcoded.help_browser;
 
+public class SmallCheckRibbon extends BasicCheckRibbon {
 	public SmallCheckRibbon() {
 		super();
 		this.setTitle("Ribbon longer title to check contextual tabs");

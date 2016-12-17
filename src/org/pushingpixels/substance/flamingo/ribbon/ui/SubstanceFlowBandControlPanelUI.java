@@ -29,13 +29,17 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
-import org.pushingpixels.flamingo.internal.ui.ribbon.*;
+import org.pushingpixels.flamingo.internal.ui.ribbon.BasicFlowBandControlPanelUI;
+import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JFlowBandControlPanel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**

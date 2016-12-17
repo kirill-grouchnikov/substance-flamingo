@@ -32,7 +32,10 @@ package test.substance.bcb;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GeminiSkin;
 
 import test.bcb.BreadCrumbTest;

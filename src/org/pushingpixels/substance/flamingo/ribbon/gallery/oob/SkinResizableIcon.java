@@ -50,9 +50,8 @@ public class SkinResizableIcon extends LayeredIcon {
 	 *            Original heigth in pixels.
 	 */
 	public SkinResizableIcon(SubstanceSkin skin, int startWidth, int startHeight) {
-		super(new WatermarkResizableIcon(skin.getWatermark(), startWidth,
-				startHeight), new ColorSchemeResizableIcon(skin
-				.getActiveColorScheme(DecorationAreaType.NONE), startWidth,
-				startHeight));
+		super(new WatermarkResizableIcon(skin.getWatermark(), startWidth, startHeight),
+				new ColorSchemeResizableIcon(skin.getActiveColorScheme(DecorationAreaType.NONE),
+						startWidth, startHeight));
 	}
 }

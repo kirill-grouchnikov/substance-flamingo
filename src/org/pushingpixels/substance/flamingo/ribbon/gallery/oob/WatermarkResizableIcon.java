@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.flamingo.ribbon.gallery.oob;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
@@ -38,6 +39,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
@@ -45,10 +47,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Resizable icon for <b>Substance </b> watermarks.
@@ -86,8 +90,7 @@ public class WatermarkResizableIcon implements ResizableIcon {
 	 * @param startHeight
 	 *            Original heigth in pixels.
 	 */
-	public WatermarkResizableIcon(SubstanceWatermark watermark, int startWidth,
-			int startHeight) {
+	public WatermarkResizableIcon(SubstanceWatermark watermark, int startWidth, int startHeight) {
 		this.watermark = watermark;
 		this.currWidth = startWidth;
 		this.currHeight = startHeight;
@@ -136,11 +139,9 @@ public class WatermarkResizableIcon implements ResizableIcon {
 		if (waterSigns.containsKey(size))
 			return waterSigns.get(size);
 
-		BufferedImage blurred = SubstanceCoreUtilities
-				.getBlankImage(size, size);
+		BufferedImage blurred = SubstanceCoreUtilities.getBlankImage(size, size);
 		Font font = new Font("Tahoma", size > 15 ? Font.PLAIN : Font.BOLD, size);
-		Graphics2D blurredGraphics = (Graphics2D) blurred.getGraphics()
-				.create();
+		Graphics2D blurredGraphics = (Graphics2D) blurred.getGraphics().create();
 		blurredGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		blurredGraphics.setColor(new Color(255, 255, 255, 96));
@@ -149,12 +150,11 @@ public class WatermarkResizableIcon implements ResizableIcon {
 		blurredGraphics.setFont(font);
 		blurredGraphics.drawString("\u2248", 1, size - 1);
 
-		float data[] = { 0.0625f, 0.125f, 0.0625f, 0.125f, 0.25f, 0.125f,
-				0.0625f, 0.125f, 0.0625f };
+		float data[] = { 0.0625f, 0.125f, 0.0625f, 0.125f, 0.25f, 0.125f, 0.0625f, 0.125f,
+				0.0625f };
 		Kernel kernel = new Kernel(3, 3, data);
 
-		ConvolveOp convolve = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP,
-				null);
+		ConvolveOp convolve = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
 
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(size, size);
 		convolve.filter(blurred, result);
@@ -183,39 +183,43 @@ public class WatermarkResizableIcon implements ResizableIcon {
 		Graphics2D graphics = (Graphics2D) g.create();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+				RenderingHints.VALUE_STROKE_PURE);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+		graphics.setStroke(new BasicStroke(borderThickness,  BasicStroke.CAP_BUTT, 
+				BasicStroke.JOIN_ROUND));
 
 		graphics.translate(x, y);
 		graphics.clipRect(0, 0, this.currWidth, this.currHeight);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		if (this.watermark != null) {
 			graphics.setColor(SubstanceCoreUtilities.getSkin(c)
-					.getEnabledColorScheme(
-							SubstanceLookAndFeel.getDecorationType(c))
+					.getEnabledColorScheme(SubstanceLookAndFeel.getDecorationType(c))
 					.getExtraLightColor());
 			graphics.fillRect(0, 0, this.currWidth, this.currHeight);
 			Composite oldComp = graphics.getComposite();
-			graphics.setComposite(AlphaComposite.getInstance(
-					AlphaComposite.SRC_OVER, 0.6f));
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
 
-			this.watermark.previewWatermark(graphics,
-					SubstanceColorSchemeUtilities.METALLIC_SKIN, 0, 0,
-					this.currWidth, this.currHeight);
+			this.watermark.previewWatermark(graphics, SubstanceColorSchemeUtilities.METALLIC_SKIN,
+					0, 0, this.currWidth, this.currHeight);
 			graphics.setComposite(oldComp);
 
 			int waterSize = this.currHeight / 2;
-			graphics.drawImage(getWatermarkSign(waterSize), this.currWidth
-					- waterSize - 2, this.currHeight - waterSize - 2, null);
-
-			graphics.setColor(Color.black);
-			graphics.drawRect(0, 0, this.currWidth - 1, this.currHeight - 1);
+			BufferedImage watermarkSign = getWatermarkSign(waterSize);
+			graphics.drawImage(watermarkSign, this.currWidth - waterSize - 2,
+					this.currHeight - waterSize - 2, watermarkSign.getWidth() / scaleFactor,
+					watermarkSign.getHeight() / scaleFactor, null);
 		} else {
 			int waterSize = Math.min(this.currHeight, this.currWidth) - 2;
-			graphics.drawImage(getWatermarkSign(waterSize),
-					(this.currWidth - waterSize) / 2,
-					(this.currHeight - waterSize) / 2, null);
-
-			graphics.setColor(Color.black);
-			graphics.drawRect(0, 0, this.currWidth - 1, this.currHeight - 1);
+			BufferedImage watermarkSign = getWatermarkSign(waterSize);
+			graphics.drawImage(watermarkSign, (this.currWidth - waterSize) / 2,
+					(this.currHeight - waterSize) / 2, watermarkSign.getWidth() / scaleFactor,
+					watermarkSign.getHeight() / scaleFactor, null);
 		}
+		graphics.setColor(Color.black);
+		graphics.draw(new Rectangle2D.Float(0, 0, 
+				this.currWidth, //- borderThickness, 
+				this.currHeight));// - borderThickness));
 
 		graphics.dispose();
 	}

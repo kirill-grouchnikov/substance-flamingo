@@ -29,20 +29,46 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.JComponent;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.flamingo.api.ribbon.*;
-import org.pushingpixels.flamingo.internal.ui.ribbon.*;
+import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
+import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
+import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonUI;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonRootPane;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
-import org.pushingpixels.substance.internal.painter.*;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
+import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
+import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * UI for ribbon in <b>Substance</b> look and feel.
@@ -55,25 +81,22 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	 * 
 	 * @author Kirill Grouchnikov
 	 */
-	protected class SubstanceTaskToggleButtonsHostPanel extends
-			TaskToggleButtonsHostPanel {
+	protected class SubstanceTaskToggleButtonsHostPanel extends TaskToggleButtonsHostPanel {
 		@Override
-		protected void paintContextualTaskGroupOutlines(Graphics g,
-				RibbonContextualTaskGroup group, Rectangle groupBounds) {
+		protected void paintContextualTaskGroupOutlines(Graphics g, RibbonContextualTaskGroup group,
+				Rectangle groupBounds) {
 			Graphics2D g2d = (Graphics2D) g.create();
 
 			// SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 			// .getBorderColorScheme(ribbon, ComponentState.DEFAULT);
 
 			g2d.translate(groupBounds.x, 0);
-			SeparatorPainterUtils.paintSeparator(ribbon, g2d, 2,
-					groupBounds.height * 3 / 4, SwingConstants.VERTICAL, false,
-					0, groupBounds.height / 3, true);
+			SeparatorPainterUtils.paintSeparator(ribbon, g2d, 2, groupBounds.height * 3 / 4,
+					SwingConstants.VERTICAL, false, 0, groupBounds.height / 3, true);
 
 			g2d.translate(groupBounds.width - 1, 0);
-			SeparatorPainterUtils.paintSeparator(ribbon, g2d, 2,
-					groupBounds.height * 3 / 4, SwingConstants.VERTICAL, false,
-					0, groupBounds.height / 3, true);
+			SeparatorPainterUtils.paintSeparator(ribbon, g2d, 2, groupBounds.height * 3 / 4,
+					SwingConstants.VERTICAL, false, 0, groupBounds.height / 3, true);
 
 			g2d.dispose();
 		}
@@ -81,10 +104,8 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 		@Override
 		protected void paintTaskOutlines(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g.create();
-			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-					.getColorScheme(ribbon,
-							ColorSchemeAssociationKind.SEPARATOR,
-							ComponentState.ENABLED);
+			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(ribbon,
+					ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
 
 			Set<RibbonTask> tasksWithTrailingSeparators = new HashSet<RibbonTask>();
 			// add all regular tasks except the last
@@ -96,8 +117,7 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 			// add all tasks of visible contextual groups except last task in
 			// each group
 			for (int i = 0; i < ribbon.getContextualTaskGroupCount(); i++) {
-				RibbonContextualTaskGroup group = ribbon
-						.getContextualTaskGroup(i);
+				RibbonContextualTaskGroup group = ribbon.getContextualTaskGroup(i);
 				if (ribbon.isVisible(group)) {
 					for (int j = 0; j < group.getTaskCount() - 1; j++) {
 						RibbonTask task = group.getTask(j);
@@ -112,9 +132,8 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 				Rectangle bounds = taskToggleButton.getBounds();
 				int x = bounds.x + bounds.width + getTabButtonGap() / 2 - 1;
 				g2d.translate(x, 0);
-				SeparatorPainterUtils.paintSeparator(ribbon, g2d, scheme, 2,
-						getHeight(), SwingConstants.VERTICAL, false,
-						getHeight() / 3, 0, true);
+				SeparatorPainterUtils.paintSeparator(ribbon, g2d, scheme, 2, getHeight(),
+						SwingConstants.VERTICAL, false, getHeight() / 3, 0, true);
 				g2d.translate(-x, 0);
 			}
 
@@ -160,13 +179,11 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		SubstanceLookAndFeel.setDecorationType(this.ribbon,
-				DecorationAreaType.HEADER);
+		SubstanceLookAndFeel.setDecorationType(this.ribbon, DecorationAreaType.HEADER);
 		Color backgr = this.ribbon.getBackground();
 		if (backgr == null || backgr instanceof UIResource) {
-			Color toSet = SubstanceColorSchemeUtilities.getColorScheme(
-					this.ribbon, ComponentState.ENABLED)
-					.getBackgroundFillColor();
+			Color toSet = SubstanceColorSchemeUtilities
+					.getColorScheme(this.ribbon, ComponentState.ENABLED).getBackgroundFillColor();
 			this.ribbon.setBackground(new ColorUIResource(toSet));
 		}
 	}
@@ -192,8 +209,7 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 		super.installComponents();
 		SubstanceLookAndFeel.setDecorationType(this.taskBarPanel,
 				DecorationAreaType.PRIMARY_TITLE_PANE);
-		SubstanceLookAndFeel.setDecorationType(this.ribbon,
-				DecorationAreaType.HEADER);
+		SubstanceLookAndFeel.setDecorationType(this.ribbon, DecorationAreaType.HEADER);
 		SubstanceLookAndFeel.setDecorationType(this.bandScrollablePanel,
 				DecorationAreaType.GENERAL);
 	}
@@ -207,9 +223,8 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonUI#createTaskToggleButtonsHostPanel
-	 * ()
+	 * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonUI#
+	 * createTaskToggleButtonsHostPanel ()
 	 */
 	@Override
 	protected TaskToggleButtonsHostPanel createTaskToggleButtonsHostPanel() {
@@ -229,9 +244,8 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonUI#paintBackground(java.awt.Graphics
-	 * )
+	 * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonUI#paintBackground(java.awt.
+	 * Graphics )
 	 */
 	@Override
 	protected void paintBackground(Graphics g) {
@@ -241,15 +255,14 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonUI#paintTaskArea(java.awt.Graphics
-	 * , int, int, int, int)
+	 * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonUI#paintTaskArea(java.awt.
+	 * Graphics , int, int, int, int)
 	 */
 	@Override
 	protected void paintTaskArea(Graphics g, int x, int y, int width, int height) {
 		if (this.ribbon.getTaskCount() == 0)
 			return;
-		
+
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		RibbonTask selectedTask = this.ribbon.getSelectedTask();
@@ -260,35 +273,27 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 		float radius = SubstanceSizeUtils
 				.getClassicButtonCornerRadius(SubstanceSizeUtils.getComponentFontSize(this.ribbon));
 
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(this.ribbon)) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(this.ribbon);
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(this.ribbon));
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(this.ribbon);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 
 		AbstractRibbonBand band = (selectedTask.getBandCount() == 0) ? null
 				: selectedTask.getBand(0);
-		SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(band, ColorSchemeAssociationKind.BORDER,
-						ComponentState.ENABLED);
+		SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(band,
+				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
-		Rectangle taskToggleButtonsViewportBounds = taskToggleButtonsScrollablePanel
-				.getView().getParent().getBounds();
-		taskToggleButtonsViewportBounds.setLocation(SwingUtilities
-				.convertPoint(taskToggleButtonsScrollablePanel,
-						taskToggleButtonsViewportBounds.getLocation(),
-						this.ribbon));
+		Rectangle taskToggleButtonsViewportBounds = taskToggleButtonsScrollablePanel.getView()
+				.getParent().getBounds();
+		taskToggleButtonsViewportBounds
+				.setLocation(SwingUtilities.convertPoint(taskToggleButtonsScrollablePanel,
+						taskToggleButtonsViewportBounds.getLocation(), this.ribbon));
 		int startSelectedX = Math.max(converted.x + 1,
 				(int) taskToggleButtonsViewportBounds.getMinX());
-		startSelectedX = Math.min(startSelectedX,
+		startSelectedX = Math.min(startSelectedX, (int) taskToggleButtonsViewportBounds.getMaxX());
+		int endSelectedX = Math.min(converted.x + selectedTaskButtonBounds.width - 1,
 				(int) taskToggleButtonsViewportBounds.getMaxX());
-		int endSelectedX = Math.min(converted.x
-				+ selectedTaskButtonBounds.width - 1,
-				(int) taskToggleButtonsViewportBounds.getMaxX());
-		endSelectedX = Math.max(endSelectedX,
-				(int) taskToggleButtonsViewportBounds.getMinX());
+		endSelectedX = Math.max(endSelectedX, (int) taskToggleButtonsViewportBounds.getMinX());
 
 		Shape outerContour = RibbonBorderShaper.getRibbonBorderOutline(this.ribbon, x + borderDelta,
 				x + width - borderDelta, startSelectedX - borderThickness,
@@ -296,26 +301,25 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 				y + height - borderDelta, radius);
 
 		Shape innerContour = RibbonBorderShaper.getRibbonBorderOutline(this.ribbon,
-				x + borderDelta + borderThickness,
-				x + width - borderThickness - borderDelta,
+				x + borderDelta + borderThickness, x + width - borderThickness - borderDelta,
 				startSelectedX - borderThickness, endSelectedX + borderThickness,
 				converted.y + borderDelta + borderThickness, y + borderDelta + borderThickness,
 				y + height - borderThickness - borderDelta, radius);
 
-		g2d.setColor(SubstanceColorSchemeUtilities.getColorScheme(band,
-				ComponentState.ENABLED).getBackgroundFillColor());
+		g2d.setColor(SubstanceColorSchemeUtilities.getColorScheme(band, ComponentState.ENABLED)
+				.getBackgroundFillColor());
 		g2d.clipRect(x, y, width, height + 2);
 		g2d.fill(outerContour);
 
-//		g2d.setColor(Color.red);
-//		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//		RenderingHints.VALUE_ANTIALIAS_ON);
-//g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-//		RenderingHints.VALUE_STROKE_PURE);
-//g2d.setStroke(new BasicStroke(0.5f));
-//		g2d.draw(outerContour);
-//		g2d.setColor(Color.blue);
-//		g2d.draw(innerContour);
+		// g2d.setColor(Color.red);
+		// g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		// RenderingHints.VALUE_ANTIALIAS_ON);
+		// g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+		// RenderingHints.VALUE_STROKE_PURE);
+		// g2d.setStroke(new BasicStroke(0.5f));
+		// g2d.draw(outerContour);
+		// g2d.setColor(Color.blue);
+		// g2d.draw(innerContour);
 		borderPainter.paintBorder(g2d, this.ribbon, width,
 				height + selectedTaskButtonBounds.height + 1, outerContour, innerContour,
 				borderScheme);
@@ -351,9 +355,9 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	 */
 	@Override
 	protected int getTabButtonGap() {
-		return SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils
-				.getComponentFontSize(this.ribbon), super.getTabButtonGap(), 3,
-				1, false);
+		return SubstanceSizeUtils.getAdjustedSize(
+				SubstanceSizeUtils.getComponentFontSize(this.ribbon), super.getTabButtonGap(), 3, 1,
+				false);
 	}
 
 	/*
@@ -365,8 +369,7 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	 */
 	@Override
 	protected void syncApplicationMenuTips() {
-		JRibbonRootPane ribbonRootPane = (JRibbonRootPane) SwingUtilities
-				.getRootPane(this.ribbon);
+		JRibbonRootPane ribbonRootPane = (JRibbonRootPane) SwingUtilities.getRootPane(this.ribbon);
 		if (ribbonRootPane == null)
 			return;
 		SubstanceRibbonRootPaneUI ribbonRootPaneUI = (SubstanceRibbonRootPaneUI) ribbonRootPane
@@ -385,8 +388,8 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 	protected void paintMinimizedRibbonSeparator(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.translate(0, this.ribbon.getHeight() - 1);
-		SeparatorPainterUtils.paintSeparator(this.ribbon, g2d, this.ribbon
-				.getWidth(), 0, JSeparator.HORIZONTAL, false, 0);
+		SeparatorPainterUtils.paintSeparator(this.ribbon, g2d, this.ribbon.getWidth(), 0,
+				JSeparator.HORIZONTAL, false, 0);
 		g2d.dispose();
 	}
 }

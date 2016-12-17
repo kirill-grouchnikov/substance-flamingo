@@ -33,7 +33,6 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -46,9 +45,9 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
+import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.menu.SubstanceMenuBackgroundDelegate;
 
 /**
@@ -62,10 +61,33 @@ public class SubstanceCommandPopupMenuUI extends BasicCommandPopupMenuUI {
 		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
 		return new SubstanceCommandPopupMenuUI();
 	}
+	
+	private DecorationPainterUtils.PopupInvokerLink popupInvokerLink;
 
 	@Override
+	public void installUI(JComponent c) {
+		this.popupInvokerLink = () -> ((JCommandPopupMenu) c).getInvoker();
+		super.installUI(c);
+	}
+	
+	@Override
+	protected void installDefaults() {
+		super.installDefaults();
+		this.popupMenu.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, 
+				this.popupInvokerLink);
+	}
+	
+	@Override
+	protected void uninstallDefaults() {
+		this.popupMenu.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, null);
+		super.uninstallDefaults();
+	}
+	
+	@Override
 	protected JPanel createMenuPanel() {
-		return new SubstanceMenuPanel();
+		JPanel result = new SubstanceMenuPanel();
+		result.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, this.popupInvokerLink);
+		return result;
 	}
 
 	protected static class SubstanceMenuPanel extends MenuPanel {

@@ -30,8 +30,10 @@
 package org.pushingpixels.substance.flamingo.ribbon.gallery.oob;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
@@ -74,16 +76,8 @@ public class SubstanceSkinRibbonGallery {
 				ResizableIcon icon = new SkinResizableIcon(skin, 60, 40);
 				JCommandToggleButton skinButton = new JCommandToggleButton(skin
 						.getDisplayName(), icon);
-				skinButton.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								SubstanceLookAndFeel.setSkin(skin);
-							}
-						});
-					}
-				});
+				skinButton.addActionListener((ActionEvent e) ->
+						SwingUtilities.invokeLater(() -> SubstanceLookAndFeel.setSkin(skin)));
 				skinButtons.add(skinButton);
 			} catch (Exception exc) {
 			}

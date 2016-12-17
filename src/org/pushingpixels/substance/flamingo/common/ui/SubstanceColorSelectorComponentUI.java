@@ -50,27 +50,24 @@ public class SubstanceColorSelectorComponentUI extends BasicColorSelectorCompone
 		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
 		return new SubstanceColorSelectorComponentUI();
 	}
-	
+
 	@Override
 	protected void paintRolloverIndication(Graphics g) {
 		int w = this.colorSelectorComponent.getWidth();
 		int h = this.colorSelectorComponent.getHeight();
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(
-						this.colorSelectorComponent));
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 
 		g2d.setComposite(AlphaComposite.SrcOver.derive(this.rollover));
-		SubstanceColorScheme highlightBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.colorSelectorComponent, 
-						ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
-						ComponentState.ROLLOVER_UNSELECTED);
+		SubstanceColorScheme highlightBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.colorSelectorComponent, ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
+				ComponentState.ROLLOVER_UNSELECTED);
 		g2d.setColor(highlightBorderScheme.getMidColor());
 		g2d.draw(new Rectangle2D.Double(0, 0, w - borderThickness, h - borderThickness));
 		g2d.setColor(highlightBorderScheme.getUltraDarkColor());
-		g2d.draw(new Rectangle2D.Double(borderThickness, borderThickness, 
-				w - 3 * borderThickness, h - 3 * borderThickness));
+		g2d.draw(new Rectangle2D.Double(borderThickness, borderThickness, w - 3 * borderThickness,
+				h - 3 * borderThickness));
 
 		g2d.dispose();
 	}

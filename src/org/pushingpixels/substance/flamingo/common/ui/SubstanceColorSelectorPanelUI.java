@@ -29,17 +29,25 @@
  */
 package org.pushingpixels.substance.flamingo.common.ui;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.internal.ui.common.popup.BasicColorSelectorPanelUI;
 import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorPanel;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * UI for {@link JColorSelectorPanel} components in <b>Substance</b> look and
@@ -59,37 +67,42 @@ public class SubstanceColorSelectorPanelUI extends BasicColorSelectorPanelUI {
 	}
 
 	@Override
-	protected void paintCaptionBackground(Graphics g, int x, int y, int width,
-			int height) {
-		SubstanceColorScheme bgFillScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.colorSelectorPanel,
-						ColorSchemeAssociationKind.HIGHLIGHT,
-						ComponentState.ENABLED);
-		SubstanceCoreUtilities.getFillPainter(this.colorSelectorPanel)
-				.paintContourBackground(g, this.colorSelectorPanel, width,
-						height, new Rectangle(x, y, width, height), false,
-						bgFillScheme, false);
+	protected void paintCaptionBackground(Graphics g, int x, int y, int width, int height) {
+		SubstanceColorScheme bgFillScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.colorSelectorPanel, ColorSchemeAssociationKind.HIGHLIGHT,
+				ComponentState.ENABLED);
+		SubstanceCoreUtilities.getFillPainter(this.colorSelectorPanel).paintContourBackground(g,
+				this.colorSelectorPanel, width, height, new Rectangle(x, y, width, height), false,
+				bgFillScheme, false);
 
-		SubstanceColorScheme bgBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.colorSelectorPanel,
-						ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
-						ComponentState.ENABLED);
+		SubstanceColorScheme bgBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.colorSelectorPanel, ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
+				ComponentState.ENABLED);
 		Color borderColor = bgBorderScheme.getLineColor();
-		g.setColor(borderColor);
-		g.drawLine(x, y, x + width, y);
-		g.drawLine(x, y + height - 1, x + width, y + height - 1);
+		float lineThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setStroke(new BasicStroke(lineThickness));
+		g2d.setColor(borderColor);
+		g2d.draw(new Line2D.Float(x, y, x + width, y));
+		float bottomLineY = y + height - lineThickness;
+		g2d.draw(new Line2D.Float(x, bottomLineY, x + width, bottomLineY));
+		g2d.dispose();
 	}
 
 	@Override
-	protected void paintBottomDivider(Graphics g, int x, int y, int width,
-			int height) {
-		SubstanceColorScheme bgBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.colorSelectorPanel,
-						ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
-						ComponentState.ENABLED);
+	protected void paintBottomDivider(Graphics g, int x, int y, int width, int height) {
+		SubstanceColorScheme bgBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.colorSelectorPanel, ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
+				ComponentState.ENABLED);
 		Color borderColor = bgBorderScheme.getLineColor();
-		g.setColor(borderColor);
-		g.drawLine(x, y + height - 1, x + width, y + height - 1);
+		float lineThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setStroke(new BasicStroke(lineThickness));
+		g2d.setColor(borderColor);
+		float lineY = y + height - lineThickness;
+		g2d.draw(new Line2D.Float(x, lineY, x + width, lineY));
+		g2d.dispose();
 	}
 
 	/*

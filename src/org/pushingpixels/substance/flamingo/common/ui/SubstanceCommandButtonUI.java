@@ -106,8 +106,8 @@ import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
-		ActionPopupTransitionAwareUI {
+public class SubstanceCommandButtonUI extends BasicCommandButtonUI
+		implements ActionPopupTransitionAwareUI {
 	/**
 	 * Delegate for painting the background.
 	 */
@@ -173,8 +173,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		this.commandButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+		this.commandButton.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
 				ClassicButtonShaper.INSTANCE);
 
 		this.commandButton.setOpaque(false);
@@ -189,9 +188,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	protected void updateBorder() {
 		Border currBorder = this.commandButton.getBorder();
 		if ((currBorder == null) || (currBorder instanceof UIResource)) {
-			Insets extra = SubstanceSizeUtils
-					.getDefaultBorderInsets(SubstanceSizeUtils
-							.getComponentFontSize(this.commandButton));
+			Insets extra = SubstanceSizeUtils.getDefaultBorderInsets(
+					SubstanceSizeUtils.getComponentFontSize(this.commandButton));
 			double hgapScaleFactor = this.commandButton.getHGapScaleFactor();
 			double vgapScaleFactor = this.commandButton.getVGapScaleFactor();
 
@@ -199,9 +197,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 			int left = 2 + (int) (hgapScaleFactor * (1 + extra.left));
 			int bottom = 0 + (int) (vgapScaleFactor * extra.bottom);
 			int right = 2 + (int) (hgapScaleFactor * (1 + extra.right));
-			this.commandButton
-					.setBorder(new BorderUIResource.EmptyBorderUIResource(top,
-							left, bottom, right));
+			this.commandButton.setBorder(
+					new BorderUIResource.EmptyBorderUIResource(top, left, bottom, right));
 		}
 	}
 
@@ -220,27 +217,24 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 			if ("actionModel".equals(evt.getPropertyName())) {
 				if (substanceModelChangeListener != null)
 					substanceModelChangeListener.unregisterListeners();
-				substanceModelChangeListener = new GhostingListener(
-						commandButton, commandButton.getActionModel());
+				substanceModelChangeListener = new GhostingListener(commandButton,
+						commandButton.getActionModel());
 				substanceModelChangeListener.registerListeners();
 			}
 			if ("enabled".equals(evt.getPropertyName())) {
 				overallRolloverModel.setEnabled(commandButton.isEnabled());
 			}
 		};
-		this.commandButton
-				.addPropertyChangeListener(this.substancePropertyListener);
+		this.commandButton.addPropertyChangeListener(this.substancePropertyListener);
 
-		this.substanceModelChangeListener = new GhostingListener(
-				this.commandButton, this.commandButton.getActionModel());
+		this.substanceModelChangeListener = new GhostingListener(this.commandButton,
+				this.commandButton.getActionModel());
 		this.substanceModelChangeListener.registerListeners();
 
-		this.substanceOverallRolloverListener = new RolloverControlListener(
-				this, this.overallRolloverModel);
-		this.commandButton
-				.addMouseListener(this.substanceOverallRolloverListener);
-		this.commandButton
-				.addMouseMotionListener(this.substanceOverallRolloverListener);
+		this.substanceOverallRolloverListener = new RolloverControlListener(this,
+				this.overallRolloverModel);
+		this.commandButton.addMouseListener(this.substanceOverallRolloverListener);
+		this.commandButton.addMouseMotionListener(this.substanceOverallRolloverListener);
 
 		this.overallStateTransitionTracker.registerModelListeners();
 	}
@@ -256,17 +250,14 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 		this.substanceVisualStateTracker.uninstallListeners(this.commandButton);
 		this.substanceVisualStateTracker = null;
 
-		this.commandButton
-				.removePropertyChangeListener(this.substancePropertyListener);
+		this.commandButton.removePropertyChangeListener(this.substancePropertyListener);
 		this.substancePropertyListener = null;
 
 		this.substanceModelChangeListener.unregisterListeners();
 		this.substanceModelChangeListener = null;
 
-		this.commandButton
-				.removeMouseListener(this.substanceOverallRolloverListener);
-		this.commandButton
-				.removeMouseMotionListener(this.substanceOverallRolloverListener);
+		this.commandButton.removeMouseListener(this.substanceOverallRolloverListener);
+		this.commandButton.removeMouseMotionListener(this.substanceOverallRolloverListener);
 		this.substanceOverallRolloverListener = null;
 
 		this.overallStateTransitionTracker.unregisterModelListeners();
@@ -285,44 +276,39 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	protected void paintButtonBackground(Graphics graphics, Rectangle toFill) {
 		if (SubstanceCoreUtilities.isButtonNeverPainted(this.commandButton))
 			return;
-
+		
 		ButtonModel actionModel = this.commandButton.getActionModel();
-		PopupButtonModel popupModel = ((JCommandButton) this.commandButton)
-				.getPopupModel();
+		PopupButtonModel popupModel = ((JCommandButton) this.commandButton).getPopupModel();
 		Rectangle actionArea = this.getLayoutInfo().actionClickArea;
 		Rectangle popupArea = this.getLayoutInfo().popupClickArea;
 
 		BufferedImage fullAlphaBackground = CommandButtonBackgroundDelegate
-				.getCombinedCommandButtonBackground(this.commandButton,
-						actionModel, actionArea, popupModel, popupArea);
+				.getCombinedCommandButtonBackground(this.commandButton, actionModel, actionArea,
+						popupModel, popupArea);
 
 		// Two special cases here:
 		// 1. Button has flat appearance and doesn't show the popup
 		// 2. Button is disabled.
 		// For both cases, we need to set custom translucency.
 		boolean isFlat = this.commandButton.isFlat()
-				&& !((JCommandButton) this.commandButton).getPopupModel()
-						.isPopupShowing();
+				&& !((JCommandButton) this.commandButton).getPopupModel().isPopupShowing();
 		boolean isSpecial = isFlat || !this.commandButton.isEnabled();
 		float extraAlpha = 1.0f;
 		if (isSpecial) {
 			if (isFlat) {
 				float extraActionAlpha = 0.0f;
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : getActionTransitionTracker()
-						.getModelStateInfo().getStateContributionMap()
-						.entrySet()) {
+						.getModelStateInfo().getStateContributionMap().entrySet()) {
 					ComponentState activeState = activeEntry.getKey();
 					if (activeState.isDisabled())
 						continue;
 					if (activeState == ComponentState.ENABLED)
 						continue;
-					extraActionAlpha += activeEntry.getValue()
-							.getContribution();
+					extraActionAlpha += activeEntry.getValue().getContribution();
 				}
 				float extraPopupAlpha = 0.0f;
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : getPopupTransitionTracker()
-						.getModelStateInfo().getStateContributionMap()
-						.entrySet()) {
+						.getModelStateInfo().getStateContributionMap().entrySet()) {
 					ComponentState activeState = activeEntry.getKey();
 					if (activeState.isDisabled())
 						continue;
@@ -332,11 +318,11 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 				}
 				extraAlpha = Math.max(extraActionAlpha, extraPopupAlpha);
 			} else {
-				ComponentState actionAreaState = ComponentState.getState(
-						actionModel, this.commandButton);
+				ComponentState actionAreaState = ComponentState.getState(actionModel,
+						this.commandButton);
 				if (actionAreaState.isDisabled()) {
-					extraAlpha = SubstanceColorSchemeUtilities.getAlpha(
-							this.commandButton, actionAreaState);
+					extraAlpha = SubstanceColorSchemeUtilities.getAlpha(this.commandButton,
+							actionAreaState);
 				}
 			}
 		}
@@ -344,10 +330,10 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 		extraAlpha = Math.min(1.0f, extraAlpha);
 		if (extraAlpha > 0.0f) {
 			Graphics2D g2d = (Graphics2D) graphics.create();
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-					this.commandButton, extraAlpha, graphics));
+			g2d.setComposite(
+					LafWidgetUtilities.getAlphaComposite(this.commandButton, extraAlpha, graphics));
 			int factor = UIUtil.isRetina() ? 2 : 1;
-			graphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor, 
+			graphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor,
 					fullAlphaBackground.getHeight() / factor, null);
 			g2d.dispose();
 		}
@@ -364,19 +350,16 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	protected void paintButtonIcon(Graphics g, Rectangle iconRect) {
 		JCommandButton jcb = (JCommandButton) this.commandButton;
 		Icon regular = jcb.getIcon();
-		if (toUseDisabledIcon()
-				&& (jcb.getDisabledIcon() != null)
-				&& ((regular != null) && !regular.getClass()
-						.isAnnotationPresent(TransitionAware.class)))
+		if (toUseDisabledIcon() && (jcb.getDisabledIcon() != null) && ((regular != null)
+				&& !regular.getClass().isAnnotationPresent(TransitionAware.class)))
 			regular = jcb.getDisabledIcon();
 
 		if ((iconRect == null) || (regular == null) || (iconRect.width == 0)
 				|| (iconRect.height == 0)) {
 			return;
 		}
-
-		boolean useThemed = SubstanceCoreUtilities
-				.useThemedDefaultIcon(this.commandButton);
+		
+		boolean useThemed = SubstanceCoreUtilities.useThemedDefaultIcon(this.commandButton);
 		if (regular != null) {
 			Graphics2D g2d = (Graphics2D) g.create();
 
@@ -391,35 +374,30 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 						.getActionStateTransitionTracker();
 				ButtonModel model = commandButton.getActionModel();
 				if (jcb.getCommandButtonKind() == CommandButtonKind.POPUP_ONLY) {
-					tracker = this.substanceVisualStateTracker
-							.getPopupStateTransitionTracker();
+					tracker = this.substanceVisualStateTracker.getPopupStateTransitionTracker();
 					model = jcb.getPopupModel();
 				}
-				CommandButtonBackgroundDelegate.paintThemedCommandButtonIcon(
-						g2d, iconRect, jcb, regular, model, tracker);
+				CommandButtonBackgroundDelegate.paintThemedCommandButtonIcon(g2d, iconRect, jcb,
+						regular, model, tracker);
 			}
 			g2d.dispose();
 		}
 	}
 
 	@Override
-	protected void paintButtonHorizontalSeparator(Graphics graphics,
-			Rectangle separatorArea) {
+	protected void paintButtonHorizontalSeparator(Graphics graphics, Rectangle separatorArea) {
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		g2d.translate(0, separatorArea.y);
 
-		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.commandButton,
-						ColorSchemeAssociationKind.SEPARATOR, ComponentState
-								.getState(this.commandButton.getActionModel(),
-										this.commandButton));
+		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.commandButton, ColorSchemeAssociationKind.SEPARATOR,
+				ComponentState.getState(this.commandButton.getActionModel(), this.commandButton));
 
 		float fadeAlpha = this.getSeparatorAlpha();
 		g2d.setComposite(AlphaComposite.SrcOver.derive(fadeAlpha));
 
-		SeparatorPainterUtils.paintSeparator(this.commandButton, g2d,
-				colorScheme, this.commandButton.getWidth(), 1,
-				JSlider.HORIZONTAL, true, 4, 4, true);
+		SeparatorPainterUtils.paintSeparator(this.commandButton, g2d, colorScheme,
+				this.commandButton.getWidth(), 1, JSlider.HORIZONTAL, true, 4, 4, true);
 
 		g2d.dispose();
 	}
@@ -431,23 +409,19 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	 * paintButtonVerticalSeparator(java.awt.Graphics, int)
 	 */
 	@Override
-	protected void paintButtonVerticalSeparator(Graphics graphics,
-			Rectangle separatorArea) {
+	protected void paintButtonVerticalSeparator(Graphics graphics, Rectangle separatorArea) {
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		g2d.translate(separatorArea.x, 0);
 
-		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.commandButton,
-						ColorSchemeAssociationKind.SEPARATOR, ComponentState
-								.getState(this.commandButton.getActionModel(),
-										this.commandButton));
+		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.commandButton, ColorSchemeAssociationKind.SEPARATOR,
+				ComponentState.getState(this.commandButton.getActionModel(), this.commandButton));
 
 		float fadeAlpha = this.getSeparatorAlpha();
 		g2d.setComposite(AlphaComposite.SrcOver.derive(fadeAlpha));
 
-		SeparatorPainterUtils.paintSeparator(this.commandButton, g2d,
-				colorScheme, 1, this.commandButton.getHeight(),
-				JSlider.VERTICAL, true, 4, 4, true);
+		SeparatorPainterUtils.paintSeparator(this.commandButton, g2d, colorScheme, 1,
+				this.commandButton.getHeight(), JSlider.VERTICAL, true, 4, 4, true);
 
 		g2d.dispose();
 	}
@@ -477,9 +451,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 		if (super.isPaintingSeparators())
 			return true;
 		boolean hasIcon = (this.commandButton.getIcon() != null);
-		return hasIcon
-				&& (this.overallStateTransitionTracker
-						.getFacetStrength(ComponentStateFacet.ROLLOVER) > 0.0f);
+		return hasIcon && (this.overallStateTransitionTracker
+				.getFacetStrength(ComponentStateFacet.ROLLOVER) > 0.0f);
 	}
 
 	/*
@@ -490,12 +463,10 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	 */
 	@Override
 	protected ResizableIcon createPopupActionIcon() {
-		final int fontSize = SubstanceSizeUtils
-				.getComponentFontSize(this.commandButton);
+		final int fontSize = SubstanceSizeUtils.getComponentFontSize(this.commandButton);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getArrowIconHeight(fontSize);
 		int arrowIconWidth = (int) SubstanceSizeUtils.getArrowIconWidth(fontSize);
-		ResizableIcon icon = new TransitionAwareResizableIcon(
-				this.commandButton,
+		ResizableIcon icon = new TransitionAwareResizableIcon(this.commandButton,
 				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
 					@Override
 					public StateTransitionTracker getStateTransitionTracker() {
@@ -503,19 +474,20 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
-							int width, int height) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
+							int height) {
 						CommandButtonPopupOrientationKind orientation = ((JCommandButton) commandButton)
 								.getPopupOrientationKind();
-						int direction = (orientation == CommandButtonPopupOrientationKind.DOWNWARD) 
+						int direction = (orientation == CommandButtonPopupOrientationKind.DOWNWARD)
 								? SwingConstants.SOUTH
-								: (commandButton.getComponentOrientation().isLeftToRight() ? SwingConstants.EAST
+								: (commandButton.getComponentOrientation().isLeftToRight()
+										? SwingConstants.EAST
 										: SwingConstants.WEST);
 						// System.out.println(direction + ":" + width + ":"
 						// + height);
-						HiDpiAwareIcon result = SubstanceImageCreator.getArrowIcon(width,
-								height, SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f,
-								direction, scheme);
+						HiDpiAwareIcon result = SubstanceImageCreator.getArrowIcon(width, height,
+								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f, direction,
+								scheme);
 						// System.out.println(" --> " + result.getIconWidth()
 						// + "*" + result.getIconHeight());
 						return result;
@@ -534,73 +506,65 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	@Override
 	public void paint(Graphics g, JComponent c) {
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setFont(FlamingoUtilities.getFont(this.commandButton,
-				"Ribbon.font", "Button.font", "Panel.font"));
+		g2d.setFont(FlamingoUtilities.getFont(this.commandButton, "Ribbon.font", "Button.font",
+				"Panel.font"));
 
-		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton,
-				g);
+		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton, g);
 		commandButton.putClientProperty("icon.bounds", layoutInfo.iconRect);
 		commandButton.putClientProperty("icon", commandButton.getIcon());
 
 		if (this.isPaintingBackground()) {
-			this.paintButtonBackground(g2d, new Rectangle(0, 0, c.getWidth(), c
-					.getHeight()));
+			this.paintButtonBackground(g2d, new Rectangle(0, 0, c.getWidth(), c.getHeight()));
 		}
 
 		// decide which command button model should be used to
 		// compute the foreground color of the command button's text
 		boolean useActionAreaForFg = layoutInfo.isTextInActionArea;
-		StateTransitionTracker transitionTrackerForFg = useActionAreaForFg ? this
-				.getActionTransitionTracker()
+		StateTransitionTracker transitionTrackerForFg = useActionAreaForFg
+				? this.getActionTransitionTracker()
 				: this.getPopupTransitionTracker();
-		ModelStateInfo modelStateInfoForFg = transitionTrackerForFg
-				.getModelStateInfo();
+		ModelStateInfo modelStateInfoForFg = transitionTrackerForFg.getModelStateInfo();
 		ComponentState currStateForFg = modelStateInfoForFg.getCurrModelState();
 		Color fgColor = this.commandButton.getForeground();
 
 		if (fgColor instanceof UIResource) {
-			float buttonAlpha = SubstanceColorSchemeUtilities.getAlpha(
-					this.commandButton, currStateForFg);
-			fgColor = SubstanceTextUtilities.getForegroundColor(
-					this.commandButton, this.commandButton.getText(),
-					modelStateInfoForFg, buttonAlpha);
+			float buttonAlpha = SubstanceColorSchemeUtilities.getAlpha(this.commandButton,
+					currStateForFg);
+			fgColor = SubstanceTextUtilities.getForegroundColor(this.commandButton,
+					this.commandButton.getText(), modelStateInfoForFg, buttonAlpha);
 		}
 
 		if (layoutInfo.textLayoutInfoList != null) {
 			for (CommandButtonLayoutManager.TextLayoutInfo mainTextLayoutInfo : layoutInfo.textLayoutInfoList) {
 				if (mainTextLayoutInfo.text != null) {
-					SubstanceTextUtilities.paintText(g2d, c,
-							mainTextLayoutInfo.textRect,
-							mainTextLayoutInfo.text, -1, g2d.getFont(),
-							fgColor, g2d.getClipBounds());
+					SubstanceTextUtilities.paintText(g2d, c, mainTextLayoutInfo.textRect,
+							mainTextLayoutInfo.text, -1, g2d.getFont(), fgColor,
+							g2d.getClipBounds());
 				}
 			}
 		}
 
 		if (layoutInfo.extraTextLayoutInfoList != null) {
 			Color disabledFgColor = SubstanceColorSchemeUtilities
-					.getColorScheme(this.commandButton,
-							ComponentState.DISABLED_UNSELECTED)
+					.getColorScheme(this.commandButton, ComponentState.DISABLED_UNSELECTED)
 					.getForegroundColor();
-			float buttonAlpha = SubstanceColorSchemeUtilities.getAlpha(
-					this.commandButton, ComponentState.DISABLED_UNSELECTED);
+			float buttonAlpha = SubstanceColorSchemeUtilities.getAlpha(this.commandButton,
+					ComponentState.DISABLED_UNSELECTED);
 			if (buttonAlpha < 1.0f) {
 				Color bgFillColor = SubstanceColorUtilities
 						.getBackgroundFillColor(this.commandButton);
-				disabledFgColor = SubstanceColorUtilities.getInterpolatedColor(
-						disabledFgColor, bgFillColor, buttonAlpha);
+				disabledFgColor = SubstanceColorUtilities.getInterpolatedColor(disabledFgColor,
+						bgFillColor, buttonAlpha);
 			}
 			if (currStateForFg.isDisabled()) {
-				disabledFgColor = SubstanceColorUtilities.getInterpolatedColor(
-						disabledFgColor, SubstanceColorUtilities
-								.getBackgroundFillColor(c), 0.5);
+				disabledFgColor = SubstanceColorUtilities.getInterpolatedColor(disabledFgColor,
+						SubstanceColorUtilities.getBackgroundFillColor(c), 0.5);
 			}
 			for (CommandButtonLayoutManager.TextLayoutInfo extraTextLayoutInfo : layoutInfo.extraTextLayoutInfoList) {
 				if (extraTextLayoutInfo.text != null) {
-					SubstanceTextUtilities.paintText(g2d, c,
-							extraTextLayoutInfo.textRect,
-							extraTextLayoutInfo.text, -1, g2d.getFont(),
-							disabledFgColor, g2d.getClipBounds());
+					SubstanceTextUtilities.paintText(g2d, c, extraTextLayoutInfo.textRect,
+							extraTextLayoutInfo.text, -1, g2d.getFont(), disabledFgColor,
+							g2d.getClipBounds());
 				}
 			}
 		}
@@ -614,12 +578,9 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 
 		if (this.isPaintingSeparators() && (layoutInfo.separatorArea != null)) {
 			if (layoutInfo.separatorOrientation == CommandButtonSeparatorOrientation.HORIZONTAL) {
-				this.paintButtonHorizontalSeparator(g2d,
-						layoutInfo.separatorArea);
+				this.paintButtonHorizontalSeparator(g2d, layoutInfo.separatorArea);
 			} else {
-				this
-						.paintButtonVerticalSeparator(g2d,
-								layoutInfo.separatorArea);
+				this.paintButtonVerticalSeparator(g2d, layoutInfo.separatorArea);
 			}
 		}
 
@@ -660,7 +621,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	protected void paintPopupActionIcon(Graphics g, Rectangle popupActionRect) {
 		int width = popupActionRect.width;
 		int height = popupActionRect.height;
-		if (((JCommandButton) this.commandButton).getPopupOrientationKind() == CommandButtonPopupOrientationKind.DOWNWARD) {
+		if (((JCommandButton) this.commandButton)
+				.getPopupOrientationKind() == CommandButtonPopupOrientationKind.DOWNWARD) {
 			width += 2;
 			if (width % 2 == 0)
 				width++;
@@ -672,9 +634,9 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 				width++;
 		}
 		popupActionIcon.setDimension(new Dimension(width, height));
-		popupActionIcon.paintIcon(this.commandButton, g, popupActionRect.x
-				+ (popupActionRect.width - width) / 2, popupActionRect.y
-				+ (popupActionRect.height - height) / 2);
+		popupActionIcon.paintIcon(this.commandButton, g,
+				popupActionRect.x + (popupActionRect.width - width) / 2,
+				popupActionRect.y + (popupActionRect.height - height) / 2);
 	}
 
 	/*
@@ -687,8 +649,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
 		AbstractCommandButton button = (AbstractCommandButton) c;
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(button);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(button);
 
 		Dimension superPref = super.getPreferredSize(button);
 		if (superPref == null)
@@ -704,12 +665,9 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 		// Additional fix - buttons in popup menus and breadcrumb bars should
 		// not have min size enforced
 		if ((button.getDisplayState() == CommandButtonDisplayState.MEDIUM)
-				&& (SwingUtilities.getAncestorOfClass(AbstractRibbonBand.class,
-						button) == null)
-				&& (SwingUtilities.getAncestorOfClass(JBreadcrumbBar.class,
-						button) == null)
-				&& (SwingUtilities.getAncestorOfClass(JCommandPopupMenu.class,
-						button) == null)) {
+				&& (SwingUtilities.getAncestorOfClass(AbstractRibbonBand.class, button) == null)
+				&& (SwingUtilities.getAncestorOfClass(JBreadcrumbBar.class, button) == null)
+				&& (SwingUtilities.getAncestorOfClass(JCommandPopupMenu.class, button) == null)) {
 			JButton dummy = new JButton(button.getText(), button.getIcon());
 			Dimension result = shaper.getPreferredSize(dummy, superPref);
 			if (FlamingoUtilities.hasPopupAction(button)) {
@@ -726,8 +684,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	 * @return Alpha value for painting the separators.
 	 */
 	private float getSeparatorAlpha() {
-		ComponentState actionAreaState = this.getActionTransitionTracker()
-				.getModelStateInfo().getCurrModelState();
+		ComponentState actionAreaState = this.getActionTransitionTracker().getModelStateInfo()
+				.getCurrModelState();
 
 		if (!actionAreaState.isFacetActive(ComponentStateFacet.SELECTION)
 				&& !actionAreaState.isDisabled()) {
@@ -749,12 +707,11 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 	protected void syncDisabledIcon() {
 		ResizableIcon currDisabledIcon = this.commandButton.getDisabledIcon();
 		ResizableIcon icon = this.commandButton.getIcon();
-		if ((currDisabledIcon == null)
-				|| ((currDisabledIcon instanceof UIResource) && !currDisabledIcon
-						.getClass().isAnnotationPresent(TransitionAware.class))) {
+		if ((currDisabledIcon == null) || ((currDisabledIcon instanceof UIResource)
+				&& !currDisabledIcon.getClass().isAnnotationPresent(TransitionAware.class))) {
 			if (icon != null) {
-				this.commandButton.setDisabledIcon(new ResizableIconUIResource(
-						new SubstanceDisabledResizableIcon(icon)));
+				this.commandButton.setDisabledIcon(
+						new ResizableIconUIResource(new SubstanceDisabledResizableIcon(icon)));
 			} else {
 				this.commandButton.setDisabledIcon(null);
 			}
@@ -762,9 +719,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 			// disabled icon coming from app code
 			if (icon != null) {
 				this.commandButton.getDisabledIcon()
-						.setDimension(
-								new Dimension(icon.getIconWidth(), icon
-										.getIconHeight()));
+						.setDimension(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 			}
 		}
 	}
@@ -785,13 +740,11 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI implements
 
 	@Override
 	public StateTransitionTracker getActionTransitionTracker() {
-		return this.substanceVisualStateTracker
-				.getActionStateTransitionTracker();
+		return this.substanceVisualStateTracker.getActionStateTransitionTracker();
 	}
 
 	@Override
 	public StateTransitionTracker getPopupTransitionTracker() {
-		return this.substanceVisualStateTracker
-				.getPopupStateTransitionTracker();
+		return this.substanceVisualStateTracker.getPopupStateTransitionTracker();
 	}
 }

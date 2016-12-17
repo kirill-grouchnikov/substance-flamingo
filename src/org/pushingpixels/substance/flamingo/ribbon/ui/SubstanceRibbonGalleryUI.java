@@ -83,25 +83,20 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#paintRibbonGalleryBorder
-	 * (java.awt.Graphics)
+	 * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#
+	 * paintRibbonGalleryBorder (java.awt.Graphics)
 	 */
 	@Override
 	protected void paintRibbonGalleryBorder(Graphics graphics) {
 		Graphics2D g2d = (Graphics2D) graphics;
-		SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.ribbonGallery,
-						ColorSchemeAssociationKind.BORDER,
-						ComponentState.ENABLED);
-		SubstanceImageCreator.paintBorder(this.ribbonGallery, g2d,
-				this.margin.left, this.margin.top, this.ribbonGallery
-						.getWidth()
-						- this.margin.left - this.margin.right,
-				this.ribbonGallery.getHeight() - this.margin.top
-						- this.margin.bottom, SubstanceSizeUtils
-						.getClassicButtonCornerRadius(SubstanceSizeUtils
-								.getComponentFontSize(this.ribbonGallery)),
+		SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.ribbonGallery, ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
+		SubstanceImageCreator.paintBorder(this.ribbonGallery, g2d, this.margin.left,
+				this.margin.top,
+				this.ribbonGallery.getWidth() - this.margin.left - this.margin.right,
+				this.ribbonGallery.getHeight() - this.margin.top - this.margin.bottom,
+				SubstanceSizeUtils.getClassicButtonCornerRadius(
+						SubstanceSizeUtils.getComponentFontSize(this.ribbonGallery)),
 				borderColorScheme);
 		g2d.dispose();
 	}
@@ -116,12 +111,9 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 	protected ExpandCommandButton createExpandButton() {
 		final ExpandCommandButton button = super.createExpandButton();
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils
-				.getSmallArrowIconHeight(fontSize) + 3;
-		int arrowIconWidth = (int) SubstanceSizeUtils
-				.getSmallArrowIconWidth(fontSize);
-		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(
-				button,
+		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
+		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
 				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
 					@Override
 					public StateTransitionTracker getStateTransitionTracker() {
@@ -130,23 +122,19 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
-							int width, int height) {
-						return SubstanceImageCreator
-								.getDoubleArrowIcon(
-										SubstanceSizeUtils
-												.getComponentFontSize(button),
-										width,
-										height,
-										SubstanceSizeUtils
-												.getDoubleArrowStrokeWidth(fontSize),
-										SwingConstants.SOUTH, scheme);
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
+							int height) {
+						return SubstanceImageCreator.getDoubleArrowIcon(
+								SubstanceSizeUtils.getComponentFontSize(button), width, height,
+								SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+								SwingConstants.SOUTH, scheme);
 					}
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
-		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-					? SubstanceConstants.Side.LEFT : SubstanceConstants.Side.RIGHT));
+						? SubstanceConstants.Side.LEFT
+						: SubstanceConstants.Side.RIGHT));
 		return button;
 	}
 
@@ -163,8 +151,7 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
-		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(
-				button,
+		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
 				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
 					@Override
 					public StateTransitionTracker getStateTransitionTracker() {
@@ -173,17 +160,18 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
-							int width, int height) {
-						return SubstanceImageCreator.getArrowIcon(width,
-								height, SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
+							int height) {
+						return SubstanceImageCreator.getArrowIcon(width, height,
+								SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
 								SwingConstants.SOUTH, scheme);
 					}
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
-		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-					? SubstanceConstants.Side.LEFT : SubstanceConstants.Side.RIGHT));
+						? SubstanceConstants.Side.LEFT
+						: SubstanceConstants.Side.RIGHT));
 		return button;
 	}
 
@@ -197,12 +185,9 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 	protected JCommandButton createScrollUpButton() {
 		final JCommandButton button = super.createScrollUpButton();
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils
-				.getSmallArrowIconHeight(fontSize);
-		int arrowIconWidth = (int) SubstanceSizeUtils
-				.getSmallArrowIconWidth(fontSize);
-		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(
-				button,
+		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
+		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
 				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
 					@Override
 					public StateTransitionTracker getStateTransitionTracker() {
@@ -211,21 +196,21 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 					}
 				}, new TransitionAwareResizableIcon.Delegate() {
 					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
-							int width, int height) {
-						return SubstanceImageCreator.getArrowIcon(width,
-								height, SubstanceSizeUtils
-										.getDoubleArrowStrokeWidth(fontSize),
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
+							int height) {
+						return SubstanceImageCreator.getArrowIcon(width, height,
+								SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
 								SwingConstants.NORTH, scheme);
 					}
 				}, new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
-		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-					? SubstanceConstants.Side.LEFT : SubstanceConstants.Side.RIGHT));
+						? SubstanceConstants.Side.LEFT
+						: SubstanceConstants.Side.RIGHT));
 		return button;
 	}
-	
+
 	@Override
 	public void update(Graphics g, JComponent c) {
 		super.update(g, c);

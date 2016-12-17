@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;

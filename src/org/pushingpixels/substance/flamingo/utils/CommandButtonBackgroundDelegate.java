@@ -29,29 +29,44 @@
  */
 package org.pushingpixels.substance.flamingo.utils;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
 
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
-import org.pushingpixels.flamingo.api.common.JCommandButtonStrip;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton.CommandButtonLocationOrderKind;
+import org.pushingpixels.flamingo.api.common.JCommandButtonStrip;
 import org.pushingpixels.flamingo.api.common.JCommandButtonStrip.StripOrientation;
 import org.pushingpixels.flamingo.api.common.model.PopupButtonModel;
-import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
 
 /**
@@ -87,6 +102,7 @@ public class CommandButtonBackgroundDelegate {
 	 *            Button height.
 	 * @return Button background.
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public static BufferedImage getFullAlphaBackground(
 			AbstractCommandButton commandButton, ButtonModel buttonModel,
 			SubstanceFillPainter fillPainter,
@@ -115,9 +131,8 @@ public class CommandButtonBackgroundDelegate {
 				.getClassicButtonCornerRadius(SubstanceSizeUtils
 						.getComponentFontSize(commandButton));
 
-		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities
-				.getSides(commandButton,
-						SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(commandButton,
+				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
 		// special handling for location order
 		AbstractCommandButton.CommandButtonLocationOrderKind locationOrderKind = commandButton
@@ -248,9 +263,7 @@ public class CommandButtonBackgroundDelegate {
 			Set<SubstanceConstants.Side> straightSides,
 			AbstractCommandButton.CommandButtonLocationOrderKind locationOrderKind,
 			int dx, int dy, int dw, int dh, boolean isVertical) {
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(commandButton)) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width + dw,
 				height + dh, radius, straightSides, borderDelta);
@@ -261,12 +274,9 @@ public class CommandButtonBackgroundDelegate {
 		fillPainter.paintContourBackground(finalGraphics, commandButton, width
 				+ dw, height + dh, contour, false, fillScheme, true);
 
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(commandButton));
-		Shape contourInner = SubstanceOutlineUtilities.getBaseOutline(width
-				+ dw, height + dh, radius, straightSides, borderDelta
-				+ borderThickness);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+		Shape contourInner = SubstanceOutlineUtilities.getBaseOutline(width + dw, height + dh,
+				radius, straightSides, borderDelta + borderThickness);
 		borderPainter.paintBorder(finalGraphics, commandButton, width + dw,
 				height + dh, contour, contourInner, borderScheme);
 
@@ -274,12 +284,10 @@ public class CommandButtonBackgroundDelegate {
 			if ((locationOrderKind == AbstractCommandButton.CommandButtonLocationOrderKind.FIRST)
 					|| (locationOrderKind == CommandButtonLocationOrderKind.MIDDLE)) {
 				// outer/inner line at the bottom
-				float y = -dy + commandButton.getHeight() - borderDelta - 2
-						* borderThickness;
+				float y = -dy + commandButton.getHeight() - borderDelta - borderThickness;
 				float xs = borderDelta;
-				float xe = commandButton.getWidth() - 2 * borderDelta;
-				Shape upper = new Line2D.Double(xs + borderThickness, y, xe - 2
-						* borderThickness, y);
+				float xe = commandButton.getWidth() - borderDelta;
+				Shape upper = new Line2D.Double(xs + borderThickness, y, xe - borderThickness, y);
 				y += borderThickness;
 				Shape lower = new Line2D.Double(xs, y, xe, y);
 				borderPainter.paintBorder(finalGraphics, commandButton, width
@@ -292,11 +300,10 @@ public class CommandButtonBackgroundDelegate {
 				// inner line at the top
 				float y = -dy + borderDelta;
 				float xs = borderDelta;
-				float xe = commandButton.getWidth() - 2 * borderDelta;
-				Shape upper = new Line2D.Double(xs + borderThickness, y, xe - 2
-						* borderThickness, y);
-				borderPainter.paintBorder(finalGraphics, commandButton, width
-						+ dw, height + dh, null, upper, borderScheme);
+				float xe = commandButton.getWidth() - borderDelta;
+				Shape upper = new Line2D.Double(xs + borderThickness, y, xe - borderThickness, y);
+				borderPainter.paintBorder(finalGraphics, commandButton, width + dw, height + dh, 
+						null, upper, borderScheme);
 			}
 		} else {
 			// special case for leftmost (not FIRST!!!) and MIDDLE location
@@ -308,16 +315,14 @@ public class CommandButtonBackgroundDelegate {
 			if (leftmost
 					|| (locationOrderKind == CommandButtonLocationOrderKind.MIDDLE)) {
 				// outer / inner line at the right
-				float x = -dx + commandButton.getWidth() - borderDelta - 2
-						* borderThickness;
+				float x = -dx + commandButton.getWidth() - borderDelta - borderThickness;
 				float ys = borderDelta;
-				float ye = commandButton.getHeight() - 2 * borderDelta;
-				Shape upper = new Line2D.Double(x, ys + borderThickness, x, ye
-						- 2 * borderThickness);
+				float ye = commandButton.getHeight() - borderDelta;
+				Shape upper = new Line2D.Double(x, ys + borderThickness, x, ye - borderThickness);
 				x += borderThickness;
 				Shape lower = new Line2D.Double(x, ys, x, ye);
-				borderPainter.paintBorder(finalGraphics, commandButton, width
-						+ dw, height + dh, lower, upper, borderScheme);
+				borderPainter.paintBorder(finalGraphics, commandButton, width + dw, height + dh, 
+						lower, upper, borderScheme);
 			}
 
 			// special case for MIDDLE and LAST location order kinds
@@ -328,11 +333,10 @@ public class CommandButtonBackgroundDelegate {
 				// inner line at the left
 				float x = -dx + borderDelta;
 				float ys = borderDelta;
-				float ye = commandButton.getHeight() - 2 * borderDelta;
-				Shape upper = new Line2D.Double(x, ys + borderThickness, x, ye
-						- 2 * borderThickness);
-				borderPainter.paintBorder(finalGraphics, commandButton, width
-						+ dw, height + dh, null, upper, borderScheme);
+				float ye = commandButton.getHeight() - borderDelta;
+				Shape upper = new Line2D.Double(x, ys + borderThickness, x, ye - borderThickness);
+				borderPainter.paintBorder(finalGraphics, commandButton, width + dw, height + dh, 
+						null, upper, borderScheme);
 			}
 		}
 		return newBackground;

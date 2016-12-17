@@ -29,23 +29,33 @@
  */
 package org.pushingpixels.substance.flamingo.utils;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
 
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Delegate class for painting backgrounds of buttons in <b>Substance </b> look
@@ -171,8 +181,7 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 	private static BufferedImage getSingleLayer(JRibbonApplicationMenuButton menuButton,
 			SubstanceFillPainter painter, SubstanceBorderPainter borderPainter, int width,
 			int height, SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme) {
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(menuButton)) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 
 		float outerRadius = Math.min(width - 2 * borderDelta, height - 2 * borderDelta);
 		int delta = 0;// (outerRadius % 2 == 1) ? 1 : 0;
@@ -184,8 +193,7 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 		painter.paintContourBackground(finalGraphics, menuButton, width, height, contour, false,
 				fillScheme, true);
 
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(menuButton));
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 		float innerRadius = Math.min(width - 2 * (borderDelta + borderThickness),
 				height - 2 * (borderDelta + borderThickness));
 		delta = 0;// (innerRadius % 2 == 1) ? 1 : 0;

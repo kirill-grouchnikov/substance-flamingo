@@ -33,7 +33,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.flamingo.api.bcb.JBreadcrumbBar;
 import org.pushingpixels.flamingo.internal.ui.bcb.BasicBreadcrumbBarUI;

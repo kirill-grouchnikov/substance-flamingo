@@ -29,7 +29,14 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -45,14 +52,21 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonTaskToggleButtonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.ribbon.RibbonBackgroundDelegate;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 
 /**
  * UI for {@link JRibbonTaskToggleButton} components in <b>Substance</b> look
@@ -131,17 +145,13 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 		this.substanceVisualStateTracker = new CommandButtonVisualStateTracker();
 		this.substanceVisualStateTracker.installListeners(this.commandButton);
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("contextualGroupHueColor".equals(evt.getPropertyName())) {
-					Color newValue = (Color) evt.getNewValue();
-					commandButton.setBackground(newValue);
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("contextualGroupHueColor".equals(evt.getPropertyName())) {
+				Color newValue = (Color) evt.getNewValue();
+				commandButton.setBackground(newValue);
 			}
 		};
-		this.commandButton
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		this.commandButton.addPropertyChangeListener(this.substancePropertyChangeListener);
 	}
 
 	@Override
@@ -166,7 +176,7 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 	public void paint(Graphics g, JComponent c) {
 		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton, g);
 
-		this.delegate.updateTaskToggleButtonBackground(g,
+		this.delegate.updateTaskToggleButtonBackground(g, 
 				(JRibbonTaskToggleButton) this.commandButton);
 		this.paintText(g);
 	}
@@ -248,32 +258,34 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 
 	private static Color getForegroundColor(AbstractCommandButton button,
 			StateTransitionTracker.ModelStateInfo modelStateInfo) {
+		// Special handling of tabs under skins that show partial visuals
+		boolean isTextOnParentBackground = 
+				(SubstanceCoreUtilities.getSkin(button).getTabFadeEnd() <= 0.5);
 		ComponentState currState = modelStateInfo.getCurrModelState();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
 
-		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(
-						button.isFlat() && currState == ComponentState.ENABLED ? button
-								.getParent() : button,
-						ColorSchemeAssociationKind.TAB, currState);
-		if (currState.isDisabled() || (activeStates == null)
-				|| (activeStates.size() == 1)) {
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
+				modelStateInfo.getStateContributionMap();
+
+		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				(button.isFlat() || isTextOnParentBackground) && currState == ComponentState.ENABLED 
+						? button.getParent() : button,
+				ColorSchemeAssociationKind.TAB, currState);
+		if (currState.isDisabled() || (activeStates == null) || (activeStates.size() == 1)) {
 			return colorScheme.getForegroundColor();
 		}
 
 		float aggrRed = 0;
 		float aggrGreen = 0;
 		float aggrBlue = 0;
-		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-				.entrySet()) {
+		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
+				activeStates.entrySet()) {
 			ComponentState activeState = activeEntry.getKey();
 			float alpha = activeEntry.getValue().getContribution();
-			SubstanceColorScheme activeColorScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(
-							button.isFlat()
-									&& activeState == ComponentState.ENABLED ? button
-									.getParent() : button,
+			SubstanceColorScheme activeColorScheme = 
+					SubstanceColorSchemeUtilities.getColorScheme(
+							(button.isFlat() || isTextOnParentBackground) 
+								&& activeState == ComponentState.ENABLED 
+									? button.getParent() : button,
 							ColorSchemeAssociationKind.TAB, activeState);
 			Color activeForeground = activeColorScheme.getForegroundColor();
 			aggrRed += alpha * activeForeground.getRed();

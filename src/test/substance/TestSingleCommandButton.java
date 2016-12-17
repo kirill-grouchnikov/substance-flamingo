@@ -2,7 +2,6 @@ package test.substance;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.flamingo.api.common.AsynchronousLoadListener;
 import org.pushingpixels.flamingo.api.common.CommandButtonDisplayState;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
@@ -32,12 +30,9 @@ public class TestSingleCommandButton extends JFrame {
 		SvgBatikResizableIcon svgIcon = SvgBatikResizableIcon.getSvgIcon(
 				TestCommandButtonSizes.class.getClassLoader().getResource(
 						"test/svg/font-x-generic.svg"), new Dimension(16, 16));
-		svgIcon.addAsynchronousLoadListener(new AsynchronousLoadListener() {
-			@Override
-			public void completed(boolean success) {
-				if (success)
-					repaint();
-			}
+		svgIcon.addAsynchronousLoadListener((boolean success) -> {
+			if (success)
+				repaint();
 		});
 		JCommandButton cb = new JCommandButton("Command", svgIcon);
 		cb.setCommandButtonKind(CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);

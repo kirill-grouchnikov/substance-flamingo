@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -99,9 +98,8 @@ public class SubstanceRibbonApplicationMenuPopupPanelUI
 								bgBorderScheme);
 
 						// draw the application menu button
-						JRibbonApplicationMenuButton rendererButton = 
-								new JRibbonApplicationMenuButton(
-										applicationMenuPopupPanel.getAppMenuButton().getRibbon());
+						JRibbonApplicationMenuButton rendererButton = new JRibbonApplicationMenuButton(
+								applicationMenuPopupPanel.getAppMenuButton().getRibbon());
 
 						JRibbonApplicationMenuButton appMenuButton = applicationMenuPopupPanel
 								.getAppMenuButton();
@@ -144,10 +142,8 @@ public class SubstanceRibbonApplicationMenuPopupPanelUI
 
 			@Override
 			public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-				int componentFontSize = SubstanceSizeUtils.getComponentFontSize(null);
-				float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize)
-						/ 2.0f;
-				float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+				float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+				float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 
 				Graphics2D g2d = (Graphics2D) g.create();
 				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(

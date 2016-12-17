@@ -29,30 +29,51 @@
  */
 package org.pushingpixels.substance.flamingo;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
 import javax.swing.border.Border;
-import javax.swing.plaf.*;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.IconUIResource;
 
 import org.pushingpixels.flamingo.api.bcb.JBreadcrumbBar;
-import org.pushingpixels.flamingo.api.common.*;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
+import org.pushingpixels.flamingo.api.common.JCommandButtonPanel;
+import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
+import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
+import org.pushingpixels.flamingo.api.common.JCommandToggleMenuButton;
+import org.pushingpixels.flamingo.api.common.JScrollablePanel;
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
 import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
-import org.pushingpixels.flamingo.api.ribbon.*;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonComponent;
 import org.pushingpixels.flamingo.internal.ui.common.JRichTooltipPanel;
 import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorComponent;
 import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorPanel;
-import org.pushingpixels.flamingo.internal.ui.ribbon.*;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JBandControlPanel;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JFlowBandControlPanel;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonGallery;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonRootPane;
+import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuPopupPanel;
 import org.pushingpixels.lafplugin.LafComponentPlugin;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.fonts.FontSet;
 import org.pushingpixels.substance.flamingo.ribbon.ui.SubstanceRibbonBandBorder;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
+import org.pushingpixels.substance.internal.utils.border.SubstancePopupMenuBorder;
 
 /**
  * Plugin for Flamingo components.
@@ -80,7 +101,7 @@ public class FlamingoPlugin implements LafComponentPlugin {
 		Font controlFont = fontSet.getControlFont();
 
 		SubstanceSkin skin = (SubstanceSkin) mSkin;
-		Border textBorder = new BorderUIResource(new SubstanceBorder());
+		Border textBorder = new SubstancePopupMenuBorder();
 
 		SubstanceColorScheme mainActiveScheme = skin.getActiveColorScheme(DecorationAreaType.NONE);
 		Color backgroundColor = new ColorUIResource(mainActiveScheme.getBackgroundFillColor());

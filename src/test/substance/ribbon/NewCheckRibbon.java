@@ -29,32 +29,46 @@
  */
 package test.substance.ribbon;
 
-import java.awt.*;
+import java.awt.ComponentOrientation;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
-import org.pushingpixels.substance.api.skin.GeminiSkin;
-import org.pushingpixels.substance.api.skin.OfficeBlack2007Skin;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.OfficeBlue2007Skin;
 import org.pushingpixels.substance.flamingo.ribbon.gallery.oob.SubstanceRibbonTask;
 
-import test.ribbon.BasicCheckRibbon;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class NewCheckRibbon extends BasicCheckRibbon {
-	private JLabel saveLabel;
+import test.ribbon.BasicCheckRibbon;
 
+public class NewCheckRibbon extends BasicCheckRibbon {
 	@Override
 	public void configureRibbon() {
 		super.configureRibbon();

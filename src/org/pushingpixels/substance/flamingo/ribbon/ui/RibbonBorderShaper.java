@@ -43,17 +43,16 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  */
 public class RibbonBorderShaper {
 	public static float getRibbonToggleButtonRadius(JComponent comp) {
-		return SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils
-				.getComponentFontSize(comp), 5.0f, 2, 1.0f);
+		return SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils.getComponentFontSize(comp),
+				5.0f, 2, 1.0f);
 	}
 
-	public static GeneralPath getRibbonBorderOutline(JRibbon ribbon,
-			float startX, float endX, float startSelectedX, float endSelectedX,
-			float topY, float bandTopY, float bottomY, float radius) {
+	public static GeneralPath getRibbonBorderOutline(JRibbon ribbon, float startX, float endX,
+			float startSelectedX, float endSelectedX, float topY, float bandTopY, float bottomY,
+			float radius) {
 
 		float height = bottomY - topY;
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils.getComponentFontSize(ribbon));
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 		GeneralPath result = new GeneralPath();
 		float radius3 = (float) (radius / (1.5 * Math.pow(height, 0.5)));
 
@@ -64,7 +63,7 @@ public class RibbonBorderShaper {
 		result.lineTo(startSelectedX, bandTopY);
 
 		// jump to the bottom end of the selected tab
-		result.moveTo(endSelectedX,  bandTopY);
+		result.moveTo(endSelectedX, bandTopY);
 
 		// move to the top right corner and curve down
 		result.lineTo(endX - radius - borderThickness, bandTopY);

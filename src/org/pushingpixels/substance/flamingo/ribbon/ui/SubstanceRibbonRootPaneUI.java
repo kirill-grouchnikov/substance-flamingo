@@ -29,11 +29,15 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.LayoutManager;
+import java.awt.Window;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;

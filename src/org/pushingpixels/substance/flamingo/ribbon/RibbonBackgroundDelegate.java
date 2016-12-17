@@ -29,27 +29,43 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.AbstractButton;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.flamingo.api.ribbon.*;
+import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
+import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
+import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.flamingo.ribbon.ui.RibbonBorderShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Delegate class for painting backgrounds of buttons in Ribbon plugin.
@@ -80,14 +96,10 @@ public class RibbonBackgroundDelegate {
 	 */
 	private static synchronized BufferedImage getTaskToggleButtonBackground(
 			JRibbonTaskToggleButton button, int width, int height) {
-		JRibbon ribbon = (JRibbon) SwingUtilities.getAncestorOfClass(
-				JRibbon.class, button);
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button
-				.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
-		ComponentState currState = ComponentState.getState(button
-				.getActionModel(), button);
+		JRibbon ribbon = (JRibbon) SwingUtilities.getAncestorOfClass(JRibbon.class, button);
+		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button.getUI();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
+		ComponentState currState = ComponentState.getState(button.getActionModel(), button);
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
@@ -103,28 +115,22 @@ public class RibbonBackgroundDelegate {
 		SubstanceFillPainter fillPainter = skin.getFillPainter();
 		SubstanceBorderPainter borderPainter = skin.getBorderPainter();
 
-		JRibbon parent = (JRibbon) SwingUtilities.getAncestorOfClass(
-				JRibbon.class, button);
+		JRibbon parent = (JRibbon) SwingUtilities.getAncestorOfClass(JRibbon.class, button);
 		RibbonTask selectedTask = parent.getSelectedTask();
 		AbstractRibbonBand band = (selectedTask.getBandCount() == 0) ? null
 				: selectedTask.getBand(0);
-		Color bgColor = (band != null) ? band.getBackground() : parent
-				.getBackground();
+		Color bgColor = (band != null) ? band.getBackground() : parent.getBackground();
 
 		HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(width, height,
-				baseFillScheme.getDisplayName(), baseBorderScheme
-						.getDisplayName(), fillPainter.getDisplayName(),
-				borderPainter.getDisplayName(), button.getParent()
-						.getBackground().getRGB(), button.getActionModel()
-						.isSelected(), button.getContextualGroupHueColor(),
-				button.getActionModel().isSelected(), ribbon.isMinimized(),
-				skin.getTabFadeStart(), skin.getTabFadeEnd(),
-				bgColor);
+				baseFillScheme.getDisplayName(), baseBorderScheme.getDisplayName(),
+				fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+				button.getParent().getBackground().getRGB(), button.getActionModel().isSelected(),
+				button.getContextualGroupHueColor(), button.getActionModel().isSelected(),
+				ribbon.isMinimized(), skin.getTabFadeStart(), skin.getTabFadeEnd(), bgColor);
 		BufferedImage baseLayer = imageCache.get(baseKey);
 		if (baseLayer == null) {
-			baseLayer = getSingleLayer(button, width, height, ribbon,
-					baseFillScheme, baseBorderScheme, fillPainter,
-					borderPainter);
+			baseLayer = getSingleLayer(button, width, height, ribbon, baseFillScheme,
+					baseBorderScheme, fillPainter, borderPainter);
 
 			imageCache.put(baseKey, baseLayer);
 		}
@@ -133,12 +139,12 @@ public class RibbonBackgroundDelegate {
 			return baseLayer;
 		}
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2d = result.createGraphics();
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
-		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor, baseLayer.getHeight() / scaleFactor, null);
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
+				baseLayer.getHeight() / scaleFactor, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -150,12 +156,10 @@ public class RibbonBackgroundDelegate {
 			if (contribution == 0.0f)
 				continue;
 
-			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(button, ColorSchemeAssociationKind.TAB,
-							activeState);
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(ribbon,
-							ColorSchemeAssociationKind.TAB_BORDER, activeState);
+			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities.getColorScheme(button,
+					ColorSchemeAssociationKind.TAB, activeState);
+			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(ribbon,
+					ColorSchemeAssociationKind.TAB_BORDER, activeState);
 
 			HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
 					fillScheme.getDisplayName(), borderScheme.getDisplayName(),
@@ -167,71 +171,60 @@ public class RibbonBackgroundDelegate {
 
 			BufferedImage layer = imageCache.get(key);
 			if (layer == null) {
-				layer = getSingleLayer(button, width, height, ribbon,
-						fillScheme, borderScheme, fillPainter, borderPainter);
+				layer = getSingleLayer(button, width, height, ribbon, fillScheme, borderScheme,
+						fillPainter, borderPainter);
 
 				imageCache.put(key, layer);
 			}
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor, layer.getHeight() / scaleFactor, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+					layer.getHeight() / scaleFactor, null);
 		}
 
 		g2d.dispose();
 		return result;
 	}
 
-	private static BufferedImage getSingleLayer(JRibbonTaskToggleButton button,
-			int width, int height, JRibbon ribbon,
-			SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme,
-			SubstanceFillPainter fillPainter,
+	private static BufferedImage getSingleLayer(JRibbonTaskToggleButton button, int width,
+			int height, JRibbon ribbon, SubstanceColorScheme fillScheme,
+			SubstanceColorScheme borderScheme, SubstanceFillPainter fillPainter,
 			SubstanceBorderPainter borderPainter) {
 		Set<Side> bottom = EnumSet.of(Side.BOTTOM);
 
 		Color contextualGroupHueColor = button.getContextualGroupHueColor();
 		if (contextualGroupHueColor != null) {
-			fillScheme = ShiftColorScheme.getShiftedScheme(fillScheme,
-					contextualGroupHueColor,
+			fillScheme = ShiftColorScheme.getShiftedScheme(fillScheme, contextualGroupHueColor,
 					RibbonContextualTaskGroup.HUE_ALPHA, null, 0.0f);
 		}
 
 		float radius = RibbonBorderShaper.getRibbonToggleButtonRadius(button);
-		float borderDelta = 2.0f * SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button));
-		float borderInsets = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)) / 2.0f;
+		float borderDelta = 2.0f * SubstanceSizeUtils.getBorderStrokeWidth();
+		float borderInsets = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(width,
 				height + 2 + borderDelta, radius, bottom, borderInsets);
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height + 2);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height + 2);
 		Graphics2D graphics = result.createGraphics();
-		fillPainter.paintContourBackground(graphics, button, width, height + 2
-				+ borderDelta, contour, false, fillScheme, true);
+		fillPainter.paintContourBackground(graphics, button, width, height + 2 + borderDelta,
+				contour, false, fillScheme, true);
 
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button));
-		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(
-				width, height + 2 + borderDelta, radius, bottom,
-				borderThickness + borderInsets);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(width,
+				height + 2 + borderDelta, radius, bottom, borderThickness + borderInsets);
 
-		borderPainter.paintBorder(graphics, button, width, height + 2, contour,
-				contourInner, borderScheme);
+		borderPainter.paintBorder(graphics, button, width, height + 2, contour, contourInner,
+				borderScheme);
 		graphics.dispose();
 
-		if (button.getActionModel().isSelected()
-				&& (button.getContextualGroupHueColor() == null)) {
+		if (button.getActionModel().isSelected() && (button.getContextualGroupHueColor() == null)) {
 			int fw = result.getWidth();
 			int fh = result.getHeight();
 			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-			BufferedImage fade = SubstanceCoreUtilities.getBlankImage(
-					fw / scaleFactor, fh / scaleFactor);
+			BufferedImage fade = SubstanceCoreUtilities.getBlankImage(fw / scaleFactor,
+					fh / scaleFactor);
 			Graphics2D fadeGraphics = fade.createGraphics();
-			JRibbon parent = (JRibbon) SwingUtilities.getAncestorOfClass(
-					JRibbon.class, button);
+			JRibbon parent = (JRibbon) SwingUtilities.getAncestorOfClass(JRibbon.class, button);
 			RibbonTask selectedTask = parent.getSelectedTask();
 			AbstractRibbonBand band = (selectedTask.getBandCount() == 0) ? null
 					: selectedTask.getBand(0);
@@ -243,11 +236,10 @@ public class RibbonBackgroundDelegate {
 			fadeGraphics.fillRect(0, 0, fw, fh);
 			SubstanceSkin skin = SubstanceCoreUtilities.getSkin(button);
 			if (skin.getWatermark() != null)
-				skin.getWatermark().drawWatermarkImage(fadeGraphics, button, 0,
-						0, fw, fh);
+				skin.getWatermark().drawWatermarkImage(fadeGraphics, button, 0, 0, fw, fh);
 
-			borderPainter.paintBorder(fadeGraphics, button, width, height + 2,
-					contour, contourInner, borderScheme);
+			borderPainter.paintBorder(fadeGraphics, button, width, height + 2, contour,
+					contourInner, borderScheme);
 
 			result = SubstanceCoreUtilities.blendImagesVertical(result, fade,
 					skin.getTabFadeStart(), skin.getTabFadeEnd());
@@ -265,19 +257,16 @@ public class RibbonBackgroundDelegate {
 	 * @param cycleCount
 	 *            Cycle count for transition effects.
 	 */
-	public void updateTaskToggleButtonBackground(Graphics g,
-			JRibbonTaskToggleButton button) {
+	public void updateTaskToggleButtonBackground(Graphics g, JRibbonTaskToggleButton button) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		int width = button.getWidth();
 		int height = button.getHeight();
 
-		BufferedImage ribbonBackground = getTaskToggleButtonBackground(button,
-				width, height);
+		BufferedImage ribbonBackground = getTaskToggleButtonBackground(button, width, height);
 
 		TransitionAwareUI ui = (TransitionAwareUI) button.getUI();
-		StateTransitionTracker stateTransitionTracker = ui
-				.getTransitionTracker();
+		StateTransitionTracker stateTransitionTracker = ui.getTransitionTracker();
 
 		float extraActionAlpha = 0.0f;
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : stateTransitionTracker
@@ -290,8 +279,7 @@ public class RibbonBackgroundDelegate {
 			extraActionAlpha += activeEntry.getValue().getContribution();
 		}
 
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(button,
-				extraActionAlpha, g));
+		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraActionAlpha, g));
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		g2d.drawImage(ribbonBackground, 0, 0, ribbonBackground.getWidth() / scaleFactor,
 				ribbonBackground.getHeight() / scaleFactor, null);
