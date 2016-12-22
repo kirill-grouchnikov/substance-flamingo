@@ -139,7 +139,7 @@
 
 	<target name="compile.module.substance-flamingo.tools" description="compile module substance-flamingo tool classes">
 		<mkdir dir="${substance-flamingo.output.dir}" />
-		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance-flamingo.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true" executable="${module.jdk.home.substance-flamingo}/bin/javac">
+		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance-flamingo.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true">
 			<compilerarg line="${javac.args.substance-flamingo}" />
 			<bootclasspath refid="substance-flamingo.module.bootclasspath" />
 			<classpath refid="substance-flamingo.module.classpath" />
