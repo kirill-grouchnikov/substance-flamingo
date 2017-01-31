@@ -31,6 +31,7 @@ package org.pushingpixels.substance.flamingo.ribbon.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -43,9 +44,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.JRootPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
@@ -359,7 +362,27 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
 				SubstanceSizeUtils.getComponentFontSize(this.ribbon), super.getTabButtonGap(), 3, 1,
 				false);
 	}
+	
+	@Override
+	public int getTaskbarHeight() {
+        FontMetrics fm = this.ribbon.getFontMetrics(UIManager.getFont("InternalFrame.titleFont", 
+                this.ribbon.getLocale()));
+        int fontHeight = fm.getHeight();
+        fontHeight += 7;
+        int iconHeight = 0;
+        if (ribbon.getRootPane().getWindowDecorationStyle() == JRootPane.FRAME) {
+            iconHeight = SubstanceSizeUtils.getTitlePaneIconSize();
+        }
 
+        int finalHeight = Math.max(fontHeight, iconHeight);
+        return finalHeight;
+	}
+
+	@Override
+	public int getTaskToggleButtonHeight() {
+	    return getTaskbarHeight() - 2;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

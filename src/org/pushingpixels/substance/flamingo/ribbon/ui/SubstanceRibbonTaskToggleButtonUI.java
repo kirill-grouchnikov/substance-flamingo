@@ -57,7 +57,6 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.ribbon.RibbonBackgroundDelegate;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -304,24 +303,14 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
 		AbstractCommandButton button = (AbstractCommandButton) c;
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(button);
-
-		Dimension superPref = super.getPreferredSize(button);
-		if (superPref == null)
-			return null;
-
-		if (shaper == null)
-			return superPref;
 
 		JButton dummy = new JButton(button.getText(), button.getIcon());
-		return shaper.getPreferredSize(dummy, superPref);
+		return dummy.getUI().getPreferredSize(dummy);
 	}
 
 	@Override
 	public StateTransitionTracker getTransitionTracker() {
-		return this.substanceVisualStateTracker
-				.getActionStateTransitionTracker();
+		return this.substanceVisualStateTracker.getActionStateTransitionTracker();
 	}
 
 	@Override
