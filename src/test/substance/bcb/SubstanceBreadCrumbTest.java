@@ -36,7 +36,7 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.skin.GeminiSkin;
+import org.pushingpixels.substance.api.skin.BusinessSkin;
 
 import test.bcb.BreadCrumbTest;
 import test.substance.SubstanceLogo;
@@ -47,7 +47,7 @@ public class SubstanceBreadCrumbTest extends BreadCrumbTest {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				SubstanceLookAndFeel.setSkin(new GeminiSkin());
+				SubstanceLookAndFeel.setSkin(new BusinessSkin());
 				SubstanceBreadCrumbTest test = new SubstanceBreadCrumbTest();
 
 				test.setIconImage(SubstanceLogo

@@ -305,7 +305,11 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 		AbstractCommandButton button = (AbstractCommandButton) c;
 
 		JButton dummy = new JButton(button.getText(), button.getIcon());
-		return dummy.getUI().getPreferredSize(dummy);
+		Dimension result = dummy.getUI().getPreferredSize(dummy);
+		Insets borderInsets = button.getBorder().getBorderInsets(button);
+        result.width += (borderInsets.left + borderInsets.right);
+        result.height += (borderInsets.top + borderInsets.bottom);
+        return result;
 	}
 
 	@Override
