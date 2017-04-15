@@ -191,7 +191,7 @@ public class WatermarkResizableIcon implements ResizableIcon {
 
 		graphics.translate(x, y);
 		graphics.clipRect(0, 0, this.currWidth, this.currHeight);
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		if (this.watermark != null) {
 			graphics.setColor(SubstanceCoreUtilities.getSkin(c)
 					.getEnabledColorScheme(SubstanceLookAndFeel.getDecorationType(c))

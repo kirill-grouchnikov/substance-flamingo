@@ -332,7 +332,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
 			Graphics2D g2d = (Graphics2D) graphics.create();
 			g2d.setComposite(
 					LafWidgetUtilities.getAlphaComposite(this.commandButton, extraAlpha, graphics));
-			int factor = UIUtil.isRetina() ? 2 : 1;
+			int factor = UIUtil.getScaleFactor();
 			graphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor,
 					fullAlphaBackground.getHeight() / factor, null);
 			g2d.dispose();

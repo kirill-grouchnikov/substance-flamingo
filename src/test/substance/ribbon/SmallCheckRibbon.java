@@ -55,7 +55,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
 import test.ribbon.BasicCheckRibbon;
-import test.svg.transcoded.help_browser;
+import test.svg.transcoded.Help_browser;
 
 public class SmallCheckRibbon extends BasicCheckRibbon {
 	public SmallCheckRibbon() {
@@ -101,7 +101,7 @@ public class SmallCheckRibbon extends BasicCheckRibbon {
 		this.getRibbon().addTask(animationsTask);
 		this.getRibbon().addTask(wrappedTask);
 
-		this.getRibbon().configureHelp(new help_browser(),
+		this.getRibbon().configureHelp(new Help_browser(),
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

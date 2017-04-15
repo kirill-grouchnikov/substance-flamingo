@@ -22,7 +22,7 @@ import org.pushingpixels.substance.api.skin.OfficeSilver2007Skin;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
-import test.svg.transcoded.font_x_generic;
+import test.svg.transcoded.Font_x_generic;
 
 public class TestCommandButtonSizes extends JFrame {
 	public TestCommandButtonSizes() {
@@ -32,7 +32,7 @@ public class TestCommandButtonSizes extends JFrame {
 		DefaultFormBuilder builder = new DefaultFormBuilder(fl);
 		builder.setDefaultDialogBorder();
 
-		ResizableIcon svgIcon = new font_x_generic();
+		ResizableIcon svgIcon = new Font_x_generic();
 		svgIcon.setDimension(new Dimension(16, 16));
 
 		// Core Swing button with an icon and text

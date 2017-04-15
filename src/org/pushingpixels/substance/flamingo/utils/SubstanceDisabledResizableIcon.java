@@ -132,12 +132,11 @@ public class SubstanceDisabledResizableIcon implements ResizableIcon {
 			Graphics2D g2d = offscreen.createGraphics();
 			this.delegate.paintIcon(c, g2d, 0, 0);
 			g2d.dispose();
-			filtered = SubstanceImageCreator.getColorSchemeImage(offscreen,
-					scheme, 0.5f);
+			filtered = SubstanceImageCreator.getColorSchemeImage(offscreen, scheme, 0.5f);
 			this.cachedImages.put(key, filtered);
 		}
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		g2d.drawImage(filtered, x, y, filtered.getWidth() / scaleFactor, filtered.getHeight() / scaleFactor, null);
 		g2d.dispose();
 	}

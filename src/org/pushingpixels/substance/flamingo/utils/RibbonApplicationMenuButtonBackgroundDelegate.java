@@ -136,7 +136,7 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2d = result.createGraphics();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 
 		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
 				baseLayer.getHeight() / scaleFactor, null);

@@ -480,7 +480,7 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 			Graphics2D g2d = (Graphics2D) graphics.create();
 			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
 					this.commandButton, extraAlpha, graphics));
-			int factor = UIUtil.isRetina() ? 2 : 1;
+			int factor = UIUtil.getScaleFactor();
 			g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor, 
 					fullAlphaBackground.getHeight() / factor, null);
 			g2d.dispose();

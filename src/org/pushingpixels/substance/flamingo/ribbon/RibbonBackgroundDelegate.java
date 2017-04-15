@@ -141,7 +141,7 @@ public class RibbonBackgroundDelegate {
 
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2d = result.createGraphics();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 
 		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
 				baseLayer.getHeight() / scaleFactor, null);
@@ -220,7 +220,7 @@ public class RibbonBackgroundDelegate {
 		if (button.getActionModel().isSelected() && (button.getContextualGroupHueColor() == null)) {
 			int fw = result.getWidth();
 			int fh = result.getHeight();
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			int scaleFactor = UIUtil.getScaleFactor();
 			BufferedImage fade = SubstanceCoreUtilities.getBlankImage(fw / scaleFactor,
 					fh / scaleFactor);
 			Graphics2D fadeGraphics = fade.createGraphics();
@@ -280,7 +280,7 @@ public class RibbonBackgroundDelegate {
 		}
 
 		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraActionAlpha, g));
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		g2d.drawImage(ribbonBackground, 0, 0, ribbonBackground.getWidth() / scaleFactor,
 				ribbonBackground.getHeight() / scaleFactor, null);
 

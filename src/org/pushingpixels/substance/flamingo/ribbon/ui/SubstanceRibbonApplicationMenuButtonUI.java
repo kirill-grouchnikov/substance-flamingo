@@ -131,7 +131,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends
 		BufferedImage fullAlphaBackground = RibbonApplicationMenuButtonBackgroundDelegate
 				.getFullAlphaBackground(b, fillPainter, borderPainter,
 						commandButton.getWidth() - 2, commandButton.getHeight() - 2);
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
 				fullAlphaBackground.getHeight() / scaleFactor, null);
 

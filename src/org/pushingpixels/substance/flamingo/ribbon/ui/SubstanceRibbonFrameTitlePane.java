@@ -418,8 +418,8 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 			RibbonContextualTaskGroup group = ribbon.getContextualTaskGroup(i);
 			if (!ribbon.isVisible(group))
 				continue;
-			SubstanceContextualGroupComponent taskGroupComponent = new SubstanceContextualGroupComponent(
-					group);
+			SubstanceContextualGroupComponent taskGroupComponent = 
+			        new SubstanceContextualGroupComponent(group);
 			taskGroupComponent.applyComponentOrientation(this.getRibbon()
 					.getComponentOrientation());
 			this.add(taskGroupComponent);
@@ -748,7 +748,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 					.getSeparatorShadowColor(compScheme)
 					: SeparatorPainterUtils.getSeparatorDarkColor(compScheme);
 			g2d.setColor(sepColor);
-			float separatorThickness = UIUtil.isRetina() ? 0.5f : 1.0f;
+			float separatorThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 			float separatorY = getHeight() - separatorThickness;
 			g2d.setStroke(new BasicStroke(separatorThickness, BasicStroke.CAP_BUTT,
 					BasicStroke.JOIN_ROUND));

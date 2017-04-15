@@ -53,8 +53,8 @@
     <property name="flamingo.basedir" value="${module.substance-flamingo.basedir}/../flamingo" />
     <property name="substance.basedir" value="${module.substance-flamingo.basedir}/../substance" />
 	
-	<property name="substance.version" value="7.0" />
-    <property name="flamingo.version" value="5.1" />
+    <property name="substance.version" value="7.1.00" />
+    <property name="flamingo.version" value="5.2.00" />
     <property name="trident.version" value="1.4" />
 
 	<path id="substance-flamingo.module.bootclasspath">
@@ -66,10 +66,10 @@
 
 	<path id="substance-flamingo.module.classpath">
 		<path refid="${module.jdk.classpath.substance-flamingo}" />
-		<pathelement location="${substance.basedir}/drop/substance-${substance.version}.jar" />
+		<pathelement location="${substance.basedir}/drop/${substance.version}/substance-${substance.version}.jar" />
 		<pathelement location="${substance.basedir}/lib/trident-${trident.version}.jar" />
-		<pathelement location="${flamingo.basedir}/drop/flamingo-${flamingo.version}.jar" />
-		<pathelement location="${flamingo.basedir}/drop/flamingo-tst-${flamingo.version}.jar" />
+		<pathelement location="${flamingo.basedir}/drop/${flamingo.version}/flamingo-${flamingo.version}.jar" />
+		<pathelement location="${flamingo.basedir}/drop/${flamingo.version}/flamingo-tst-${flamingo.version}.jar" />
         <pathelement location="${flamingo.basedir}/lib/batik-all.jar" />
         <pathelement location="${flamingo.basedir}/lib/forms-1.2.0.jar" />
 		<pathelement location="${substance.basedir}/lib/test/fest-swing-1.2.jar" />
@@ -165,10 +165,10 @@
 	</target>
 
 	<target name="jar-bin" description="create runtime jar">
-		<mkdir dir="${substance-flamingo.drop.dir}" />
-		<delete file="${substance-flamingo.drop.dir}/substance-flamingo-${substance.version}.jar" />
+		<mkdir dir="${substance-flamingo.drop.dir}/${substance.version}" />
+		<delete file="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-${substance.version}.jar" />
 
-		<jar compress="true" destfile="${substance-flamingo.drop.dir}/substance-flamingo-${substance.version}.jar">
+		<jar compress="true" destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-${substance.version}.jar">
 			<fileset dir="${substance-flamingo.output.dir}/" excludes="test/**" />
 			<fileset dir="${module.substance-flamingo.basedir}/" includes="resources/**" />
 			<manifest>
@@ -180,8 +180,8 @@
 	</target>
 
 	<target name="jar-bin-tst" description="create test runtime jar">
-		<delete file="${substance-flamingo.drop.dir}/substance-flamingo-tst-${substance.version}.jar" />
-		<jar destfile="${substance-flamingo.drop.dir}/substance-flamingo-tst-${substance.version}.jar">
+		<delete file="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tst-${substance.version}.jar" />
+		<jar destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tst-${substance.version}.jar">
 			<fileset dir="${substance-flamingo.output.dir}/" includes="test/**/*.class" />
 			<fileset dir="${substance-flamingo.src.dir}/" includes="test/resource/**" />
 			<manifest>
@@ -193,8 +193,8 @@
 	</target>
 
 	<target name="jar-bin-tools" description="create tools runtime jar">
-		<delete file="${substance-flamingo.drop.dir}/substance-flamingo-tools-${substance.version}.jar" />
-		<jar destfile="${substance-flamingo.drop.dir}/substance-flamingo-tools-${substance.version}.jar">
+		<delete file="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tools-${substance.version}.jar" />
+		<jar destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tools-${substance.version}.jar">
 			<fileset dir="${substance-flamingo.output.dir}/" includes="tools/**/*.class tools/**/*.jpg tools/**/*.png" />
 			<manifest>
 				<attribute name="Substance-Version" value="${substance.version}" />

@@ -14,11 +14,11 @@ import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GeminiSkin;
 
-import test.svg.transcoded.edit_copy;
-import test.svg.transcoded.edit_cut;
-import test.svg.transcoded.edit_find;
-import test.svg.transcoded.edit_find_replace;
-import test.svg.transcoded.edit_paste;
+import test.svg.transcoded.Edit_copy;
+import test.svg.transcoded.Edit_cut;
+import test.svg.transcoded.Edit_find;
+import test.svg.transcoded.Edit_find_replace;
+import test.svg.transcoded.Edit_paste;
 
 public class MultiLevelMenu extends JFrame {
 
@@ -34,9 +34,9 @@ public class MultiLevelMenu extends JFrame {
 		main.setPopupCallback((JCommandButton commandButton) -> {
 			JCommandPopupMenu result = new JCommandPopupMenu();
 
-			result.addMenuButton(new JCommandMenuButton("Copy", new edit_copy()));
-			result.addMenuButton(new JCommandMenuButton("Cut", new edit_cut()));
-			result.addMenuButton(new JCommandMenuButton("Paste", new edit_paste()));
+			result.addMenuButton(new JCommandMenuButton("Copy", new Edit_copy()));
+			result.addMenuButton(new JCommandMenuButton("Cut", new Edit_cut()));
+			result.addMenuButton(new JCommandMenuButton("Paste", new Edit_paste()));
 
 			result.addMenuSeparator();
 
@@ -46,9 +46,9 @@ public class MultiLevelMenu extends JFrame {
 			second.setPopupCallback((JCommandButton commandButton2) -> {
 				JCommandPopupMenu result2 = new JCommandPopupMenu();
 
-				result2.addMenuButton(new JCommandMenuButton("Find", new edit_find()));
+				result2.addMenuButton(new JCommandMenuButton("Find", new Edit_find()));
 				result2.addMenuButton(
-						new JCommandMenuButton("Find replace", new edit_find_replace()));
+						new JCommandMenuButton("Find replace", new Edit_find_replace()));
 
 				return result2;
 			});

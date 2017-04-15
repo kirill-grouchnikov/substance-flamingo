@@ -47,6 +47,7 @@ import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleMenuButton;
 import org.pushingpixels.flamingo.api.common.JScrollablePanel;
+import org.pushingpixels.flamingo.api.common.popup.JColorSelectorPopupMenu;
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
 import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;
@@ -137,8 +138,11 @@ public class FlamingoPlugin implements LafComponentPlugin {
 				JScrollablePanel.uiClassID,
 				UI_COMMON_CLASSNAME_PREFIX + "ScrollablePanelUI",
 
-				JCommandPopupMenu.uiClassID,
-				UI_COMMON_CLASSNAME_PREFIX + "CommandPopupMenuUI",
+                JCommandPopupMenu.uiClassID,
+                UI_COMMON_CLASSNAME_PREFIX + "CommandPopupMenuUI",
+
+                JColorSelectorPopupMenu.uiClassID,
+                UI_COMMON_CLASSNAME_PREFIX + "CommandPopupMenuUI",
 
 				JColorSelectorPanel.uiClassID,
 				UI_COMMON_CLASSNAME_PREFIX + "ColorSelectorPanelUI",

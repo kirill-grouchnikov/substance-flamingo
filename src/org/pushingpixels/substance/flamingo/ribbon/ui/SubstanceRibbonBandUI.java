@@ -233,7 +233,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 
 		GeneralPath outline = new GeneralPath();
 
-		float outlineDelta = UIUtil.isRetina() ? 0.5f : 1.0f;
+		float outlineDelta = SubstanceSizeUtils.getBorderStrokeWidth();
 		// top left
 		outline.moveTo(0, 0);
 		// top right

@@ -205,7 +205,7 @@ public class CommandButtonBackgroundDelegate {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
 				height);
 		Graphics2D g2d = result.createGraphics();
-		int factor = UIUtil.isRetina() ? 2 : 1;
+		int factor = UIUtil.getScaleFactor();
 
 		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / factor, baseLayer.getHeight() / factor, null);
 
@@ -367,7 +367,7 @@ public class CommandButtonBackgroundDelegate {
 				.getBlankImage(fullAlphaBackground.getWidth(),
 						fullAlphaBackground.getHeight());
 		Graphics2D combinedGraphics = layers.createGraphics();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		combinedGraphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
 				fullAlphaBackground.getHeight() / scaleFactor, null);
 
@@ -483,7 +483,7 @@ public class CommandButtonBackgroundDelegate {
 		} else {
 			if (stateTransitionTracker != null) {
 				float alpha = stateTransitionTracker.getActiveStrength();
-				int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+				int scaleFactor = UIUtil.getScaleFactor();
 				if (alpha < 1.0f) {
 					// paint the themed image full opaque on a separate image
 					BufferedImage themedImage = SubstanceCoreUtilities

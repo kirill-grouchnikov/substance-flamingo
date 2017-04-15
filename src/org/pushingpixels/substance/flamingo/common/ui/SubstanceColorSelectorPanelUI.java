@@ -116,4 +116,10 @@ public class SubstanceColorSelectorPanelUI extends BasicColorSelectorPanelUI {
 		BackgroundPaintingUtils.updateIfOpaque(g, c);
 		this.paint(g, c);
 	}
+	
+	@Override
+	protected int getLayoutGap() {
+        return (int) SubstanceSizeUtils.getAdjustedSize(
+                SubstanceSizeUtils.getComponentFontSize(colorSelectorPanel), 4, 1, 0.25f);
+	}
 }

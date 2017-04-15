@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
-import org.pushingpixels.flamingo.internal.ui.common.popup.BasicCommandPopupMenuUI;
+import org.pushingpixels.flamingo.internal.ui.common.popup.BasicColorSelectorPopupMenuUI;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -48,6 +48,7 @@ import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.menu.SubstanceMenuBackgroundDelegate;
 
 /**
@@ -56,78 +57,89 @@ import org.pushingpixels.substance.internal.utils.menu.SubstanceMenuBackgroundDe
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceCommandPopupMenuUI extends BasicCommandPopupMenuUI {
-	public static ComponentUI createUI(JComponent c) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
-		return new SubstanceCommandPopupMenuUI();
-	}
-	
-	private DecorationPainterUtils.PopupInvokerLink popupInvokerLink;
+public class SubstanceCommandPopupMenuUI extends BasicColorSelectorPopupMenuUI {
+    public static ComponentUI createUI(JComponent c) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
+        return new SubstanceCommandPopupMenuUI();
+    }
 
-	@Override
-	public void installUI(JComponent c) {
-		this.popupInvokerLink = () -> ((JCommandPopupMenu) c).getInvoker();
-		super.installUI(c);
-	}
-	
-	@Override
-	protected void installDefaults() {
-		super.installDefaults();
-		this.popupMenu.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, 
-				this.popupInvokerLink);
-	}
-	
-	@Override
-	protected void uninstallDefaults() {
-		this.popupMenu.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, null);
-		super.uninstallDefaults();
-	}
-	
-	@Override
-	protected JPanel createMenuPanel() {
-		JPanel result = new SubstanceMenuPanel();
-		result.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, this.popupInvokerLink);
-		return result;
-	}
+    private DecorationPainterUtils.PopupInvokerLink popupInvokerLink;
 
-	protected static class SubstanceMenuPanel extends MenuPanel {
-		@Override
-		protected void paintIconGutterSeparator(Graphics g) {
-		}
+    @Override
+    public void installUI(JComponent c) {
+        this.popupInvokerLink = () -> ((JCommandPopupMenu) c).getInvoker();
+        super.installUI(c);
+    }
 
-		@Override
-		protected void paintIconGutterBackground(Graphics g) {
-			Graphics2D g2d = (Graphics2D) g.create();
-			MenuGutterFillKind fillKind = SubstanceCoreUtilities.getMenuGutterFillKind();
-			if (fillKind != MenuGutterFillKind.NONE) {
-				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(this,
-						ComponentState.ENABLED);
-				Color extraLight = SubstanceMenuBackgroundDelegate.getGutterHardFillColor(scheme);
-				Color ultraLight = SubstanceMenuBackgroundDelegate.getGutterSoftFillColor(scheme);
-				Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL)
-						|| (fillKind == MenuGutterFillKind.HARD)) ? ultraLight : extraLight;
-				Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL)
-						|| (fillKind == MenuGutterFillKind.SOFT)) ? ultraLight : extraLight;
-				g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, 0.7f, g));
+    @Override
+    protected void installDefaults() {
+        super.installDefaults();
+        this.popupMenu.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK,
+                this.popupInvokerLink);
+    }
 
-				int sepX = this.getSeparatorX();
-				if (this.getComponentOrientation().isLeftToRight()) {
-					GradientPaint gp = new GradientPaint(0, 0, leftColor, sepX + 2, 0, rightColor);
-					g2d.setPaint(gp);
-					g2d.fillRect(0, 0, sepX, this.getHeight());
-				} else {
-					GradientPaint gp = new GradientPaint(sepX, 0, leftColor, this.getWidth(), 0,
-							rightColor);
-					g2d.setPaint(gp);
-					g2d.fillRect(sepX + 2, 0, this.getWidth() - sepX, this.getHeight());
-				}
-			}
-			g2d.dispose();
-		}
-	}
+    @Override
+    protected void uninstallDefaults() {
+        this.popupMenu.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, null);
+        super.uninstallDefaults();
+    }
 
-	@Override
-	public void update(Graphics g, JComponent c) {
-		BackgroundPaintingUtils.update(g, c, false);
-	}
+    @Override
+    protected JPanel createMenuPanel() {
+        JPanel result = new SubstanceMenuPanel();
+        result.putClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK, this.popupInvokerLink);
+        return result;
+    }
+
+    protected static class SubstanceMenuPanel extends MenuPanel {
+        @Override
+        protected void paintIconGutterSeparator(Graphics g) {
+        }
+
+        @Override
+        protected void paintIconGutterBackground(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            MenuGutterFillKind fillKind = SubstanceCoreUtilities.getMenuGutterFillKind();
+            if (fillKind != MenuGutterFillKind.NONE) {
+                SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(this,
+                        ComponentState.ENABLED);
+                Color extraLight = SubstanceMenuBackgroundDelegate.getGutterHardFillColor(scheme);
+                Color ultraLight = SubstanceMenuBackgroundDelegate.getGutterSoftFillColor(scheme);
+                Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL)
+                        || (fillKind == MenuGutterFillKind.HARD)) ? ultraLight : extraLight;
+                Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL)
+                        || (fillKind == MenuGutterFillKind.SOFT)) ? ultraLight : extraLight;
+                g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, 0.7f, g));
+
+                int sepX = this.getSeparatorX();
+                if (this.getComponentOrientation().isLeftToRight()) {
+                    GradientPaint gp = new GradientPaint(0, 0, leftColor, sepX + 2, 0, rightColor);
+                    g2d.setPaint(gp);
+                    g2d.fillRect(0, 0, sepX, this.getHeight());
+                } else {
+                    GradientPaint gp = new GradientPaint(sepX, 0, leftColor, this.getWidth(), 0,
+                            rightColor);
+                    g2d.setPaint(gp);
+                    g2d.fillRect(sepX + 2, 0, this.getWidth() - sepX, this.getHeight());
+                }
+            }
+            g2d.dispose();
+        }
+    }
+
+    @Override
+    public void update(Graphics g, JComponent c) {
+        BackgroundPaintingUtils.update(g, c, false);
+    }
+
+    @Override
+    public int getColorSelectorCellSize() {
+        return SubstanceSizeUtils.getComponentFontSize(popupPanel);
+    }
+
+    @Override
+    public int getColorSelectorCellGap() {
+        return (int) SubstanceSizeUtils.getAdjustedSize(
+                SubstanceSizeUtils.getComponentFontSize(popupPanel), 4, 1, 0.25f);
+    }
 }
