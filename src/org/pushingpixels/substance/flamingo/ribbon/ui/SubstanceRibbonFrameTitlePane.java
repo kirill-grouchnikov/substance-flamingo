@@ -62,7 +62,6 @@ import javax.swing.event.ChangeListener;
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
-import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.RibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
@@ -196,7 +195,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 			this.setOpaque(false);
 			int insets = SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils
 					.getComponentFontSize(this), 2, 3, 1, false);
-			this.setBorder(new EmptyBorder(insets, insets, insets, insets));
+			this.setBorder(new EmptyBorder(2, insets, 2, insets));
 		}
 
 		/*
@@ -516,6 +515,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 						if (taskbarPanel.isVisible()) {
 							taskbarPanel.setBounds(maxLeadingX, 0, pref.width,
 									c.getHeight());
+							taskbarPanel.doLayout();
 						}
 						menuBar.setVisible(false);
 					} else {
@@ -529,6 +529,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 										+ menuBar.getWidth() + 5, 0,
 										pref.width, c.getHeight());
 							}
+                            taskbarPanel.doLayout();
 						}
 						menuBar.setVisible(true);
 					}
@@ -597,6 +598,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 						if (taskbarPanel.isVisible()) {
 							taskbarPanel.setBounds(maxLeadingX - pref.width, 0,
 									pref.width, c.getHeight());
+                            taskbarPanel.doLayout();
 						}
 						menuBar.setVisible(false);
 					} else {
@@ -609,6 +611,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 										- pref.width, 0, pref.width, c
 										.getHeight());
 							}
+                            taskbarPanel.doLayout();
 						}
 						menuBar.setVisible(true);
 					}
