@@ -50,6 +50,8 @@ import org.pushingpixels.flamingo.api.common.JCommandButtonStrip;
 import org.pushingpixels.flamingo.api.common.JCommandButtonStrip.StripOrientation;
 import org.pushingpixels.flamingo.api.common.model.PopupButtonModel;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
@@ -59,6 +61,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
+import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -464,25 +467,35 @@ public class CommandButtonBackgroundDelegate {
 		return sb.toString();
 	}
 
-	public static void paintThemedCommandButtonIcon(Graphics2D g,
+	public static void paintCommandButtonIcon(Graphics2D g,
 			Rectangle iconRect, AbstractCommandButton commandButton,
-			Icon regular, ButtonModel model,
+			Icon regular, GlowingResizableIcon glowingIcon, ButtonModel model,
 			StateTransitionTracker stateTransitionTracker) {
-		Icon themed = SubstanceCoreUtilities.getThemedIcon(commandButton,
-				regular);
+        boolean useThemed = SubstanceCoreUtilities.useThemedDefaultIcon(commandButton);
+		Icon themed = useThemed ? SubstanceCoreUtilities.getThemedIcon(commandButton,
+				regular) : regular;
 
-		boolean useRegularVersion = model.isArmed()
+		boolean useRegularVersion = (model.isArmed()
 				|| model.isPressed()
 				|| model.isSelected()
 				|| regular.getClass()
-						.isAnnotationPresent(TransitionAware.class);
+						.isAnnotationPresent(TransitionAware.class));
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.translate(iconRect.x, iconRect.y);
+
+        float alpha = stateTransitionTracker.getActiveStrength();
+        if (alpha > 0 && glowingIcon != null && model.isEnabled() && 
+                AnimationConfigurationManager.getInstance()
+                .isAnimationAllowed(AnimationFacet.ICON_GLOW, commandButton)
+                && stateTransitionTracker.getIconGlowTracker().isPlaying()) {
+            glowingIcon.paintIcon(commandButton, g2d, 0, 0);
+            return;
+        } 
+
 		if (useRegularVersion) {
 			regular.paintIcon(commandButton, g2d, 0, 0);
 		} else {
 			if (stateTransitionTracker != null) {
-				float alpha = stateTransitionTracker.getActiveStrength();
 				int scaleFactor = UIUtil.getScaleFactor();
 				if (alpha < 1.0f) {
 					// paint the themed image full opaque on a separate image

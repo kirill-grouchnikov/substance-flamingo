@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.flamingo.common.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -63,6 +64,8 @@ import org.pushingpixels.flamingo.internal.ui.common.BasicCommandToggleButtonUI;
 import org.pushingpixels.flamingo.internal.ui.common.ResizableIconUIResource;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
@@ -73,6 +76,7 @@ import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
+import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonBackgroundDelegate;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
 import org.pushingpixels.substance.flamingo.utils.SubstanceDisabledResizableIcon;
@@ -100,8 +104,7 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 	protected ButtonBackgroundDelegate backgroundDelegate;
 
 	/**
-	 * Property change listener. Listens on changes to
-	 * {@link AbstractButton#MODEL_CHANGED_PROPERTY} property.
+	 * Property change listener.
 	 */
 	protected PropertyChangeListener substancePropertyListener;
 
@@ -114,6 +117,13 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 	 * Tracker for visual state transitions.
 	 */
 	protected CommandButtonVisualStateTracker substanceVisualStateTracker;
+
+    /**
+     * The matching glowing icon. Is used only when
+     * {@link AnimationConfigurationManager#isAnimationAllowed(AnimationFacet, Component)}
+     * returns true on {@link AnimationFacet#ICON_GLOW}.
+     */
+    protected GlowingResizableIcon glowingIcon;
 
 	/*
 	 * (non-Javadoc)
@@ -196,6 +206,9 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 							commandButton, commandButton.getActionModel());
 					substanceModelChangeListener.registerListeners();
 				}
+	            if ("icon".equals(evt.getPropertyName())) {
+	                trackGlowingIcon();
+	            }
 			}
 		};
 		this.commandButton
@@ -204,6 +217,8 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 		this.substanceModelChangeListener = new GhostingListener(
 				this.commandButton, this.commandButton.getActionModel());
 		this.substanceModelChangeListener.registerListeners();
+
+        this.trackGlowingIcon();
 	}
 
 	/*
@@ -245,9 +260,6 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 			regular = jctb.getDisabledIcon();
 		}
 
-		boolean useThemed = SubstanceCoreUtilities
-				.useThemedDefaultIcon(this.commandButton);
-
 		if ((iconRect == null) || (regular == null) || (iconRect.width == 0)
 				|| (iconRect.height == 0)) {
 			return;
@@ -259,14 +271,10 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 			GhostPaintingUtils.paintGhostIcon(g2d, jctb, regular, iconRect);
 			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(jctb, g));
 
-			if (!useThemed) {
-				regular.paintIcon(jctb, g2d, iconRect.x, iconRect.y);
-			} else {
-				CommandButtonBackgroundDelegate.paintThemedCommandButtonIcon(
-						g2d, iconRect, jctb, regular, jctb.getActionModel(),
-						this.substanceVisualStateTracker
-								.getPopupStateTransitionTracker());
-			}
+			CommandButtonBackgroundDelegate.paintCommandButtonIcon(
+					g2d, iconRect, jctb, regular, glowingIcon, jctb.getActionModel(),
+					this.substanceVisualStateTracker
+							.getActionStateTransitionTracker());
 			g2d.dispose();
 		}
 	}
@@ -413,6 +421,23 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 		}
 		return superPref;
 	}
+	
+    /**
+     * Tracks possible usage of glowing icon.
+     * 
+     * @param b
+     *            Button.
+     */
+    protected void trackGlowingIcon() {
+        ResizableIcon currIcon = this.commandButton.getIcon();
+        if (currIcon instanceof GlowingResizableIcon)
+            return;
+        if (currIcon == null)
+            return;
+        this.glowingIcon = new GlowingResizableIcon(currIcon, 
+                this.substanceVisualStateTracker.getActionStateTransitionTracker().
+                    getIconGlowTracker());
+    }
 
 	/*
 	 * (non-Javadoc)

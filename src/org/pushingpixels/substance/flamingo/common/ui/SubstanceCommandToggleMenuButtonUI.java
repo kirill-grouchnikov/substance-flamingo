@@ -37,6 +37,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.util.EnumSet;
 import java.util.Map;
 
@@ -60,6 +61,7 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker.Mod
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * UI for {@link JCommandToggleMenuButton} components in <b>Substance</b> look
@@ -81,8 +83,10 @@ public class SubstanceCommandToggleMenuButtonUI extends
 		boolean isSelected = this.commandButton.getActionModel().isSelected();
 		if (isSelected) {
 			Graphics2D g2d = (Graphics2D) g.create();
-			Rectangle extended = new Rectangle(iconRect.x - 1, iconRect.y - 1,
-					iconRect.width + 1, iconRect.height + 1);
+	        float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
+	        Rectangle2D.Float extended = new Rectangle2D.Float(iconRect.x - borderDelta / 2.0f, 
+			        iconRect.y - borderDelta / 2.0f, iconRect.width + borderDelta, 
+			        iconRect.height + borderDelta);
 
 			ComponentState currState = this.commandButton.getActionModel()
 					.isEnabled() ? ComponentState.SELECTED
@@ -94,7 +98,7 @@ public class SubstanceCommandToggleMenuButtonUI extends
 			SubstanceFillPainter fillPainter = SubstanceCoreUtilities
 					.getFillPainter(this.commandButton);
 			fillPainter.paintContourBackground(g2d, this.commandButton,
-					extended.width, extended.height, extended, false,
+					(float) extended.getWidth(), (float) extended.getHeight(), extended, false,
 					fillScheme, false);
 
 			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
@@ -103,8 +107,8 @@ public class SubstanceCommandToggleMenuButtonUI extends
 							currState);
 			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 					.getBorderPainter(this.commandButton);
-			borderPainter.paintBorder(g2d, this.commandButton, extended.width,
-					extended.height, extended, null, borderScheme);
+			borderPainter.paintBorder(g2d, this.commandButton, (float) extended.getWidth(),
+			        (float) extended.getHeight(), extended, null, borderScheme);
 
 			g2d.dispose();
 		}

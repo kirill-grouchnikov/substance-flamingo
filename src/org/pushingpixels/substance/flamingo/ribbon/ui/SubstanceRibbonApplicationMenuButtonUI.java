@@ -29,11 +29,14 @@
  */
 package org.pushingpixels.substance.flamingo.ribbon.ui;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -43,11 +46,14 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.BasicRibbonApplicationMenuButtonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
+import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonBackgroundDelegate;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
@@ -61,177 +67,206 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceRibbonApplicationMenuButtonUI extends
-		BasicRibbonApplicationMenuButtonUI implements
-		ActionPopupTransitionAwareUI {
-	/**
-	 * Model change listener for ghost image effects.
-	 */
-	private GhostingListener substanceModelChangeListener;
+public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicationMenuButtonUI
+        implements ActionPopupTransitionAwareUI {
+    /**
+     * Model change listener for ghost image effects.
+     */
+    private GhostingListener substanceModelChangeListener;
 
-	/**
-	 * Tracker for visual state transitions.
-	 */
-	protected CommandButtonVisualStateTracker substanceVisualStateTracker;
+    /**
+     * Property change listener.
+     */
+    protected PropertyChangeListener substancePropertyListener;
 
-	public static ComponentUI createUI(JComponent c) {
-		return new SubstanceRibbonApplicationMenuButtonUI();
-	}
+    /**
+     * Tracker for visual state transitions.
+     */
+    protected CommandButtonVisualStateTracker substanceVisualStateTracker;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#installListeners()
-	 */
-	@Override
-	protected void installListeners() {
-		super.installListeners();
+    /**
+     * The matching glowing icon. Is used only when
+     * {@link AnimationConfigurationManager#isAnimationAllowed(AnimationFacet, Component)}
+     * returns true on {@link AnimationFacet#ICON_GLOW}.
+     */
+    protected GlowingResizableIcon glowingIcon;
 
-		this.substanceVisualStateTracker = new CommandButtonVisualStateTracker();
-		this.substanceVisualStateTracker.installListeners(this.commandButton);
+    public static ComponentUI createUI(JComponent c) {
+        return new SubstanceRibbonApplicationMenuButtonUI();
+    }
 
-		this.substanceModelChangeListener = new GhostingListener(
-				this.commandButton, this.commandButton.getActionModel());
-		this.substanceModelChangeListener.registerListeners();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#installListeners()
+     */
+    @Override
+    protected void installListeners() {
+        super.installListeners();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#uninstallListeners()
-	 */
-	@Override
-	protected void uninstallListeners() {
-		this.substanceVisualStateTracker.uninstallListeners(this.commandButton);
-		this.substanceVisualStateTracker = null;
+        this.substanceVisualStateTracker = new CommandButtonVisualStateTracker();
+        this.substanceVisualStateTracker.installListeners(this.commandButton);
 
-		this.substanceModelChangeListener.unregisterListeners();
-		this.substanceModelChangeListener = null;
+        this.substancePropertyListener = new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("icon".equals(evt.getPropertyName())) {
+                    trackGlowingIcon();
+                }
+            }
+        };
+        this.commandButton.addPropertyChangeListener(this.substancePropertyListener);
 
-		super.uninstallListeners();
-	}
+        this.substanceModelChangeListener = new GhostingListener(this.commandButton,
+                this.commandButton.getActionModel());
+        this.substanceModelChangeListener.registerListeners();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicButtonUI#paint(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void paint(Graphics g, JComponent c) {
-		JRibbonApplicationMenuButton b = (JRibbonApplicationMenuButton) c;
+        this.trackGlowingIcon();
+    }
 
-		this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton, g);
-		commandButton.putClientProperty("icon.bounds", layoutInfo.iconRect);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#uninstallListeners()
+     */
+    @Override
+    protected void uninstallListeners() {
+        this.substanceVisualStateTracker.uninstallListeners(this.commandButton);
+        this.substanceVisualStateTracker = null;
 
-		Graphics2D g2d = (Graphics2D) g.create();
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(commandButton);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(commandButton);
-		BufferedImage fullAlphaBackground = RibbonApplicationMenuButtonBackgroundDelegate
-				.getFullAlphaBackground(b, fillPainter, borderPainter,
-						commandButton.getWidth() - 2, commandButton.getHeight() - 2);
-		int scaleFactor = UIUtil.getScaleFactor();
-		g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
-				fullAlphaBackground.getHeight() / scaleFactor, null);
+        this.commandButton.removePropertyChangeListener(this.substancePropertyListener);
+        this.substancePropertyListener = null;
 
-		// Paint the icon
-		ResizableIcon icon = b.getIcon();
-		if (icon != null) {
-			int iconWidth = icon.getIconWidth();
-			int iconHeight = icon.getIconHeight();
-			Rectangle iconRect = new Rectangle((commandButton.getWidth() - iconWidth) / 2 - 1,
-					(commandButton.getHeight() - iconHeight) / 2 - 1, iconWidth, iconHeight);
-			paintButtonIcon(g2d, iconRect);
-		}
+        this.substanceModelChangeListener.unregisterListeners();
+        this.substanceModelChangeListener = null;
 
-		g2d.dispose();
-	}
+        super.uninstallListeners();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonIcon(java
-	 * .awt.Graphics, java.awt.Rectangle)
-	 */
-	@Override
-	protected void paintButtonIcon(Graphics g, Rectangle iconRect) {
-		Icon regular = this.applicationMenuButton.isEnabled() ? this.applicationMenuButton.getIcon()
-				: this.applicationMenuButton.getDisabledIcon();
-		if (regular == null)
-			return;
-		boolean useThemed = SubstanceCoreUtilities
-				.useThemedDefaultIcon(this.applicationMenuButton);
+    /**
+     * Tracks possible usage of glowing icon.
+     * 
+     * @param b
+     *            Button.
+     */
+    protected void trackGlowingIcon() {
+        ResizableIcon currIcon = this.commandButton.getIcon();
+        if (currIcon instanceof GlowingResizableIcon)
+            return;
+        if (currIcon == null)
+            return;
+        this.glowingIcon = new GlowingResizableIcon(currIcon, this.substanceVisualStateTracker
+                .getPopupStateTransitionTracker().getIconGlowTracker());
+    }
 
-		if (regular != null) {
-			Graphics2D g2d = (Graphics2D) g.create();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicButtonUI#paint(java.awt.Graphics,
+     * javax.swing.JComponent)
+     */
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        JRibbonApplicationMenuButton b = (JRibbonApplicationMenuButton) c;
 
-			GhostPaintingUtils.paintGhostIcon(g2d, this.applicationMenuButton,
-					regular, iconRect);
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-					this.applicationMenuButton, g));
+        this.layoutInfo = this.layoutManager.getLayoutInfo(this.commandButton, g);
+        commandButton.putClientProperty("icon.bounds", layoutInfo.iconRect);
 
-			if (!useThemed) {
-				g2d.translate(iconRect.x, iconRect.y);
-				regular.paintIcon(this.applicationMenuButton, g2d, 0, 0);
-			} else {
-				CommandButtonBackgroundDelegate.paintThemedCommandButtonIcon(
-						g2d, iconRect, this.applicationMenuButton, regular,
-						this.applicationMenuButton.getPopupModel(),
-						this.substanceVisualStateTracker.getPopupStateTransitionTracker());
-			}
-			g2d.dispose();
-		}
-	}
+        Graphics2D g2d = (Graphics2D) g.create();
+        SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(commandButton);
+        SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
+                .getBorderPainter(commandButton);
+        BufferedImage fullAlphaBackground = RibbonApplicationMenuButtonBackgroundDelegate
+                .getFullAlphaBackground(b, fillPainter, borderPainter, commandButton.getWidth() - 2,
+                        commandButton.getHeight() - 2);
+        int scaleFactor = UIUtil.getScaleFactor();
+        g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / scaleFactor,
+                fullAlphaBackground.getHeight() / scaleFactor, null);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.appmenu.BasicRibbonApplicationMenuButtonUI
-	 * #update(java.awt.Graphics, javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		this.paint(g, c);
-	}
+        // Paint the icon
+        ResizableIcon icon = b.getIcon();
+        if (icon != null) {
+            int iconWidth = icon.getIconWidth();
+            int iconHeight = icon.getIconHeight();
+            Rectangle iconRect = new Rectangle((commandButton.getWidth() - iconWidth) / 2 - 1,
+                    (commandButton.getHeight() - iconHeight) / 2 - 1, iconWidth, iconHeight);
+            paintButtonIcon(g2d, iconRect);
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.substance.SubstanceButtonUI#contains(javax.swing.JComponent,
-	 * int, int)
-	 */
-	@Override
-	public boolean contains(JComponent c, int x, int y) {
-		// allow clicking anywhere in the area (around the button
-		// round outline as well) to activate the button.
-		return (x >= 0) && (x < c.getWidth()) && (y >= 0)
-				&& (y < c.getHeight());
-	}
+        g2d.dispose();
+    }
 
-	@Override
-	public StateTransitionTracker getActionTransitionTracker() {
-		return this.substanceVisualStateTracker
-				.getActionStateTransitionTracker();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonIcon(java
+     * .awt.Graphics, java.awt.Rectangle)
+     */
+    @Override
+    protected void paintButtonIcon(Graphics g, Rectangle iconRect) {
+        Icon regular = this.applicationMenuButton.isEnabled() ? this.applicationMenuButton.getIcon()
+                : this.applicationMenuButton.getDisabledIcon();
+        if (regular == null)
+            return;
 
-	@Override
-	public StateTransitionTracker getPopupTransitionTracker() {
-		return this.substanceVisualStateTracker
-				.getPopupStateTransitionTracker();
-	}
+        if (regular != null) {
+            Graphics2D g2d = (Graphics2D) g.create();
 
-	@Override
-	public StateTransitionTracker getTransitionTracker() {
-		return this.substanceVisualStateTracker
-				.getPopupStateTransitionTracker();
-	}
+            GhostPaintingUtils.paintGhostIcon(g2d, this.applicationMenuButton, regular, iconRect);
+            g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.applicationMenuButton, g));
 
-	@Override
-	public boolean isInside(MouseEvent me) {
-		return true;
-	}
+            CommandButtonBackgroundDelegate.paintCommandButtonIcon(g2d, iconRect,
+                    this.applicationMenuButton, regular, glowingIcon,
+                    this.applicationMenuButton.getPopupModel(),
+                    this.substanceVisualStateTracker.getPopupStateTransitionTracker());
+            g2d.dispose();
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jvnet.flamingo.ribbon.ui.appmenu.BasicRibbonApplicationMenuButtonUI
+     * #update(java.awt.Graphics, javax.swing.JComponent)
+     */
+    @Override
+    public void update(Graphics g, JComponent c) {
+        this.paint(g, c);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jvnet.substance.SubstanceButtonUI#contains(javax.swing.JComponent,
+     * int, int)
+     */
+    @Override
+    public boolean contains(JComponent c, int x, int y) {
+        // allow clicking anywhere in the area (around the button
+        // round outline as well) to activate the button.
+        return (x >= 0) && (x < c.getWidth()) && (y >= 0) && (y < c.getHeight());
+    }
+
+    @Override
+    public StateTransitionTracker getActionTransitionTracker() {
+        return this.substanceVisualStateTracker.getActionStateTransitionTracker();
+    }
+
+    @Override
+    public StateTransitionTracker getPopupTransitionTracker() {
+        return this.substanceVisualStateTracker.getPopupStateTransitionTracker();
+    }
+
+    @Override
+    public StateTransitionTracker getTransitionTracker() {
+        return this.substanceVisualStateTracker.getPopupStateTransitionTracker();
+    }
+
+    @Override
+    public boolean isInside(MouseEvent me) {
+        return true;
+    }
 }
