@@ -43,7 +43,6 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonGalleryUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonGallery;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -51,7 +50,6 @@ import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
@@ -113,23 +111,13 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
-		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
-				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-					@Override
-					public StateTransitionTracker getStateTransitionTracker() {
-						return ((ActionPopupTransitionAwareUI) button.getUI())
-								.getActionTransitionTracker();
-					}
-				}, new TransitionAwareResizableIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
-							int height) {
-						return SubstanceImageCreator.getDoubleArrowIcon(
-								SubstanceSizeUtils.getComponentFontSize(button), width, height,
-								SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
-								SwingConstants.SOUTH, scheme);
-					}
-				}, new Dimension(arrowIconWidth, arrowIconHeight));
+        final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
+                () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
+                (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
+                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), width,
+                                height, SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                                SwingConstants.SOUTH, scheme),
+                new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
 		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
@@ -151,22 +139,13 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
-		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
-				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-					@Override
-					public StateTransitionTracker getStateTransitionTracker() {
-						return ((ActionPopupTransitionAwareUI) button.getUI())
-								.getActionTransitionTracker();
-					}
-				}, new TransitionAwareResizableIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
-							int height) {
-						return SubstanceImageCreator.getArrowIcon(width, height,
-								SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
-								SwingConstants.SOUTH, scheme);
-					}
-				}, new Dimension(arrowIconWidth, arrowIconHeight));
+        final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
+                () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
+                (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
+                        .getArrowIcon(width, height,
+                                SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                                SwingConstants.SOUTH, scheme),
+                new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
 		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
@@ -187,22 +166,13 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
-		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
-				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-					@Override
-					public StateTransitionTracker getStateTransitionTracker() {
-						return ((ActionPopupTransitionAwareUI) button.getUI())
-								.getActionTransitionTracker();
-					}
-				}, new TransitionAwareResizableIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
-							int height) {
-						return SubstanceImageCreator.getArrowIcon(width, height,
-								SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
-								SwingConstants.NORTH, scheme);
-					}
-				}, new Dimension(arrowIconWidth, arrowIconHeight));
+        final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
+                () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
+                (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
+                        .getArrowIcon(width, height,
+                                SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                                SwingConstants.NORTH, scheme),
+                new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
 		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()

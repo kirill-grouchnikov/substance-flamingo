@@ -37,7 +37,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -192,7 +191,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
-
+        
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 SubstanceLookAndFeel.setSkin(new OfficeBlue2007Skin());

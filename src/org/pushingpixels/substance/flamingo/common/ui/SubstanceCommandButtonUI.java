@@ -369,7 +369,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
             g2d.setComposite(
                     LafWidgetUtilities.getAlphaComposite(this.commandButton, extraAlpha, graphics));
             int factor = UIUtil.getScaleFactor();
-            graphics.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor,
+            g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor,
                     fullAlphaBackground.getHeight() / factor, null);
             g2d.dispose();
         }

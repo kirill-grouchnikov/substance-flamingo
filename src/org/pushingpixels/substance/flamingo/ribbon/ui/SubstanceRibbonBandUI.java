@@ -52,11 +52,9 @@ import javax.swing.plaf.UIResource;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
-import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
@@ -69,7 +67,6 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -361,31 +358,16 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 				.getSmallArrowIconHeight(fontSize) + 2;
 		int arrowIconWidth = (int) SubstanceSizeUtils
 				.getSmallArrowIconWidth(fontSize);
-		final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(
-				button,
-				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-					@Override
-					public StateTransitionTracker getStateTransitionTracker() {
-						return ((ActionPopupTransitionAwareUI) button.getUI())
-								.getActionTransitionTracker();
-					}
-				}, new TransitionAwareResizableIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme,
-							int width, int height) {
-						return SubstanceImageCreator
-								.getDoubleArrowIcon(
-										SubstanceSizeUtils
-												.getComponentFontSize(button),
-										width,
-										height,
-										SubstanceSizeUtils
-												.getDoubleArrowStrokeWidth(fontSize),
-										button.getComponentOrientation()
-												.isLeftToRight() ? SwingConstants.EAST
-												: SwingConstants.WEST, scheme);
-					}
-				}, new Dimension(arrowIconWidth, arrowIconHeight));
+        final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
+                () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
+                (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
+                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), width,
+                                height, SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                                button.getComponentOrientation().isLeftToRight()
+                                        ? SwingConstants.EAST
+                                        : SwingConstants.WEST,
+                                scheme),
+                new Dimension(arrowIconWidth, arrowIconHeight));
 		return arrowIcon;
 	}
 
