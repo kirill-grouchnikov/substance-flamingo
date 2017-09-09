@@ -642,24 +642,9 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
      */
     @Override
     protected void paintPopupActionIcon(Graphics g, Rectangle popupActionRect) {
-        int width = popupActionRect.width;
-        int height = popupActionRect.height;
-        if (((JCommandButton) this.commandButton)
-                .getPopupOrientationKind() == CommandButtonPopupOrientationKind.DOWNWARD) {
-            width += 2;
-            if (width % 2 == 0)
-                width++;
-            height = height / 2 - 1;
-        } else {
-            height /= 2;
-            width++;
-            if (width % 2 == 0)
-                width++;
-        }
-        popupActionIcon.setDimension(new Dimension(width, height));
         popupActionIcon.paintIcon(this.commandButton, g,
-                popupActionRect.x + (popupActionRect.width - width) / 2,
-                popupActionRect.y + (popupActionRect.height - height) / 2);
+                popupActionRect.x + (popupActionRect.width - popupActionIcon.getIconWidth()) / 2,
+                popupActionRect.y + (popupActionRect.height - popupActionIcon.getIconHeight()) / 2);
     }
 
     /*
