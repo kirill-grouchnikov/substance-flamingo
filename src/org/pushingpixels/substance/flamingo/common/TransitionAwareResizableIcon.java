@@ -54,9 +54,7 @@ import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
 
 /**
  * Icon with transition-aware capabilities. Has a delegate that does the actual
- * painting based on the transition themes. This class is used heavily on
- * Substance-provided icons, such as title pane button icons, arrow icons on
- * scroll bars and combos etc.
+ * painting based on the transition themes. 
  * 
  * @author Kirill Grouchnikov
  */
@@ -75,7 +73,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 	/**
 	 * The delegate needs to implement the method in this interface based on the
 	 * provided theme. The theme is computed based on the transitions that are
-	 * happening on the associated button.
+	 * happening on the associated control.
 	 * 
 	 * @author Kirill Grouchnikov
 	 */

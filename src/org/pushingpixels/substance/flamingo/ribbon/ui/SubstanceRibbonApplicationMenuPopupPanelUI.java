@@ -44,6 +44,7 @@ import javax.swing.CellRendererPane;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.BasicRibbonApplicationMenuPopupPanelUI;
@@ -128,7 +129,7 @@ public class SubstanceRibbonApplicationMenuPopupPanelUI
 				});
 		this.applicationMenuPopupPanel.setBorder(newBorder);
 
-		this.panelLevel2.setBorder(new Border() {
+		this.panelScrollerLevel2.setBorder(new Border() {
 			@Override
 			public Insets getBorderInsets(Component c) {
 				boolean ltr = c.getComponentOrientation().isLeftToRight();
@@ -165,6 +166,7 @@ public class SubstanceRibbonApplicationMenuPopupPanelUI
 				g2d.dispose();
 			}
 		});
+		this.panelLevel2.setBorder(new EmptyBorder(0, 0, 0, 0));
 		this.mainPanel.setBorder(new SubstanceBorder());
 	}
 }

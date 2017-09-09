@@ -498,31 +498,23 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
         int arrowIconHeight = (int) SubstanceSizeUtils.getArrowIconHeight(fontSize);
         int arrowIconWidth = (int) SubstanceSizeUtils.getArrowIconWidth(fontSize);
         ResizableIcon icon = new TransitionAwareResizableIcon(this.commandButton,
-                new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-                    @Override
-                    public StateTransitionTracker getStateTransitionTracker() {
-                        return getPopupTransitionTracker();
-                    }
-                }, new TransitionAwareResizableIcon.Delegate() {
-                    @Override
-                    public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
-                            int height) {
-                        CommandButtonPopupOrientationKind orientation = ((JCommandButton) commandButton)
-                                .getPopupOrientationKind();
-                        int direction = (orientation == CommandButtonPopupOrientationKind.DOWNWARD)
-                                ? SwingConstants.SOUTH
-                                : (commandButton.getComponentOrientation().isLeftToRight()
-                                        ? SwingConstants.EAST
-                                        : SwingConstants.WEST);
-                        // System.out.println(direction + ":" + width + ":"
-                        // + height);
-                        HiDpiAwareIcon result = SubstanceImageCreator.getArrowIcon(width, height,
-                                SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f, direction,
-                                scheme);
-                        // System.out.println(" --> " + result.getIconWidth()
-                        // + "*" + result.getIconHeight());
-                        return result;
-                    }
+                () -> getPopupTransitionTracker(), 
+                (SubstanceColorScheme scheme, int width, int height) -> {
+                    CommandButtonPopupOrientationKind orientation = ((JCommandButton) commandButton)
+                            .getPopupOrientationKind();
+                    int direction = (orientation == CommandButtonPopupOrientationKind.DOWNWARD)
+                            ? SwingConstants.SOUTH
+                            : (commandButton.getComponentOrientation().isLeftToRight()
+                                    ? SwingConstants.EAST
+                                    : SwingConstants.WEST);
+                    // System.out.println(direction + ":" + width + ":"
+                    // + height);
+                    HiDpiAwareIcon result = SubstanceImageCreator.getArrowIcon(width, height,
+                            SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f, direction,
+                            scheme);
+                    // System.out.println(" --> " + result.getIconWidth()
+                    // + "*" + result.getIconHeight());
+                    return result;
                 }, new Dimension(arrowIconWidth, arrowIconHeight));
         return icon;
     }

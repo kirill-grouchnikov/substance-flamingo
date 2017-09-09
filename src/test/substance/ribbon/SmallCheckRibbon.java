@@ -44,6 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.ribbon.JFlowRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
@@ -101,7 +102,12 @@ public class SmallCheckRibbon extends BasicCheckRibbon {
 		this.getRibbon().addTask(animationsTask);
 		this.getRibbon().addTask(wrappedTask);
 
+        RichTooltip helpTooltip = new RichTooltip();
+        helpTooltip.setTitle(resourceBundle.getString("Help.tooltip.title"));
+        helpTooltip.addDescriptionSection(resourceBundle
+                .getString("Help.tooltip.actionParagraph"));
 		this.getRibbon().configureHelp(new Help_browser(),
+		        helpTooltip,
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

@@ -48,7 +48,6 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
@@ -94,37 +93,28 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
 	@Override
 	public JCommandButton createLeadingScroller() {
 		final JCommandButton result = super.createLeadingScroller();
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
+		final int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
 		if (arrowIconHeight % 2 == 0)
 			arrowIconHeight++;
 		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
-				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-					@Override
-					public StateTransitionTracker getStateTransitionTracker() {
-						return ((ActionPopupTransitionAwareUI) result.getUI())
-								.getActionTransitionTracker();
+				() -> ((ActionPopupTransitionAwareUI) result.getUI())
+								.getActionTransitionTracker(), 
+				(SubstanceColorScheme scheme, int width, int height) -> {
+					float arrowStrokeWidth = SubstanceSizeUtils
+							.getDoubleArrowStrokeWidth(fontSize) - 0.3f;
+					if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
+						width--;
 					}
-				}, new TransitionAwareResizableIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
-							int height) {
-						int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
-						float arrowStrokeWidth = SubstanceSizeUtils
-								.getDoubleArrowStrokeWidth(fontSize) - 0.3f;
-						if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
-							width--;
-						}
-						HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
-								SubstanceSizeUtils.getComponentFontSize(result), width, height,
-								arrowStrokeWidth,
-								(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-										? SwingUtilities.WEST
-										: SwingUtilities.NORTH,
-								scheme);
-						return doubleArrowIcon;
-					}
+					HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
+							SubstanceSizeUtils.getComponentFontSize(result), width, height,
+							arrowStrokeWidth,
+							(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+									? SwingUtilities.WEST
+									: SwingUtilities.NORTH,
+							scheme);
+					return doubleArrowIcon;
 				}, new Dimension(arrowIconHeight, arrowIconWidth));
 		result.setIcon(arrowIcon);
 		result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
@@ -139,37 +129,28 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
 	@Override
 	public JCommandButton createTrailingScroller() {
 		final JCommandButton result = super.createTrailingScroller();
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
+		final int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
 		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
 		if (arrowIconHeight % 2 == 0)
 			arrowIconHeight++;
 		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
-				new TransitionAwareResizableIcon.StateTransitionTrackerDelegate() {
-					@Override
-					public StateTransitionTracker getStateTransitionTracker() {
-						return ((ActionPopupTransitionAwareUI) result.getUI())
-								.getActionTransitionTracker();
+				() -> ((ActionPopupTransitionAwareUI) result.getUI())
+								.getActionTransitionTracker(), 
+				(SubstanceColorScheme scheme, int width, int height) -> {
+					float arrowStrokeWidth = SubstanceSizeUtils
+							.getDoubleArrowStrokeWidth(fontSize) - 0.3f;
+					if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
+						width--;
 					}
-				}, new TransitionAwareResizableIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
-							int height) {
-						int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
-						float arrowStrokeWidth = SubstanceSizeUtils
-								.getDoubleArrowStrokeWidth(fontSize) - 0.3f;
-						if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
-							width--;
-						}
-						HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
-								SubstanceSizeUtils.getComponentFontSize(result), width, height,
-								arrowStrokeWidth,
-								(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-										? SwingUtilities.EAST
-										: SwingUtilities.SOUTH,
-								scheme);
-						return doubleArrowIcon;
-					}
+					HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
+							SubstanceSizeUtils.getComponentFontSize(result), width, height,
+							arrowStrokeWidth,
+							(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+									? SwingUtilities.EAST
+									: SwingUtilities.SOUTH,
+							scheme);
+					return doubleArrowIcon;
 				}, new Dimension(arrowIconHeight, arrowIconWidth));
 		result.setIcon(arrowIcon);
 		result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
