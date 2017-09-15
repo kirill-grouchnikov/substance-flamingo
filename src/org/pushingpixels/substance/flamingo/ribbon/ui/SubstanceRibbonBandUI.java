@@ -354,20 +354,20 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 	private static ResizableIcon getExpandButtonIcon(
 			final AbstractCommandButton button) {
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils
-				.getSmallArrowIconHeight(fontSize) + 2;
-		int arrowIconWidth = (int) SubstanceSizeUtils
-				.getSmallArrowIconWidth(fontSize);
+		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+        int arrowIconHeight = (int) SubstanceSizeUtils.getSmallDoubleArrowIconHeight(fontSize);
         final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
                 () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
-                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), width,
-                                height, SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), 
+                                width, height, 
+                                SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                                SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
                                 button.getComponentOrientation().isLeftToRight()
                                         ? SwingConstants.EAST
                                         : SwingConstants.WEST,
                                 scheme),
-                new Dimension(arrowIconWidth, arrowIconHeight));
+                new Dimension(arrowIconHeight, arrowIconWidth));
 		return arrowIcon;
 	}
 

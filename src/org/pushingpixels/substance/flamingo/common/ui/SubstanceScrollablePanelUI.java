@@ -59,106 +59,92 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  * @author Kirill Grouchnikov
  */
 public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceScrollablePanelUI();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceScrollablePanelUI();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		if (!c.isShowing()) {
-			return;
-		}
-		synchronized (c) {
-			if (c.isOpaque()) {
-				BackgroundPaintingUtils.update(g, c, false);
-				super.paint(g, c);
-			} else {
-				super.paint(g, c);
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
+     * javax.swing.JComponent)
+     */
+    @Override
+    public void update(Graphics g, JComponent c) {
+        if (!c.isShowing()) {
+            return;
+        }
+        synchronized (c) {
+            if (c.isOpaque()) {
+                BackgroundPaintingUtils.update(g, c, false);
+                super.paint(g, c);
+            } else {
+                super.paint(g, c);
+            }
+        }
+    }
 
-	@Override
-	public JCommandButton createLeadingScroller() {
-		final JCommandButton result = super.createLeadingScroller();
-		final int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
-		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
-		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
-		if (arrowIconHeight % 2 == 0)
-			arrowIconHeight++;
-		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
-				() -> ((ActionPopupTransitionAwareUI) result.getUI())
-								.getActionTransitionTracker(), 
-				(SubstanceColorScheme scheme, int width, int height) -> {
-					float arrowStrokeWidth = SubstanceSizeUtils
-							.getDoubleArrowStrokeWidth(fontSize) - 0.3f;
-					if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
-						width--;
-					}
-					HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
-							SubstanceSizeUtils.getComponentFontSize(result), width, height,
-							arrowStrokeWidth,
-							(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-									? SwingUtilities.WEST
-									: SwingUtilities.NORTH,
-							scheme);
-					return doubleArrowIcon;
-				}, new Dimension(arrowIconHeight, arrowIconWidth));
-		result.setIcon(arrowIcon);
-		result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-						? EnumSet.of(SubstanceConstants.Side.RIGHT)
-						: EnumSet.of(SubstanceConstants.Side.BOTTOM));
-		result.setHorizontalAlignment(SwingConstants.CENTER);
-		result.setFlat(true);
-		return result;
-	}
+    @Override
+    public JCommandButton createLeadingScroller() {
+        final JCommandButton result = super.createLeadingScroller();
+        final int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
+        int arrowIconHeight = (int) SubstanceSizeUtils.getSmallDoubleArrowIconHeight(fontSize);
+        int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+        ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
+                () -> ((ActionPopupTransitionAwareUI) result.getUI()).getActionTransitionTracker(),
+                (SubstanceColorScheme scheme, int width, int height) -> {
+                    HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
+                            SubstanceSizeUtils.getComponentFontSize(result), width, height,
+                            SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                            SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                            (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+                                    ? SwingUtilities.WEST
+                                    : SwingUtilities.NORTH,
+                            scheme);
+                    return doubleArrowIcon;
+                }, new Dimension(arrowIconHeight, arrowIconWidth));
+        result.setIcon(arrowIcon);
+        result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
+                (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+                        ? EnumSet.of(SubstanceConstants.Side.RIGHT)
+                        : EnumSet.of(SubstanceConstants.Side.BOTTOM));
+        result.setHorizontalAlignment(SwingConstants.CENTER);
+        result.setFlat(true);
+        return result;
+    }
 
-	@Override
-	public JCommandButton createTrailingScroller() {
-		final JCommandButton result = super.createTrailingScroller();
-		final int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
-		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
-		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
-		if (arrowIconHeight % 2 == 0)
-			arrowIconHeight++;
-		ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
-				() -> ((ActionPopupTransitionAwareUI) result.getUI())
-								.getActionTransitionTracker(), 
-				(SubstanceColorScheme scheme, int width, int height) -> {
-					float arrowStrokeWidth = SubstanceSizeUtils
-							.getDoubleArrowStrokeWidth(fontSize) - 0.3f;
-					if (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY) {
-						width--;
-					}
-					HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
-							SubstanceSizeUtils.getComponentFontSize(result), width, height,
-							arrowStrokeWidth,
-							(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-									? SwingUtilities.EAST
-									: SwingUtilities.SOUTH,
-							scheme);
-					return doubleArrowIcon;
-				}, new Dimension(arrowIconHeight, arrowIconWidth));
-		result.setIcon(arrowIcon);
-		result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				(scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-						? EnumSet.of(SubstanceConstants.Side.LEFT)
-						: EnumSet.of(SubstanceConstants.Side.TOP));
-		result.setHorizontalAlignment(SwingConstants.CENTER);
-		result.setFlat(true);
-		return result;
-	}
+    @Override
+    public JCommandButton createTrailingScroller() {
+        final JCommandButton result = super.createTrailingScroller();
+        final int fontSize = SubstanceSizeUtils.getComponentFontSize(result);
+        int arrowIconHeight = (int) SubstanceSizeUtils.getSmallDoubleArrowIconHeight(fontSize);
+        int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+        ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
+                () -> ((ActionPopupTransitionAwareUI) result.getUI()).getActionTransitionTracker(),
+                (SubstanceColorScheme scheme, int width, int height) -> {
+                    HiDpiAwareIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
+                            SubstanceSizeUtils.getComponentFontSize(result), width, height,
+                            SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                            SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                            (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+                                    ? SwingUtilities.EAST
+                                    : SwingUtilities.SOUTH,
+                            scheme);
+                    return doubleArrowIcon;
+                }, new Dimension(arrowIconHeight, arrowIconWidth));
+        result.setIcon(arrowIcon);
+        result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
+                (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+                        ? EnumSet.of(SubstanceConstants.Side.LEFT)
+                        : EnumSet.of(SubstanceConstants.Side.TOP));
+        result.setHorizontalAlignment(SwingConstants.CENTER);
+        result.setFlat(true);
+        return result;
+    }
 }

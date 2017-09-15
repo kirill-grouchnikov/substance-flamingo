@@ -33,12 +33,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 
-import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.IconUIResource;
 
 import org.pushingpixels.flamingo.api.bcb.JBreadcrumbBar;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
@@ -71,8 +69,6 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.fonts.FontSet;
 import org.pushingpixels.substance.flamingo.ribbon.ui.SubstanceRibbonBandBorder;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
-import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstancePopupMenuBorder;
 
@@ -203,12 +199,6 @@ public class FlamingoPlugin implements LafComponentPlugin {
 
 				"ControlPanel.background",
 				backgroundColor,
-
-				"CommandButton.popupActionIcon",
-				new IconUIResource(SubstanceImageCreator
-						.getDoubleArrowIconDelta(SubstanceSizeUtils
-								.getControlFontSize(), -2, -1, -0.5f,
-								SwingConstants.SOUTH, mainActiveScheme)),
 
 				"PopupPanel.border", textBorder,
 

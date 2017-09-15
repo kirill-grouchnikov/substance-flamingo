@@ -109,13 +109,15 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 	protected ExpandCommandButton createExpandButton() {
 		final ExpandCommandButton button = super.createExpandButton();
 		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize) + 3;
+		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallDoubleArrowIconHeight(fontSize);
 		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
         final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
                 () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
-                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), width,
-                                height, SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), 
+                                width, height, 
+                                SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                                SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
                                 SwingConstants.SOUTH, scheme),
                 new Dimension(arrowIconWidth, arrowIconHeight));
 		button.setIcon(arrowIcon);
