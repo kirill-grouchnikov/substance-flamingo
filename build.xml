@@ -53,8 +53,10 @@
     <property name="flamingo.basedir" value="${module.substance-flamingo.basedir}/../flamingo" />
     <property name="substance.basedir" value="${module.substance-flamingo.basedir}/../substance" />
 	
-    <property name="substance.version" value="7.1.00-rc" />
-    <property name="flamingo.version" value="5.2.00-rc" />
+    <property name="substance.version" value="7.1.00" />
+    <property name="substance.versionKey" value="7.1final Vermont" />
+    <property name="flamingo.version" value="5.2.00" />
+    <property name="flamingo.versionKey" value="5.2final Kennocha" />
     <property name="trident.version" value="1.4" />
 
 	<path id="substance-flamingo.module.bootclasspath">
@@ -172,8 +174,8 @@
 			<fileset dir="${substance-flamingo.output.dir}/" excludes="test/**" />
 			<fileset dir="${module.substance-flamingo.basedir}/" includes="resources/**" />
 			<manifest>
-				<attribute name="Substance-Version" value="${substance.version}" />
-				<attribute name="Flamingo-Version" value="${flamingo.version}" />
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Flamingo-Version" value="${flamingo.versionKey}" />
 				<attribute name="Substance-Flamingo-BuildStamp" value="${build.time}" />
 			</manifest>
 		</jar>
@@ -185,8 +187,8 @@
 			<fileset dir="${substance-flamingo.output.dir}/" includes="test/**/*.class" />
 			<fileset dir="${substance-flamingo.src.dir}/" includes="test/resource/**" />
 			<manifest>
-				<attribute name="Substance-Version" value="${substance.version}" />
-				<attribute name="Flamingo-Version" value="${flamingo.version}" />
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Flamingo-Version" value="${flamingo.versionKey}" />
 				<attribute name="Substance-Flamingo-BuildStamp" value="${build.time}" />
 			</manifest>
 		</jar>
@@ -197,8 +199,8 @@
 		<jar destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tools-${substance.version}.jar">
 			<fileset dir="${substance-flamingo.output.dir}/" includes="tools/**/*.class tools/**/*.jpg tools/**/*.png" />
 			<manifest>
-				<attribute name="Substance-Version" value="${substance.version}" />
-				<attribute name="Flamingo-Version" value="${flamingo.version}" />
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Flamingo-Version" value="${flamingo.versionKey}" />
 				<attribute name="Substance-Flamingo-BuildStamp" value="${build.time}" />
 			</manifest>
 		</jar>
