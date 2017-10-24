@@ -162,27 +162,24 @@ public class NewCheckRibbon extends BasicCheckRibbon {
             Enumeration<URL> urls = cl.getResources("META-INF/MANIFEST.MF");
             Set<String> timestampStrings = new HashSet<String>();
             while (urls.hasMoreElements()) {
-                InputStream is = urls.nextElement().openStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                while (true) {
-                    String line = br.readLine();
-                    if (line == null)
-                        break;
-                    int firstColonIndex = line.indexOf(":");
-                    if (firstColonIndex < 0)
-                        continue;
-                    String name = line.substring(0, firstColonIndex).trim();
-                    if (timestampStrings.contains(name)) {
-                        continue;
+                try (InputStream is = urls.nextElement().openStream();
+                        BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                    while (true) {
+                        String line = br.readLine();
+                        if (line == null)
+                            break;
+                        int firstColonIndex = line.indexOf(":");
+                        if (firstColonIndex < 0)
+                            continue;
+                        String name = line.substring(0, firstColonIndex).trim();
+                        if (timestampStrings.contains(name)) {
+                            continue;
+                        }
+                        if (name.endsWith("-BuildStamp")) {
+                            System.out.println(line);
+                            timestampStrings.add(name);
+                        }
                     }
-                    if (name.endsWith("-BuildStamp")) {
-                        System.out.println(line);
-                        timestampStrings.add(name);
-                    }
-                }
-                try {
-                    br.close();
-                } catch (IOException ioe) {
                 }
             }
             System.out.println();
@@ -191,7 +188,7 @@ public class NewCheckRibbon extends BasicCheckRibbon {
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
-        
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 SubstanceLookAndFeel.setSkin(new OfficeBlue2007Skin());

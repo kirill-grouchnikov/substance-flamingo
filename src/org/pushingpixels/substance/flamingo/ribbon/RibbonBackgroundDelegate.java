@@ -59,7 +59,6 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.flamingo.ribbon.ui.RibbonBorderShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -194,7 +193,7 @@ public class RibbonBackgroundDelegate {
 
 		Color contextualGroupHueColor = button.getContextualGroupHueColor();
 		if (contextualGroupHueColor != null) {
-			fillScheme = ShiftColorScheme.getShiftedScheme(fillScheme, contextualGroupHueColor,
+			fillScheme = SubstanceColorSchemeUtilities.getShiftedScheme(fillScheme, contextualGroupHueColor,
 					RibbonContextualTaskGroup.HUE_ALPHA, null, 0.0f);
 		}
 
