@@ -74,7 +74,6 @@
 		<pathelement location="${flamingo.basedir}/drop/${flamingo.version}/flamingo-tst-${flamingo.version}.jar" />
         <pathelement location="${flamingo.basedir}/lib/batik-all.jar" />
         <pathelement location="${flamingo.basedir}/lib/forms-1.2.0.jar" />
-		<pathelement location="${substance.basedir}/lib/test/fest-swing-1.2.jar" />
 	</path>
 
 	<patternset id="excluded.from.module.substance-flamingo" />
@@ -90,19 +89,7 @@
 		</dirset>
 	</path>
 
-	<path id="substance-flamingo.module.testsourcepath">
-		<dirset dir="${substance-flamingo.src.dir}">
-			<include name="test" />
-		</dirset>
-	</path>
-
-	<path id="substance-flamingo.module.toolssourcepath">
-		<dirset dir="${substance-flamingo.src.dir}">
-			<include name="tools" />
-		</dirset>
-	</path>
-
-	<target name="compile.module.substance-flamingo" depends="compile.module.substance-flamingo.production,compile.module.substance-flamingo.tests,compile.module.substance-flamingo.tools" description="compile module substance-flamingo" />
+	<target name="compile.module.substance-flamingo" depends="compile.module.substance-flamingo.production" description="compile module substance-flamingo" />
 
 	<target name="compile.module.substance-flamingo.production" description="compile module substance-flamingo production classes">
 		<mkdir dir="${substance-flamingo.output.dir}" />
@@ -115,42 +102,6 @@
 		</javac>
 		<copy todir="${substance-flamingo.output.dir}">
 			<fileset dir="${substance-flamingo.src.dir}">
-				<patternset refid="javac.resources" />
-				<type type="file" />
-				<patternset refid="excluded.from.compilation.substance-flamingo" />
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="compile.module.substance-flamingo.tests" description="compile module substance-flamingo test classes" unless="skip.tests">
-		<mkdir dir="${substance-flamingo.output.dir}" />
-		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance-flamingo.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true">
-			<compilerarg line="${javac.args.substance-flamingo}" />
-			<bootclasspath refid="substance-flamingo.module.bootclasspath" />
-			<classpath refid="substance-flamingo.module.classpath" />
-			<src refid="substance-flamingo.module.testsourcepath" />
-			<patternset refid="excluded.from.compilation.substance-flamingo" />
-		</javac>
-		<copy todir="${substance-flamingo.output.dir}/test">
-			<fileset dir="${substance-flamingo.src.dir}/test">
-				<patternset refid="javac.resources" />
-				<type type="file" />
-				<patternset refid="excluded.from.compilation.substance-flamingo" />
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="compile.module.substance-flamingo.tools" description="compile module substance-flamingo tool classes">
-		<mkdir dir="${substance-flamingo.output.dir}" />
-		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance-flamingo.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true">
-			<compilerarg line="${javac.args.substance-flamingo}" />
-			<bootclasspath refid="substance-flamingo.module.bootclasspath" />
-			<classpath refid="substance-flamingo.module.classpath" />
-			<src refid="substance-flamingo.module.toolssourcepath" />
-			<patternset refid="excluded.from.compilation.substance-flamingo" />
-		</javac>
-		<copy todir="${substance-flamingo.output.dir}/tools">
-			<fileset dir="${substance-flamingo.src.dir}/tools">
 				<patternset refid="javac.resources" />
 				<type type="file" />
 				<patternset refid="excluded.from.compilation.substance-flamingo" />
@@ -171,33 +122,8 @@
 		<delete file="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-${substance.version}.jar" />
 
 		<jar compress="true" destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-${substance.version}.jar">
-			<fileset dir="${substance-flamingo.output.dir}/" excludes="test/**" />
+			<fileset dir="${substance-flamingo.output.dir}/" />
 			<fileset dir="${module.substance-flamingo.basedir}/" includes="resources/**" />
-			<manifest>
-				<attribute name="Substance-Version" value="${substance.versionKey}" />
-				<attribute name="Flamingo-Version" value="${flamingo.versionKey}" />
-				<attribute name="Substance-Flamingo-BuildStamp" value="${build.time}" />
-			</manifest>
-		</jar>
-	</target>
-
-	<target name="jar-bin-tst" description="create test runtime jar">
-		<delete file="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tst-${substance.version}.jar" />
-		<jar destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tst-${substance.version}.jar">
-			<fileset dir="${substance-flamingo.output.dir}/" includes="test/**/*.class" />
-			<fileset dir="${substance-flamingo.src.dir}/" includes="test/resource/**" />
-			<manifest>
-				<attribute name="Substance-Version" value="${substance.versionKey}" />
-				<attribute name="Flamingo-Version" value="${flamingo.versionKey}" />
-				<attribute name="Substance-Flamingo-BuildStamp" value="${build.time}" />
-			</manifest>
-		</jar>
-	</target>
-
-	<target name="jar-bin-tools" description="create tools runtime jar">
-		<delete file="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tools-${substance.version}.jar" />
-		<jar destfile="${substance-flamingo.drop.dir}/${substance.version}/substance-flamingo-tools-${substance.version}.jar">
-			<fileset dir="${substance-flamingo.output.dir}/" includes="tools/**/*.class tools/**/*.jpg tools/**/*.png" />
 			<manifest>
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Flamingo-Version" value="${flamingo.versionKey}" />
@@ -234,7 +160,7 @@
 		<echo message="Ant version: ${ant.version}" />
 	</target>
 
-	<target name="jar" depends="jar-bin, jar-bin-tst, jar-bin-tools" description="create all jars" />
+	<target name="jar" depends="jar-bin" description="create all jars" />
 
 	<target name="clean" depends="clean.module.substance-flamingo" description="cleanup all" />
 

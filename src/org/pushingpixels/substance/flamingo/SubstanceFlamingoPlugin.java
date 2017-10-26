@@ -61,9 +61,9 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonRootPane;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuPopupPanel;
-import org.pushingpixels.lafplugin.LafComponentPlugin;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceComponentPlugin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.fonts.FontSet;
@@ -77,16 +77,9 @@ import org.pushingpixels.substance.internal.utils.border.SubstancePopupMenuBorde
  * 
  * @author Kirill Grouchnikov
  */
-public class FlamingoPlugin implements LafComponentPlugin {
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.lafplugin.LafComponentPlugin#getDefaults(java.lang.
-	 * Object)
-	 */
-	public Object[] getDefaults(Object mSkin) {
+public class SubstanceFlamingoPlugin implements SubstanceComponentPlugin {
+    @Override
+	public Object[] getDefaults(SubstanceSkin skin) {
 		String UI_COMMON_CLASSNAME_PREFIX = "org.pushingpixels.substance.flamingo.common.ui.Substance";
 
 		String UI_RIBBON_CLASSNAME_PREFIX = "org.pushingpixels.substance.flamingo.ribbon.ui.Substance";
@@ -97,7 +90,6 @@ public class FlamingoPlugin implements LafComponentPlugin {
 				"Substance", null);
 		Font controlFont = fontSet.getControlFont();
 
-		SubstanceSkin skin = (SubstanceSkin) mSkin;
 		Border textBorder = new SubstancePopupMenuBorder();
 
 		SubstanceColorScheme mainActiveScheme = skin.getActiveColorScheme(DecorationAreaType.NONE);
