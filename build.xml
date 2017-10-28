@@ -71,9 +71,6 @@
 		<pathelement location="${substance.basedir}/drop/${substance.version}/substance-${substance.version}.jar" />
 		<pathelement location="${substance.basedir}/lib/trident-${trident.version}.jar" />
 		<pathelement location="${flamingo.basedir}/drop/${flamingo.version}/flamingo-${flamingo.version}.jar" />
-		<pathelement location="${flamingo.basedir}/drop/${flamingo.version}/flamingo-tst-${flamingo.version}.jar" />
-        <pathelement location="${flamingo.basedir}/lib/batik-all.jar" />
-        <pathelement location="${flamingo.basedir}/lib/forms-1.2.0.jar" />
 	</path>
 
 	<patternset id="excluded.from.module.substance-flamingo" />

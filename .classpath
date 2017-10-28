@@ -5,14 +5,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/flamingo"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/substance"/>
 	<classpathentry kind="lib" path="/flamingo/lib/batik-all.jar"/>
-	<classpathentry kind="lib" path="/flamingo/lib/forms-1.2.0.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/js.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/pdf-transcoder.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/svnkit.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/xerces_2_5_0.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/xml-apis.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/laf-plugin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/laf-widget"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
