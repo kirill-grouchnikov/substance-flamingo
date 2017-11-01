@@ -66,8 +66,6 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.RibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -78,12 +76,14 @@ import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
 /**
  * Custom title pane for {@link JRibbonFrame} running under Substance
@@ -788,12 +788,12 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 			g2d.clip(contour);
 			DecorationPainterUtils.paintDecorationBackground(g2d, taskbarPanel,
 					true);
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(taskbarPanel,
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(taskbarPanel,
 					0.3f, g));
 			MatteFillPainter.INSTANCE.paintContourBackground(g2d, taskbarPanel,
 					taskbarPanel.getWidth(), taskbarPanel.getHeight(), contour
 							.getBounds(), false, colorScheme, false);
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(taskbarPanel,
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(taskbarPanel,
 					1.0f, g));
 			g2d.setClip(clip);
 

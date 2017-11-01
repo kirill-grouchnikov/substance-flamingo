@@ -49,10 +49,8 @@ import org.pushingpixels.flamingo.api.common.AbstractCommandButton.CommandButton
 import org.pushingpixels.flamingo.api.common.JCommandButtonStrip;
 import org.pushingpixels.flamingo.api.common.JCommandButtonStrip.StripOrientation;
 import org.pushingpixels.flamingo.api.common.model.PopupButtonModel;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -64,7 +62,9 @@ import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -474,7 +474,7 @@ public class CommandButtonBackgroundDelegate {
                 themed.paintIcon(commandButton, themedImage.createGraphics(), 0, 0);
                 // and paint that image translucently
                 g2d.setComposite(
-                        LafWidgetUtilities.getAlphaComposite(commandButton, 1.0f - alpha, g));
+                        WidgetUtilities.getAlphaComposite(commandButton, 1.0f - alpha, g));
                 g2d.drawImage(themedImage, 0, 0, themedImage.getWidth() / scaleFactor,
                         themedImage.getHeight() / scaleFactor, null);
             }
@@ -485,7 +485,7 @@ public class CommandButtonBackgroundDelegate {
                         .getBlankImage(regular.getIconWidth(), regular.getIconHeight());
                 regular.paintIcon(commandButton, regularImage.createGraphics(), 0, 0);
                 // and paint that image translucently
-                g2d.setComposite(LafWidgetUtilities.getAlphaComposite(commandButton, alpha, g));
+                g2d.setComposite(WidgetUtilities.getAlphaComposite(commandButton, alpha, g));
                 g2d.drawImage(regularImage, 0, 0, regularImage.getWidth() / scaleFactor,
                         regularImage.getHeight() / scaleFactor, null);
             }

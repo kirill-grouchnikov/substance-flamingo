@@ -11,6 +11,5 @@
 	<classpathentry kind="lib" path="/flamingo/lib/xerces_2_5_0.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/xml-apis-ext.jar"/>
 	<classpathentry kind="lib" path="/flamingo/lib/xml-apis.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/laf-widget"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

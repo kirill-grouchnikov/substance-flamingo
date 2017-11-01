@@ -42,7 +42,6 @@ import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonGalleryUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonGallery;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -54,6 +53,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * UI delegate for {@link JRibbonGallery} component under Substance

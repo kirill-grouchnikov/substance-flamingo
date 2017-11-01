@@ -63,12 +63,8 @@ import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
 import org.pushingpixels.flamingo.internal.ui.common.BasicCommandToggleButtonUI;
 import org.pushingpixels.flamingo.internal.ui.common.ResizableIconUIResource;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
@@ -82,13 +78,17 @@ import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracke
 import org.pushingpixels.substance.flamingo.utils.SubstanceDisabledResizableIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.ButtonBackgroundDelegate;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 
 /**
  * UI for command buttons {@link JCommandToggleButton} in <b>Substance </b> look
@@ -269,7 +269,7 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 			Graphics2D g2d = (Graphics2D) g.create();
 
 			GhostPaintingUtils.paintGhostIcon(g2d, jctb, regular, iconRect);
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(jctb, g));
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(jctb, g));
 
 			CommandButtonBackgroundDelegate.paintCommandButtonIcon(
 					g2d, iconRect, jctb, regular, glowingIcon, jctb.getActionModel(),
@@ -503,7 +503,7 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 		extraAlpha = Math.min(1.0f, extraAlpha);
 		if (extraAlpha > 0.0f) {
 			Graphics2D g2d = (Graphics2D) graphics.create();
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(
 					this.commandButton, extraAlpha, graphics));
 			int factor = UIUtil.getScaleFactor();
 			g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor, 

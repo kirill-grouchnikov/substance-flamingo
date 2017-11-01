@@ -66,7 +66,7 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceComponentPlugin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.flamingo.ribbon.ui.SubstanceRibbonBandBorder;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;

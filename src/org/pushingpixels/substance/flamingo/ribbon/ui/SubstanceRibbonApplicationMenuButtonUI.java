@@ -45,12 +45,8 @@ import javax.swing.plaf.ComponentUI;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.BasicRibbonApplicationMenuButtonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
@@ -59,7 +55,11 @@ import org.pushingpixels.substance.flamingo.utils.CommandButtonBackgroundDelegat
 import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
 import org.pushingpixels.substance.flamingo.utils.RibbonApplicationMenuButtonBackgroundDelegate;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 
 /**
  * UI for {@link JRibbonApplicationMenuButton} components in <b>Substance</b>
@@ -214,7 +214,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
             Graphics2D g2d = (Graphics2D) g.create();
 
             GhostPaintingUtils.paintGhostIcon(g2d, this.applicationMenuButton, regular, iconRect);
-            g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.applicationMenuButton, g));
+            g2d.setComposite(WidgetUtilities.getAlphaComposite(this.applicationMenuButton, g));
 
             CommandButtonBackgroundDelegate.paintCommandButtonIcon(g2d, iconRect,
                     this.applicationMenuButton, regular, glowingIcon,

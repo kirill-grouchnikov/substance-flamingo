@@ -53,9 +53,6 @@ import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -69,6 +66,7 @@ import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -76,6 +74,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalButton;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * UI for ribbon bands in <b>Substance</b> look and feel.
@@ -210,7 +210,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 
         boolean isDark = colorScheme.isDark();
         float alpha = 0.85f - (isDark ? 0.15f : 0.35f) * this.rolloverAmount;
-        g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.ribbonBand, alpha, g));
+        g2d.setComposite(WidgetUtilities.getAlphaComposite(this.ribbonBand, alpha, g));
 
         SubstanceRibbonBandBorder border = (SubstanceRibbonBandBorder) this.ribbonBand.getBorder();
         float cornerRadius = border.getCornerRadius(this.ribbonBand);
@@ -249,7 +249,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
         SubstanceColorScheme separatorScheme = SubstanceLookAndFeel.getCurrentSkin(this.ribbonBand)
                 .getColorScheme(DecorationAreaType.HEADER, ColorSchemeAssociationKind.SEPARATOR,
                         ComponentState.ENABLED);
-        g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.ribbonBand, alpha * 0.7f, g));
+        g2d.setComposite(WidgetUtilities.getAlphaComposite(this.ribbonBand, alpha * 0.7f, g));
         SeparatorPainterUtils.paintSeparator(this.ribbonBand, g2d, separatorScheme,
                 titleRectangle.width, 1, SwingConstants.HORIZONTAL, false, 0, 0, true);
         g2d.dispose();

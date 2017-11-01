@@ -38,12 +38,12 @@ import javax.swing.border.Border;
 
 import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.resize.IconRibbonBandResizePolicy;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
@@ -79,7 +79,7 @@ public class SubstanceRibbonBandBorder implements Border {
 				ComponentState.ENABLED);
 
 		graphics
-				.setComposite(LafWidgetUtilities.getAlphaComposite(c, alpha, g));
+				.setComposite(WidgetUtilities.getAlphaComposite(c, alpha, g));
 
 		AbstractRibbonBand band = (AbstractRibbonBand) c;
 		int titleHeight = band.getUI().getBandTitleHeight();
@@ -99,7 +99,7 @@ public class SubstanceRibbonBandBorder implements Border {
 							DecorationAreaType.HEADER,
 							ColorSchemeAssociationKind.BORDER,
 							ComponentState.ENABLED);
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c,
+			graphics.setComposite(WidgetUtilities.getAlphaComposite(c,
 					0.75f, g));
 			SubstanceImageCreator.paintBorder(c, graphics, x, y, width, height,
 					radius, bottomColorScheme);

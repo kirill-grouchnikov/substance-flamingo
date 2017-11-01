@@ -72,13 +72,8 @@ import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
 import org.pushingpixels.flamingo.internal.ui.common.BasicCommandButtonUI;
 import org.pushingpixels.flamingo.internal.ui.common.ResizableIconUIResource;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -93,8 +88,11 @@ import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracke
 import org.pushingpixels.substance.flamingo.utils.SubstanceDisabledResizableIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.ButtonBackgroundDelegate;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.RolloverControlListener;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -103,6 +101,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 
 /**
  * UI for command buttons {@link JCommandButton} in <b>Substance </b> look and
@@ -367,7 +367,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
         if (extraAlpha > 0.0f) {
             Graphics2D g2d = (Graphics2D) graphics.create();
             g2d.setComposite(
-                    LafWidgetUtilities.getAlphaComposite(this.commandButton, extraAlpha, graphics));
+                    WidgetUtilities.getAlphaComposite(this.commandButton, extraAlpha, graphics));
             int factor = UIUtil.getScaleFactor();
             g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor,
                     fullAlphaBackground.getHeight() / factor, null);
@@ -400,7 +400,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
             Graphics2D g2d = (Graphics2D) g.create();
 
             GhostPaintingUtils.paintGhostIcon(g2d, jcb, regular, iconRect);
-            g2d.setComposite(LafWidgetUtilities.getAlphaComposite(jcb, g));
+            g2d.setComposite(WidgetUtilities.getAlphaComposite(jcb, g));
 
             StateTransitionTracker tracker = this.substanceVisualStateTracker
                     .getActionStateTransitionTracker();

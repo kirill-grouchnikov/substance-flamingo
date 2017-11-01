@@ -47,8 +47,6 @@ import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
 import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -59,7 +57,9 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.flamingo.ribbon.ui.RibbonBorderShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -278,7 +278,7 @@ public class RibbonBackgroundDelegate {
 			extraActionAlpha += activeEntry.getValue().getContribution();
 		}
 
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraActionAlpha, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(button, extraActionAlpha, g));
 		int scaleFactor = UIUtil.getScaleFactor();
 		g2d.drawImage(ribbonBackground, 0, 0, ribbonBackground.getWidth() / scaleFactor,
 				ribbonBackground.getHeight() / scaleFactor, null);
