@@ -45,6 +45,7 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
@@ -65,7 +66,7 @@ public class SubstanceRibbonBandBorder implements Border {
 	public void paintBorder(Component c, Graphics g, int x, int y, int width,
 			int height) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
 			return;
 		}
 
