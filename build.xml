@@ -50,6 +50,7 @@
 	<property name="substance-flamingo.drop.dir" value="${module.substance-flamingo.basedir}/drop" />
 	<property name="substance-flamingo.src.dir" value="${module.substance-flamingo.basedir}/src/" />
 	
+    <property name="trident.basedir" value="${module.substance-flamingo.basedir}/../trident" />
     <property name="flamingo.basedir" value="${module.substance-flamingo.basedir}/../flamingo" />
     <property name="substance.basedir" value="${module.substance-flamingo.basedir}/../substance" />
 	
@@ -57,7 +58,7 @@
     <property name="substance.versionKey" value="8.0.0dev Wyoming" />
     <property name="flamingo.version" value="6.0.00-dev" />
     <property name="flamingo.versionKey" value="6.0.00dev Liadan" />
-    <property name="trident.version" value="1.4" />
+    <property name="trident.version" value="1.5.00-dev" />
 
 	<path id="substance-flamingo.module.bootclasspath">
 		<!-- Paths to be included in compilation bootclasspath -->
@@ -69,7 +70,7 @@
 	<path id="substance-flamingo.module.classpath">
 		<path refid="${module.jdk.classpath.substance-flamingo}" />
 		<pathelement location="${substance.basedir}/drop/${substance.version}/substance-${substance.version}.jar" />
-		<pathelement location="${substance.basedir}/lib/trident-${trident.version}.jar" />
+        <pathelement location="${trident.basedir}/drop/${trident.version}/trident-${trident.version}.jar" />
 		<pathelement location="${flamingo.basedir}/drop/${flamingo.version}/flamingo-${flamingo.version}.jar" />
 	</path>
 

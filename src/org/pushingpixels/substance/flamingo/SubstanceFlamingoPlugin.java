@@ -51,6 +51,7 @@ import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonComponent;
+import org.pushingpixels.flamingo.internal.ui.common.JCircularProgress;
 import org.pushingpixels.flamingo.internal.ui.common.JRichTooltipPanel;
 import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorComponent;
 import org.pushingpixels.flamingo.internal.ui.common.popup.JColorSelectorPanel;
@@ -120,8 +121,11 @@ public class SubstanceFlamingoPlugin implements SubstanceComponentPlugin {
 				JCommandToggleMenuButton.uiClassID,
 				UI_COMMON_CLASSNAME_PREFIX + "CommandToggleMenuButtonUI",
 
-				JPopupPanel.uiClassID,
-				UI_COMMON_CLASSNAME_PREFIX + "PopupPanelUI",
+                JPopupPanel.uiClassID,
+                UI_COMMON_CLASSNAME_PREFIX + "PopupPanelUI",
+
+                JCircularProgress.uiClassID,
+                UI_COMMON_CLASSNAME_PREFIX + "CircularProgressUI",
 
 				JScrollablePanel.uiClassID,
 				UI_COMMON_CLASSNAME_PREFIX + "ScrollablePanelUI",
