@@ -48,11 +48,11 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleMenuButton;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -74,7 +74,7 @@ public class SubstanceCommandToggleMenuButtonUI extends
 	public static ComponentUI createUI(JComponent c) {
 		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
 		c.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				EnumSet.allOf(SubstanceConstants.Side.class));
+				EnumSet.allOf(SubstanceSlices.Side.class));
 		return new SubstanceCommandToggleMenuButtonUI();
 	}
 

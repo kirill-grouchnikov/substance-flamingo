@@ -49,27 +49,27 @@ import org.pushingpixels.flamingo.api.common.AbstractCommandButton.CommandButton
 import org.pushingpixels.flamingo.api.common.JCommandButtonStrip;
 import org.pushingpixels.flamingo.api.common.JCommandButtonStrip.StripOrientation;
 import org.pushingpixels.flamingo.api.common.model.PopupButtonModel;
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
-import org.pushingpixels.substance.api.AnimationFacet;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
 
 /**
@@ -130,7 +130,7 @@ public class CommandButtonBackgroundDelegate {
         float radius = SubstanceSizeUtils.getClassicButtonCornerRadius(
                 SubstanceSizeUtils.getComponentFontSize(commandButton));
 
-        Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(commandButton,
+        Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(commandButton,
                 SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
         // special handling for location order
@@ -247,7 +247,7 @@ public class CommandButtonBackgroundDelegate {
     private static BufferedImage getSingleLayer(AbstractCommandButton commandButton,
             SubstanceFillPainter fillPainter, SubstanceBorderPainter borderPainter, int width,
             int height, SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme,
-            float radius, Set<SubstanceConstants.Side> straightSides,
+            float radius, Set<SubstanceSlices.Side> straightSides,
             AbstractCommandButton.CommandButtonLocationOrderKind locationOrderKind, int dx, int dy,
             int dw, int dh, boolean isVertical) {
         float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;

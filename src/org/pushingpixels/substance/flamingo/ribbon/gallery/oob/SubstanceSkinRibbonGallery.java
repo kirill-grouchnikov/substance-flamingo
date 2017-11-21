@@ -42,7 +42,7 @@ import org.pushingpixels.flamingo.api.common.StringValuePair;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 
@@ -52,41 +52,40 @@ import org.pushingpixels.substance.api.skin.SkinInfo;
  * @author Kirill Grouchnikov
  */
 public class SubstanceSkinRibbonGallery {
-	/**
-	 * Adds an in-ribbon gallery that contains all available <b>Substance</b>
-	 * skins to the specified ribbon band.
-	 * 
-	 * @param ribbonBand
-	 *            Ribbon band that will contain the newly added skin gallery.
-	 */
-	public static void addSkinGallery(JRibbonBand ribbonBand) {
-		Map<RibbonElementPriority, Integer> prefWidths = new HashMap<RibbonElementPriority, Integer>();
-		prefWidths.put(RibbonElementPriority.LOW, 2);
-		prefWidths.put(RibbonElementPriority.MEDIUM, 4);
-		prefWidths.put(RibbonElementPriority.TOP, 8);
+    /**
+     * Adds an in-ribbon gallery that contains all available <b>Substance</b> skins to the specified
+     * ribbon band.
+     * 
+     * @param ribbonBand
+     *            Ribbon band that will contain the newly added skin gallery.
+     */
+    public static void addSkinGallery(JRibbonBand ribbonBand) {
+        Map<RibbonElementPriority, Integer> prefWidths = new HashMap<RibbonElementPriority, Integer>();
+        prefWidths.put(RibbonElementPriority.LOW, 2);
+        prefWidths.put(RibbonElementPriority.MEDIUM, 4);
+        prefWidths.put(RibbonElementPriority.TOP, 8);
 
-		List<StringValuePair<List<JCommandToggleButton>>> skinGroups = new ArrayList<StringValuePair<List<JCommandToggleButton>>>();
-		List<JCommandToggleButton> skinButtons = new ArrayList<JCommandToggleButton>();
+        List<StringValuePair<List<JCommandToggleButton>>> skinGroups = new ArrayList<StringValuePair<List<JCommandToggleButton>>>();
+        List<JCommandToggleButton> skinButtons = new ArrayList<JCommandToggleButton>();
 
-		Map<String, SkinInfo> skins = SubstanceLookAndFeel.getAllSkins();
-		for (Map.Entry<String, SkinInfo> entry : skins.entrySet()) {
-			try {
-				final SubstanceSkin skin = (SubstanceSkin) Class.forName(
-						entry.getValue().getClassName()).newInstance();
-				ResizableIcon icon = new SkinResizableIcon(skin, 60, 40);
-				JCommandToggleButton skinButton = new JCommandToggleButton(skin
-						.getDisplayName(), icon);
-				skinButton.addActionListener((ActionEvent e) ->
-						SwingUtilities.invokeLater(() -> SubstanceLookAndFeel.setSkin(skin)));
-				skinButtons.add(skinButton);
-			} catch (Exception exc) {
-			}
-		}
+        Map<String, SkinInfo> skins = SubstanceCortex.GlobalScope.getAllSkins();
+        for (Map.Entry<String, SkinInfo> entry : skins.entrySet()) {
+            try {
+                final SubstanceSkin skin = (SubstanceSkin) Class
+                        .forName(entry.getValue().getClassName()).newInstance();
+                ResizableIcon icon = new SkinResizableIcon(skin, 60, 40);
+                JCommandToggleButton skinButton = new JCommandToggleButton(skin.getDisplayName(),
+                        icon);
+                skinButton.addActionListener((ActionEvent e) -> SwingUtilities
+                        .invokeLater(() -> SubstanceCortex.GlobalScope.setSkin(skin)));
+                skinButtons.add(skinButton);
+            } catch (Exception exc) {
+            }
+        }
 
-		skinGroups.add(new StringValuePair<List<JCommandToggleButton>>("Skins",
-				skinButtons));
+        skinGroups.add(new StringValuePair<List<JCommandToggleButton>>("Skins", skinButtons));
 
-		ribbonBand.addRibbonGallery("Skins", skinGroups, prefWidths, 5, 3,
-				RibbonElementPriority.TOP);
-	}
+        ribbonBand.addRibbonGallery("Skins", skinGroups, prefWidths, 5, 3,
+                RibbonElementPriority.TOP);
+    }
 }

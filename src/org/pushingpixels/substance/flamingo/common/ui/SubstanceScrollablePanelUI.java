@@ -43,8 +43,8 @@ import org.pushingpixels.flamingo.api.common.JScrollablePanel;
 import org.pushingpixels.flamingo.api.common.JScrollablePanel.ScrollType;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.common.BasicScrollablePanelUI;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
@@ -112,8 +112,8 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
         result.setIcon(arrowIcon);
         result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
                 (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-                        ? EnumSet.of(SubstanceConstants.Side.RIGHT)
-                        : EnumSet.of(SubstanceConstants.Side.BOTTOM));
+                        ? EnumSet.of(SubstanceSlices.Side.RIGHT)
+                        : EnumSet.of(SubstanceSlices.Side.BOTTOM));
         result.setHorizontalAlignment(SwingConstants.CENTER);
         result.setFlat(true);
         return result;
@@ -141,8 +141,8 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
         result.setIcon(arrowIcon);
         result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
                 (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-                        ? EnumSet.of(SubstanceConstants.Side.LEFT)
-                        : EnumSet.of(SubstanceConstants.Side.TOP));
+                        ? EnumSet.of(SubstanceSlices.Side.LEFT)
+                        : EnumSet.of(SubstanceSlices.Side.TOP));
         result.setHorizontalAlignment(SwingConstants.CENTER);
         result.setFlat(true);
         return result;

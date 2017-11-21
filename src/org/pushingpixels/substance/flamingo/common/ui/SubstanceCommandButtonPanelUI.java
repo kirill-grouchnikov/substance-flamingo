@@ -41,11 +41,11 @@ import javax.swing.plaf.ComponentUI;
 
 import org.pushingpixels.flamingo.api.common.JCommandButtonPanel;
 import org.pushingpixels.flamingo.internal.ui.common.BasicCommandButtonPanelUI;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -126,7 +126,7 @@ public class SubstanceCommandButtonPanelUI extends BasicCommandButtonPanelUI {
 	@Override
 	protected void paintGroupTitleBackground(Graphics g, int groupIndex, int x,
 			int y, int width, int height) {
-		Set<SubstanceConstants.Side> openSides = EnumSet.of(Side.LEFT,
+		Set<SubstanceSlices.Side> openSides = EnumSet.of(Side.LEFT,
 				Side.RIGHT);
 		if (groupIndex == 0)
 			openSides.add(Side.TOP);

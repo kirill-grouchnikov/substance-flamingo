@@ -53,10 +53,11 @@ import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
@@ -66,7 +67,6 @@ import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -74,6 +74,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalButton;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
@@ -101,7 +102,8 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        SubstanceLookAndFeel.setDecorationType(this.ribbonBand, DecorationAreaType.GENERAL);
+        SubstanceCortex.ComponentScope.setDecorationType(this.ribbonBand,
+                DecorationAreaType.GENERAL);
 
         Color backgr = this.ribbonBand.getBackground();
         if (backgr == null || backgr instanceof UIResource) {
@@ -132,7 +134,8 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
     protected void installComponents() {
         super.installComponents();
 
-        SubstanceLookAndFeel.setDecorationType(this.ribbonBand, DecorationAreaType.GENERAL);
+        SubstanceCortex.ComponentScope.setDecorationType(this.ribbonBand,
+                DecorationAreaType.GENERAL);
 
         if (this.expandButton != null) {
             this.expandButton.putClientProperty(SubstanceLookAndFeel.USE_THEMED_DEFAULT_ICONS,
@@ -246,9 +249,9 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
         g2d.draw(outline);
 
         // top line
-        SubstanceColorScheme separatorScheme = SubstanceLookAndFeel.getCurrentSkin(this.ribbonBand)
-                .getColorScheme(DecorationAreaType.HEADER, ColorSchemeAssociationKind.SEPARATOR,
-                        ComponentState.ENABLED);
+        SubstanceColorScheme separatorScheme = SubstanceCortex.ComponentScope
+                .getCurrentSkin(this.ribbonBand).getColorScheme(DecorationAreaType.HEADER,
+                        ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
         g2d.setComposite(WidgetUtilities.getAlphaComposite(this.ribbonBand, alpha * 0.7f, g));
         SeparatorPainterUtils.paintSeparator(this.ribbonBand, g2d, separatorScheme,
                 titleRectangle.width, 1, SwingConstants.HORIZONTAL, false, 0, 0, true);
@@ -271,7 +274,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 
         SubstanceSkin skin = SubstanceCoreUtilities.getSkin(comp);
         SubstanceColorScheme bgScheme = skin
-                .getBackgroundColorScheme(SubstanceLookAndFeel.getDecorationType(comp));
+                .getBackgroundColorScheme(SubstanceCortex.ComponentScope.getDecorationType(comp));
 
         int offset = 20 - dy;
         float bp = (float) offset / (float) comp.getHeight();
@@ -319,7 +322,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
         RibbonBandExpandButton result = new RibbonBandExpandButton();
         // since paintBandTitleBackground uses HEADER, mark this button with
         // HEADER as well to sync the mark color
-        SubstanceLookAndFeel.setDecorationType(result, DecorationAreaType.HEADER);
+        SubstanceCortex.ComponentScope.setDecorationType(result, DecorationAreaType.HEADER);
         SubstanceSkin skin = SubstanceCoreUtilities.getSkin(this.ribbonBand);
         result.setIcon(getExpandButtonIcon(skin, result));
         return result;
@@ -342,8 +345,8 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
                             SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
                             button.getComponentOrientation().isLeftToRight() ? SwingConstants.EAST
                                     : SwingConstants.WEST,
-                            SubstanceColorSchemeUtilities.getShiftedScheme(scheme, bgFillColor, 0.0f,
-                                    bgFillColor, 0.2f));
+                            SubstanceColorSchemeUtilities.getShiftedScheme(scheme, bgFillColor,
+                                    0.0f, bgFillColor, 0.2f));
                 }, new Dimension(arrowIconHeight, arrowIconWidth));
         return arrowIcon;
     }

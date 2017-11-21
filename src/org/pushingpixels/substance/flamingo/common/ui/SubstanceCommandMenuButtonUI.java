@@ -45,7 +45,7 @@ import javax.swing.plaf.ComponentUI;
 import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
 import org.pushingpixels.flamingo.api.common.RolloverActionListener;
 import org.pushingpixels.flamingo.internal.utils.KeyTipRenderingUtilities;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -64,7 +64,7 @@ public class SubstanceCommandMenuButtonUI extends SubstanceCommandButtonUI {
 	public static ComponentUI createUI(JComponent c) {
 		SubstanceCoreUtilities.testComponentCreationThreadingViolation(c);
 		c.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				EnumSet.allOf(SubstanceConstants.Side.class));
+				EnumSet.allOf(SubstanceSlices.Side.class));
 		return new SubstanceCommandMenuButtonUI((JCommandMenuButton)c);
 	}
 	

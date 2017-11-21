@@ -42,10 +42,10 @@ import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonGalleryUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonGallery;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
@@ -123,8 +123,8 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		button.setIcon(arrowIcon);
 		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-						? SubstanceConstants.Side.LEFT
-						: SubstanceConstants.Side.RIGHT));
+						? SubstanceSlices.Side.LEFT
+						: SubstanceSlices.Side.RIGHT));
 		return button;
 	}
 
@@ -151,8 +151,8 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		button.setIcon(arrowIcon);
 		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-						? SubstanceConstants.Side.LEFT
-						: SubstanceConstants.Side.RIGHT));
+						? SubstanceSlices.Side.LEFT
+						: SubstanceSlices.Side.RIGHT));
 		return button;
 	}
 
@@ -178,8 +178,8 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
 		button.setIcon(arrowIcon);
 		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-						? SubstanceConstants.Side.LEFT
-						: SubstanceConstants.Side.RIGHT));
+						? SubstanceSlices.Side.LEFT
+						: SubstanceSlices.Side.RIGHT));
 		return button;
 	}
 

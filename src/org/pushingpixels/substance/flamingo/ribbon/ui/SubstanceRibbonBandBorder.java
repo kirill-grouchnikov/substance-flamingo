@@ -38,79 +38,70 @@ import javax.swing.border.Border;
 
 import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.resize.IconRibbonBandResizePolicy;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 public class SubstanceRibbonBandBorder implements Border {
 
-	@Override
-	public Insets getBorderInsets(Component c) {
-		return SubstanceSizeUtils.getDefaultBorderInsets(SubstanceSizeUtils
-				.getComponentFontSize(c));
-	}
+    @Override
+    public Insets getBorderInsets(Component c) {
+        return SubstanceSizeUtils
+                .getDefaultBorderInsets(SubstanceSizeUtils.getComponentFontSize(c));
+    }
 
-	@Override
-	public boolean isBorderOpaque() {
-		return false;
-	}
+    @Override
+    public boolean isBorderOpaque() {
+        return false;
+    }
 
-	@Override
-	public void paintBorder(Component c, Graphics g, int x, int y, int width,
-			int height) {
-		// failsafe for LAF change
-		if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
-			return;
-		}
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        // failsafe for LAF change
+        if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
+            return;
+        }
 
-		if ((width <= 0) || (height <= 0))
-			return;
+        if ((width <= 0) || (height <= 0))
+            return;
 
-		Graphics2D graphics = (Graphics2D) g.create();
-		float radius = this.getCornerRadius(c);
+        Graphics2D graphics = (Graphics2D) g.create();
+        float radius = this.getCornerRadius(c);
 
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(c,
-				ComponentState.ENABLED);
+        float alpha = SubstanceColorSchemeUtilities.getAlpha(c, ComponentState.ENABLED);
 
-		graphics
-				.setComposite(WidgetUtilities.getAlphaComposite(c, alpha, g));
+        graphics.setComposite(WidgetUtilities.getAlphaComposite(c, alpha, g));
 
-		AbstractRibbonBand band = (AbstractRibbonBand) c;
-		int titleHeight = band.getUI().getBandTitleHeight();
+        AbstractRibbonBand band = (AbstractRibbonBand) c;
+        int titleHeight = band.getUI().getBandTitleHeight();
 
-		SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(c, ColorSchemeAssociationKind.BORDER,
-						ComponentState.ENABLED);
-		SubstanceImageCreator.paintBorder(c, graphics, x, y, width, height,
-				radius, borderColorScheme);
+        SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
+                ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
+        SubstanceImageCreator.paintBorder(c, graphics, x, y, width, height, radius,
+                borderColorScheme);
 
-		if (!(band.getCurrentResizePolicy() instanceof IconRibbonBandResizePolicy)) {
-			// bottom part - header color scheme
-			graphics.clipRect(0, c.getHeight() - titleHeight, c.getWidth(),
-					titleHeight);
-			SubstanceColorScheme bottomColorScheme = SubstanceLookAndFeel
-					.getCurrentSkin(c).getColorScheme(
-							DecorationAreaType.HEADER,
-							ColorSchemeAssociationKind.BORDER,
-							ComponentState.ENABLED);
-			graphics.setComposite(WidgetUtilities.getAlphaComposite(c,
-					0.75f, g));
-			SubstanceImageCreator.paintBorder(c, graphics, x, y, width, height,
-					radius, bottomColorScheme);
-		}
-		graphics.dispose();
-	}
+        if (!(band.getCurrentResizePolicy() instanceof IconRibbonBandResizePolicy)) {
+            // bottom part - header color scheme
+            graphics.clipRect(0, c.getHeight() - titleHeight, c.getWidth(), titleHeight);
+            SubstanceColorScheme bottomColorScheme = SubstanceCortex.ComponentScope
+                    .getCurrentSkin(c).getColorScheme(DecorationAreaType.HEADER,
+                            ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
+            graphics.setComposite(WidgetUtilities.getAlphaComposite(c, 0.75f, g));
+            SubstanceImageCreator.paintBorder(c, graphics, x, y, width, height, radius,
+                    bottomColorScheme);
+        }
+        graphics.dispose();
+    }
 
-	public float getCornerRadius(Component c) {
-		return SubstanceSizeUtils
-				.getClassicButtonCornerRadius(SubstanceSizeUtils
-						.getComponentFontSize(c));
-	}
+    public float getCornerRadius(Component c) {
+        return SubstanceSizeUtils
+                .getClassicButtonCornerRadius(SubstanceSizeUtils.getComponentFontSize(c));
+    }
 }

@@ -30,7 +30,7 @@
 package org.pushingpixels.substance.flamingo.ribbon.gallery.oob;
 
 import org.pushingpixels.flamingo.api.common.icon.LayeredIcon;
-import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceSkin;
 
 /**

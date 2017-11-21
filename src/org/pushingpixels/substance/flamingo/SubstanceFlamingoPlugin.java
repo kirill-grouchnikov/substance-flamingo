@@ -62,10 +62,10 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonRootPane;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuPopupPanel;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceComponentPlugin;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.flamingo.ribbon.ui.SubstanceRibbonBandBorder;
@@ -87,7 +87,7 @@ public class SubstanceFlamingoPlugin implements SubstanceComponentPlugin {
 
 		String UI_BCB_CLASSNAME_PREFIX = "org.pushingpixels.substance.flamingo.bcb.ui.Substance";
 
-		FontSet fontSet = SubstanceLookAndFeel.getFontPolicy().getFontSet(
+		FontSet fontSet = SubstanceCortex.GlobalScope.getFontPolicy().getFontSet(
 				"Substance", null);
 		Font controlFont = fontSet.getControlFont();
 

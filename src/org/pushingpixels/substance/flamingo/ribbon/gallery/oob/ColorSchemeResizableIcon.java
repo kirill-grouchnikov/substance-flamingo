@@ -41,7 +41,7 @@ import java.awt.geom.Ellipse2D;
 
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 
 /**
  * Resizable icon for <b>Substance</b> themes.
