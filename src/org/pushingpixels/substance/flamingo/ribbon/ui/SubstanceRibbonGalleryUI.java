@@ -43,10 +43,10 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonGalleryUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonGallery;
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -56,91 +56,86 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
- * UI delegate for {@link JRibbonGallery} component under Substance
- * look-and-feel.
+ * UI delegate for {@link JRibbonGallery} component under Substance look-and-feel.
  * 
  * @author Kirill Grouchnikov
  */
 public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceRibbonGalleryUI();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceRibbonGalleryUI();
+    }
 
-	/**
-	 * Creates new UI delegate.
-	 */
-	private SubstanceRibbonGalleryUI() {
-	}
+    /**
+     * Creates new UI delegate.
+     */
+    private SubstanceRibbonGalleryUI() {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#
-	 * paintRibbonGalleryBorder (java.awt.Graphics)
-	 */
-	@Override
-	protected void paintRibbonGalleryBorder(Graphics graphics) {
-		Graphics2D g2d = (Graphics2D) graphics;
-		SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities.getColorScheme(
-				this.ribbonGallery, ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
-		SubstanceImageCreator.paintBorder(this.ribbonGallery, g2d, this.margin.left,
-				this.margin.top,
-				this.ribbonGallery.getWidth() - this.margin.left - this.margin.right,
-				this.ribbonGallery.getHeight() - this.margin.top - this.margin.bottom,
-				SubstanceSizeUtils.getClassicButtonCornerRadius(
-						SubstanceSizeUtils.getComponentFontSize(this.ribbonGallery)),
-				borderColorScheme);
-		g2d.dispose();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI# paintRibbonGalleryBorder
+     * (java.awt.Graphics)
+     */
+    @Override
+    protected void paintRibbonGalleryBorder(Graphics graphics) {
+        Graphics2D g2d = (Graphics2D) graphics;
+        SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+                this.ribbonGallery, ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
+        SubstanceImageCreator.paintBorder(this.ribbonGallery, g2d, this.margin.left,
+                this.margin.top,
+                this.ribbonGallery.getWidth() - this.margin.left - this.margin.right,
+                this.ribbonGallery.getHeight() - this.margin.top - this.margin.bottom,
+                SubstanceSizeUtils.getClassicButtonCornerRadius(
+                        SubstanceSizeUtils.getComponentFontSize(this.ribbonGallery)),
+                borderColorScheme);
+        g2d.dispose();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#createExpandButton()
-	 */
-	@Override
-	protected ExpandCommandButton createExpandButton() {
-		final ExpandCommandButton button = super.createExpandButton();
-		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallDoubleArrowIconHeight(fontSize);
-		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#createExpandButton()
+     */
+    @Override
+    protected ExpandCommandButton createExpandButton() {
+        final ExpandCommandButton button = super.createExpandButton();
+        final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
+        int arrowIconHeight = (int) SubstanceSizeUtils.getSmallDoubleArrowIconHeight(fontSize);
+        int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
         final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
                 () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
-                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), 
-                                width, height, 
-                                SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                        .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(button), width,
+                                height, SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
                                 SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
                                 SwingConstants.SOUTH, scheme),
                 new Dimension(arrowIconWidth, arrowIconHeight));
-		button.setIcon(arrowIcon);
-		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-						? SubstanceSlices.Side.LEFT
-						: SubstanceSlices.Side.RIGHT));
-		return button;
-	}
+        button.setIcon(arrowIcon);
+        SubstanceCortex.ComponentScope.setButtonStraightSides(button,
+                EnumSet.of(
+                        button.getComponentOrientation().isLeftToRight() ? SubstanceSlices.Side.LEFT
+                                : SubstanceSlices.Side.RIGHT));
+        return button;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#createScrollDownButton
-	 * ()
-	 */
-	@Override
-	protected JCommandButton createScrollDownButton() {
-		final JCommandButton button = super.createScrollDownButton();
-		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
-		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#createScrollDownButton ()
+     */
+    @Override
+    protected JCommandButton createScrollDownButton() {
+        final JCommandButton button = super.createScrollDownButton();
+        final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
+        int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
+        int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
         final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
                 () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
@@ -148,26 +143,25 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
                                 SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
                                 SwingConstants.SOUTH, scheme),
                 new Dimension(arrowIconWidth, arrowIconHeight));
-		button.setIcon(arrowIcon);
-		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-						? SubstanceSlices.Side.LEFT
-						: SubstanceSlices.Side.RIGHT));
-		return button;
-	}
+        button.setIcon(arrowIcon);
+        SubstanceCortex.ComponentScope.setButtonStraightSides(button,
+                EnumSet.of(
+                        button.getComponentOrientation().isLeftToRight() ? SubstanceSlices.Side.LEFT
+                                : SubstanceSlices.Side.RIGHT));
+        return button;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#createScrollUpButton()
-	 */
-	@Override
-	protected JCommandButton createScrollUpButton() {
-		final JCommandButton button = super.createScrollUpButton();
-		final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
-		int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jvnet.flamingo.ribbon.ui.BasicRibbonGalleryUI#createScrollUpButton()
+     */
+    @Override
+    protected JCommandButton createScrollUpButton() {
+        final JCommandButton button = super.createScrollUpButton();
+        final int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
+        int arrowIconHeight = (int) SubstanceSizeUtils.getSmallArrowIconHeight(fontSize);
+        int arrowIconWidth = (int) SubstanceSizeUtils.getSmallArrowIconWidth(fontSize);
         final ResizableIcon arrowIcon = new TransitionAwareResizableIcon(button,
                 () -> ((ActionPopupTransitionAwareUI) button.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> SubstanceImageCreator
@@ -175,17 +169,17 @@ public class SubstanceRibbonGalleryUI extends BasicRibbonGalleryUI {
                                 SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
                                 SwingConstants.NORTH, scheme),
                 new Dimension(arrowIconWidth, arrowIconHeight));
-		button.setIcon(arrowIcon);
-		button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				EnumSet.of(button.getComponentOrientation().isLeftToRight()
-						? SubstanceSlices.Side.LEFT
-						: SubstanceSlices.Side.RIGHT));
-		return button;
-	}
+        button.setIcon(arrowIcon);
+        SubstanceCortex.ComponentScope.setButtonStraightSides(button,
+                EnumSet.of(
+                        button.getComponentOrientation().isLeftToRight() ? SubstanceSlices.Side.LEFT
+                                : SubstanceSlices.Side.RIGHT));
+        return button;
+    }
 
-	@Override
-	public void update(Graphics g, JComponent c) {
-		super.update(g, c);
-		GhostPaintingUtils.paintGhostImages(c, g);
-	}
+    @Override
+    public void update(Graphics g, JComponent c) {
+        super.update(g, c);
+        GhostPaintingUtils.paintGhostImages(c, g);
+    }
 }

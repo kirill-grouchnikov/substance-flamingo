@@ -54,13 +54,13 @@ import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
 import org.pushingpixels.substance.flamingo.common.ui.ActionPopupTransitionAwareUI;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -131,7 +131,7 @@ public class CommandButtonBackgroundDelegate {
                 SubstanceSizeUtils.getComponentFontSize(commandButton));
 
         Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(commandButton,
-                SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+                SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
 
         // special handling for location order
         AbstractCommandButton.CommandButtonLocationOrderKind locationOrderKind = commandButton

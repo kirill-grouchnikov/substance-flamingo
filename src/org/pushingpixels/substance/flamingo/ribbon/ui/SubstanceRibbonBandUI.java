@@ -54,12 +54,11 @@ import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceCortex;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
@@ -138,8 +137,6 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
                 DecorationAreaType.GENERAL);
 
         if (this.expandButton != null) {
-            this.expandButton.putClientProperty(SubstanceLookAndFeel.USE_THEMED_DEFAULT_ICONS,
-                    Boolean.FALSE);
             this.expandButton.setFocusable(false);
         }
     }

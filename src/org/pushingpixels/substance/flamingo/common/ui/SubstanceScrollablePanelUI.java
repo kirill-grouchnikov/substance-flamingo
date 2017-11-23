@@ -43,9 +43,9 @@ import org.pushingpixels.flamingo.api.common.JScrollablePanel;
 import org.pushingpixels.flamingo.api.common.JScrollablePanel.ScrollType;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.common.BasicScrollablePanelUI;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
@@ -72,8 +72,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-     * javax.swing.JComponent)
+     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics, javax.swing.JComponent)
      */
     @Override
     public void update(Graphics g, JComponent c) {
@@ -110,7 +109,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
                     return doubleArrowIcon;
                 }, new Dimension(arrowIconHeight, arrowIconWidth));
         result.setIcon(arrowIcon);
-        result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
+        SubstanceCortex.ComponentScope.setButtonStraightSides(result,
                 (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
                         ? EnumSet.of(SubstanceSlices.Side.RIGHT)
                         : EnumSet.of(SubstanceSlices.Side.BOTTOM));
@@ -139,7 +138,7 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
                     return doubleArrowIcon;
                 }, new Dimension(arrowIconHeight, arrowIconWidth));
         result.setIcon(arrowIcon);
-        result.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
+        SubstanceCortex.ComponentScope.setButtonStraightSides(result,
                 (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
                         ? EnumSet.of(SubstanceSlices.Side.LEFT)
                         : EnumSet.of(SubstanceSlices.Side.TOP));

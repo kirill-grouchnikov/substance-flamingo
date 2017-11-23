@@ -64,9 +64,9 @@ import org.pushingpixels.flamingo.internal.ui.common.BasicCommandToggleButtonUI;
 import org.pushingpixels.flamingo.internal.ui.common.ResizableIconUIResource;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -153,9 +153,8 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		this.commandButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
-				ClassicButtonShaper.INSTANCE);
+        SubstanceCortex.ComponentScope.setButtonShaper(this.commandButton,
+                ClassicButtonShaper.INSTANCE);
 
 		this.commandButton.setOpaque(false);
 	}

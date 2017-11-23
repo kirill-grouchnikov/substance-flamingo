@@ -56,7 +56,6 @@ import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.flamingo.ribbon.RibbonBackgroundDelegate;
 import org.pushingpixels.substance.flamingo.utils.CommandButtonVisualStateTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -126,9 +125,7 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 		});
 		SubstanceCortex.ComponentScope.setDecorationType(this.commandButton,
 				DecorationAreaType.GENERAL);
-
-		this.commandButton.putClientProperty(
-				SubstanceLookAndFeel.COLORIZATION_FACTOR,
+        SubstanceCortex.ComponentOrParentChainScope.setColorizationFactor(this.commandButton, 
 				RibbonContextualTaskGroup.HUE_ALPHA);
 	}
 

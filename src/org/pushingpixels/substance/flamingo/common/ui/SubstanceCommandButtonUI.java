@@ -73,11 +73,11 @@ import org.pushingpixels.flamingo.internal.ui.common.BasicCommandButtonUI;
 import org.pushingpixels.flamingo.internal.ui.common.ResizableIconUIResource;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
@@ -105,8 +105,7 @@ import org.pushingpixels.substance.internal.widget.animation.effects.GhostPainti
 import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 
 /**
- * UI for command buttons {@link JCommandButton} in <b>Substance </b> look and
- * feel.
+ * UI for command buttons {@link JCommandButton} in <b>Substance </b> look and feel.
  * 
  * @author Kirill Grouchnikov
  */
@@ -118,8 +117,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     protected ButtonBackgroundDelegate backgroundDelegate;
 
     /**
-     * Property change listener. Listens on changes to
-     * {@link AbstractButton#MODEL_CHANGED_PROPERTY} property.
+     * Property change listener. Listens on changes to {@link AbstractButton#MODEL_CHANGED_PROPERTY}
+     * property.
      */
     protected PropertyChangeListener substancePropertyListener;
 
@@ -141,8 +140,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
 
     /**
      * The matching glowing icon. Is used only when
-     * {@link AnimationConfigurationManager#isAnimationAllowed(AnimationFacet, Component)}
-     * returns true on {@link AnimationFacet#ICON_GLOW}.
+     * {@link AnimationConfigurationManager#isAnimationAllowed(AnimationFacet, Component)} returns
+     * true on {@link AnimationFacet#ICON_GLOW}.
      */
     protected GlowingResizableIcon glowingIcon;
 
@@ -184,7 +183,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        this.commandButton.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        SubstanceCortex.ComponentScope.setButtonShaper(this.commandButton,
                 ClassicButtonShaper.INSTANCE);
 
         this.commandButton.setOpaque(false);
@@ -258,8 +257,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.ribbon.ui.BasiccommandButtonUI#uninstallListeners()
+     * @see org.jvnet.flamingo.ribbon.ui.BasiccommandButtonUI#uninstallListeners()
      */
     @Override
     protected void uninstallListeners() {
@@ -304,8 +302,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonBackground
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonBackground
      * (java.awt.Graphics, java.awt.Rectangle)
      */
     @Override
@@ -378,9 +375,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonIcon(java
-     * .awt.Graphics, java.awt.Rectangle)
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonIcon(java .awt.Graphics,
+     * java.awt.Rectangle)
      */
     @Override
     protected void paintButtonIcon(Graphics g, Rectangle iconRect) {
@@ -409,8 +405,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
                 tracker = this.substanceVisualStateTracker.getPopupStateTransitionTracker();
                 model = jcb.getPopupModel();
             }
-            CommandButtonBackgroundDelegate.paintCommandButtonIcon(g2d, iconRect, jcb,
-                    regular, this.glowingIcon, model, tracker);
+            CommandButtonBackgroundDelegate.paintCommandButtonIcon(g2d, iconRect, jcb, regular,
+                    this.glowingIcon, model, tracker);
             g2d.dispose();
         }
     }
@@ -460,8 +456,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#isPaintingBackground()
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#isPaintingBackground()
      */
     @Override
     protected boolean isPaintingBackground() {
@@ -474,8 +469,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#isPaintingSeparators()
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#isPaintingSeparators()
      */
     @Override
     protected boolean isPaintingSeparators() {
@@ -489,8 +483,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#createPopupActionIcon()
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#createPopupActionIcon()
      */
     @Override
     protected ResizableIcon createPopupActionIcon() {
@@ -498,7 +491,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
         int arrowIconHeight = (int) SubstanceSizeUtils.getArrowIconHeight(fontSize);
         int arrowIconWidth = (int) SubstanceSizeUtils.getArrowIconWidth(fontSize);
         ResizableIcon icon = new TransitionAwareResizableIcon(this.commandButton,
-                () -> getPopupTransitionTracker(), 
+                () -> getPopupTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> {
                     CommandButtonPopupOrientationKind orientation = ((JCommandButton) commandButton)
                             .getPopupOrientationKind();
@@ -522,9 +515,8 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paint(java.awt.Graphics
-     * , javax.swing.JComponent)
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paint(java.awt.Graphics ,
+     * javax.swing.JComponent)
      */
     @Override
     public void paint(Graphics g, JComponent c) {
@@ -636,8 +628,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintPopupActionIcon
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintPopupActionIcon
      * (java.awt.Graphics, java.awt.Rectangle)
      */
     @Override
@@ -650,8 +641,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#getPreferredSize(javax
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#getPreferredSize(javax
      * .swing.JComponent)
      */
     @Override
