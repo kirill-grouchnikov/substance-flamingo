@@ -44,7 +44,7 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
@@ -89,7 +89,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 		 *            Icon height.
 		 * @return Icon that matches the specified theme.
 		 */
-		public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
+		public SubstanceIcon getColorSchemeIcon(SubstanceColorScheme scheme, int width,
 				int height);
 	}
 
@@ -110,7 +110,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 	 * is that the {@link #delegate} returns an icon that paints the same for
 	 * the same parameters.
 	 */
-	private LazyResettableHashMap<HiDpiAwareIcon> iconMap;
+	private LazyResettableHashMap<SubstanceIcon> iconMap;
 
 	public static interface StateTransitionTrackerDelegate {
 		public StateTransitionTracker getStateTransitionTracker();
@@ -136,7 +136,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 		this.comp = button;
 		this.stateTransitionTrackerDelegate = stateTransitionTrackerDelegate;
 		this.delegate = delegate;
-		this.iconMap = new LazyResettableHashMap<HiDpiAwareIcon>(
+		this.iconMap = new LazyResettableHashMap<SubstanceIcon>(
 				"TransitionAwareResizableIcon");
 		this.width = initialDim.width;
 		this.height = initialDim.height;
@@ -147,7 +147,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 	 * 
 	 * @return Icon to paint.
 	 */
-	private HiDpiAwareIcon getIconToPaint() {
+	private SubstanceIcon getIconToPaint() {
 		StateTransitionTracker stateTransitionTracker = this.stateTransitionTrackerDelegate
 				.getStateTransitionTracker();
 
@@ -167,9 +167,9 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(baseScheme
 				.getDisplayName(), baseAlpha, this.width, this.height);
 		// System.out.println(key);
-		HiDpiAwareIcon layerBase = this.iconMap.get(keyBase);
+		SubstanceIcon layerBase = this.iconMap.get(keyBase);
 		if (layerBase == null) {
-			HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme,
+			SubstanceIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme,
 					width, height);
 			if (baseAlpha == 1.0f) {
 				layerBase = baseFullOpacity;
@@ -182,7 +182,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 				g2base.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
 				baseFullOpacity.paintIcon(this.comp, g2base, 0, 0);
 				g2base.dispose();
-				layerBase = new HiDpiAwareIcon(baseImage);
+				layerBase = new SubstanceIcon(baseImage);
 				iconMap.put(keyBase, layerBase);
 			}
 		}
@@ -218,9 +218,9 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 
 				HashMapKey key = SubstanceCoreUtilities.getHashKey(scheme
 						.getDisplayName(), alpha, this.width, this.height);
-				HiDpiAwareIcon layer = iconMap.get(key);
+				SubstanceIcon layer = iconMap.get(key);
 				if (layer == null) {
-					HiDpiAwareIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme,
+					SubstanceIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme,
 							width, height);
 					if (alpha == 1.0f) {
 						layer = fullOpacity;
@@ -234,7 +234,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 								.derive(alpha));
 						fullOpacity.paintIcon(this.comp, g2layer, 0, 0);
 						g2layer.dispose();
-						layer = new HiDpiAwareIcon(image);
+						layer = new SubstanceIcon(image);
 						iconMap.put(key, layer);
 					}
 				}
@@ -242,7 +242,7 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 			}
 		}
 		g2d.dispose();
-		return new HiDpiAwareIcon(result);
+		return new SubstanceIcon(result);
 	}
 
 	/*

@@ -131,7 +131,7 @@ public class CommandButtonBackgroundDelegate {
                 SubstanceSizeUtils.getComponentFontSize(commandButton));
 
         Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(commandButton,
-                SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
+                SubstanceSynapse.BUTTON_STRAIGHT_SIDE);
 
         // special handling for location order
         AbstractCommandButton.CommandButtonLocationOrderKind locationOrderKind = commandButton
