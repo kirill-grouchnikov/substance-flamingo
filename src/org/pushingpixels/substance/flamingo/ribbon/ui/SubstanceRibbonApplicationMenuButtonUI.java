@@ -62,8 +62,7 @@ import org.pushingpixels.substance.internal.widget.animation.effects.GhostPainti
 import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 
 /**
- * UI for {@link JRibbonApplicationMenuButton} components in <b>Substance</b>
- * look and feel.
+ * UI for {@link JRibbonApplicationMenuButton} components in <b>Substance</b> look and feel.
  * 
  * @author Kirill Grouchnikov
  */
@@ -86,8 +85,8 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
 
     /**
      * The matching glowing icon. Is used only when
-     * {@link AnimationConfigurationManager#isAnimationAllowed(AnimationFacet, Component)}
-     * returns true on {@link AnimationFacet#ICON_GLOW}.
+     * {@link AnimationConfigurationManager#isAnimationAllowed(AnimationFacet, Component)} returns
+     * true on {@link AnimationFacet#ICON_GLOW}.
      */
     protected GlowingResizableIcon glowingIcon;
 
@@ -107,11 +106,9 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
         this.substanceVisualStateTracker = new CommandButtonVisualStateTracker();
         this.substanceVisualStateTracker.installListeners(this.commandButton);
 
-        this.substancePropertyListener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("icon".equals(evt.getPropertyName())) {
-                    trackGlowingIcon();
-                }
+        this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+            if ("icon".equals(evt.getPropertyName())) {
+                trackGlowingIcon();
             }
         };
         this.commandButton.addPropertyChangeListener(this.substancePropertyListener);
@@ -126,8 +123,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#uninstallListeners()
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#uninstallListeners()
      */
     @Override
     protected void uninstallListeners() {
@@ -162,8 +158,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.plaf.basic.BasicButtonUI#paint(java.awt.Graphics,
-     * javax.swing.JComponent)
+     * @see javax.swing.plaf.basic.BasicButtonUI#paint(java.awt.Graphics, javax.swing.JComponent)
      */
     @Override
     public void paint(Graphics g, JComponent c) {
@@ -199,9 +194,8 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonIcon(java
-     * .awt.Graphics, java.awt.Rectangle)
+     * @see org.jvnet.flamingo.common.ui.BasicCommandButtonUI#paintButtonIcon(java .awt.Graphics,
+     * java.awt.Rectangle)
      */
     @Override
     protected void paintButtonIcon(Graphics g, Rectangle iconRect) {
@@ -227,8 +221,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.flamingo.ribbon.ui.appmenu.BasicRibbonApplicationMenuButtonUI
+     * @see org.jvnet.flamingo.ribbon.ui.appmenu.BasicRibbonApplicationMenuButtonUI
      * #update(java.awt.Graphics, javax.swing.JComponent)
      */
     @Override
@@ -239,9 +232,7 @@ public class SubstanceRibbonApplicationMenuButtonUI extends BasicRibbonApplicati
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.jvnet.substance.SubstanceButtonUI#contains(javax.swing.JComponent,
-     * int, int)
+     * @see org.jvnet.substance.SubstanceButtonUI#contains(javax.swing.JComponent, int, int)
      */
     @Override
     public boolean contains(JComponent c, int x, int y) {

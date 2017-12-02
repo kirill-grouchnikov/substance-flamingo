@@ -67,10 +67,10 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.RibbonUI;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
@@ -367,12 +367,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
 
         this.syncRibbonState();
 
-        this.ribbonFrameChangeListener = new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                syncRibbonState();
-            }
-        };
+        this.ribbonFrameChangeListener = (ChangeEvent e) -> syncRibbonState();
         ribbon.addChangeListener(this.ribbonFrameChangeListener);
     }
 

@@ -37,68 +37,64 @@ import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 
 public class CommandButtonVisualStateTracker {
-	/**
-	 * Property change listener.
-	 */
-	protected PropertyChangeListener substancePropertyListener;
+    /**
+     * Property change listener.
+     */
+    protected PropertyChangeListener substancePropertyListener;
 
-	/**
-	 * Listener for transition animations on the action area.
-	 */
-	protected StateTransitionTracker actionStateTransitionTracker;
+    /**
+     * Listener for transition animations on the action area.
+     */
+    protected StateTransitionTracker actionStateTransitionTracker;
 
-	/**
-	 * Listener for transition animations on the popup area.
-	 */
-	protected StateTransitionTracker popupStateTransitionTracker;
+    /**
+     * Listener for transition animations on the popup area.
+     */
+    protected StateTransitionTracker popupStateTransitionTracker;
 
-	public void installListeners(final AbstractCommandButton b) {
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("actionModel".equals(evt.getPropertyName())) {
-					// action model has been changed
-					actionStateTransitionTracker.setModel(b.getActionModel());
-				}
-				if ("popupModel".equals(evt.getPropertyName())) {
-					JCommandButton jcb = (JCommandButton) b;
-					// popup model has been changed
-					popupStateTransitionTracker.setModel(jcb.getPopupModel());
-				}
-			}
-		};
-		b.addPropertyChangeListener(this.substancePropertyListener);
+    public void installListeners(final AbstractCommandButton b) {
+        this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+            if ("actionModel".equals(evt.getPropertyName())) {
+                // action model has been changed
+                actionStateTransitionTracker.setModel(b.getActionModel());
+            }
+            if ("popupModel".equals(evt.getPropertyName())) {
+                JCommandButton jcb = (JCommandButton) b;
+                // popup model has been changed
+                popupStateTransitionTracker.setModel(jcb.getPopupModel());
+            }
+        };
+        b.addPropertyChangeListener(this.substancePropertyListener);
 
-		this.actionStateTransitionTracker = new StateTransitionTracker(b, b
-				.getActionModel());
-		this.actionStateTransitionTracker.registerModelListeners();
+        this.actionStateTransitionTracker = new StateTransitionTracker(b, b.getActionModel());
+        this.actionStateTransitionTracker.registerModelListeners();
 
-		if (b instanceof JCommandButton) {
-			JCommandButton jcb = (JCommandButton) b;
-			this.popupStateTransitionTracker = new StateTransitionTracker(jcb,
-					jcb.getPopupModel());
-			this.popupStateTransitionTracker.registerModelListeners();
-		}
-	}
+        if (b instanceof JCommandButton) {
+            JCommandButton jcb = (JCommandButton) b;
+            this.popupStateTransitionTracker = new StateTransitionTracker(jcb, jcb.getPopupModel());
+            this.popupStateTransitionTracker.registerModelListeners();
+        }
+    }
 
-	public void uninstallListeners(AbstractCommandButton b) {
-		b.removePropertyChangeListener(this.substancePropertyListener);
-		this.substancePropertyListener = null;
+    public void uninstallListeners(AbstractCommandButton b) {
+        b.removePropertyChangeListener(this.substancePropertyListener);
+        this.substancePropertyListener = null;
 
-		this.actionStateTransitionTracker.unregisterModelListeners();
-		this.actionStateTransitionTracker = null;
+        this.actionStateTransitionTracker.unregisterModelListeners();
+        this.actionStateTransitionTracker = null;
 
-		if (this.popupStateTransitionTracker != null) {
-			this.popupStateTransitionTracker.unregisterModelListeners();
-			this.popupStateTransitionTracker = null;
-		}
-	}
+        if (this.popupStateTransitionTracker != null) {
+            this.popupStateTransitionTracker.unregisterModelListeners();
+            this.popupStateTransitionTracker = null;
+        }
+    }
 
-	public StateTransitionTracker getActionStateTransitionTracker() {
-		return actionStateTransitionTracker;
-	}
+    public StateTransitionTracker getActionStateTransitionTracker() {
+        return actionStateTransitionTracker;
+    }
 
-	public StateTransitionTracker getPopupStateTransitionTracker() {
-		return popupStateTransitionTracker;
-	}
+    public StateTransitionTracker getPopupStateTransitionTracker() {
+        return popupStateTransitionTracker;
+    }
 
 }

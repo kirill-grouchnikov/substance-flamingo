@@ -30,8 +30,8 @@
 package org.pushingpixels.substance.flamingo.ribbon.gallery.oob;
 
 import org.pushingpixels.flamingo.api.common.icon.LayeredIcon;
-import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 
 /**
  * Resizable icon for <b>Substance</b> skins.
