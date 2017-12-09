@@ -82,6 +82,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
+import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
@@ -335,7 +336,8 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
         super(root, ui);
         this.taskComponentMap = new HashMap<>();
         this.taskbarPanel = new TaskbarPanel();
-        this.markExtraComponent(this.taskbarPanel, ExtraComponentKind.LEADING);
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.taskbarPanel,
+                SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING);
         // Mark this with HEADER decoration area type even though it is in the primary title pane.
         // Otherwise the background fill on the popup menu doesn't look good.
         SubstanceCortex.ComponentScope.setDecorationType(this.taskbarPanel,
@@ -412,7 +414,8 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
                     .applyComponentOrientation(this.getRibbon().getComponentOrientation());
             this.add(taskGroupComponent);
             this.taskComponentMap.put(group, taskGroupComponent);
-            this.markExtraComponent(taskGroupComponent, ExtraComponentKind.TRAILING);
+            SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(taskGroupComponent,
+                    SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
         }
         // Taskbar components
         this.taskbarPanel.removeAll();
@@ -457,9 +460,10 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
                         if (!child.isVisible())
                             continue;
                         if (child instanceof JComponent) {
-                            ExtraComponentKind kind = (ExtraComponentKind) ((JComponent) child)
-                                    .getClientProperty(EXTRA_COMPONENT_KIND);
-                            if (kind == ExtraComponentKind.LEADING)
+                            SubstanceTitlePaneUtilities.ExtraComponentKind kind = (SubstanceTitlePaneUtilities.ExtraComponentKind) ((JComponent) child)
+                                    .getClientProperty(
+                                            SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND);
+                            if (kind == SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING)
                                 continue;
                             if (child instanceof SubstanceContextualGroupComponent)
                                 continue;
@@ -532,9 +536,10 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
                         if (!child.isVisible())
                             continue;
                         if (child instanceof JComponent) {
-                            ExtraComponentKind kind = (ExtraComponentKind) ((JComponent) child)
-                                    .getClientProperty(EXTRA_COMPONENT_KIND);
-                            if (kind == ExtraComponentKind.LEADING)
+                            SubstanceTitlePaneUtilities.ExtraComponentKind kind = (SubstanceTitlePaneUtilities.ExtraComponentKind) ((JComponent) child)
+                                    .getClientProperty(
+                                            SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND);
+                            if (kind == SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING)
                                 continue;
                             if (child instanceof SubstanceContextualGroupComponent)
                                 continue;
