@@ -78,7 +78,7 @@ import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.flamingo.common.GlowingResizableIcon;
@@ -502,7 +502,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
                                     : SwingConstants.WEST);
                     // System.out.println(direction + ":" + width + ":"
                     // + height);
-                    SubstanceIcon result = SubstanceImageCreator.getArrowIcon(width, height,
+                    SubstanceIconUIResource result = SubstanceImageCreator.getArrowIcon(width, height,
                             SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f, direction,
                             scheme);
                     // System.out.println(" --> " + result.getIconWidth()

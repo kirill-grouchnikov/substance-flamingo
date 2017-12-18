@@ -46,7 +46,7 @@ import org.pushingpixels.flamingo.internal.ui.common.BasicScrollablePanelUI;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.flamingo.common.TransitionAwareResizableIcon;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -98,14 +98,15 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
         ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
                 () -> ((ActionPopupTransitionAwareUI) result.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> {
-                    SubstanceIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
-                            SubstanceSizeUtils.getComponentFontSize(result), width, height,
-                            SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
-                            SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
-                            (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-                                    ? SwingUtilities.WEST
-                                    : SwingUtilities.NORTH,
-                            scheme);
+                    SubstanceIconUIResource doubleArrowIcon = SubstanceImageCreator
+                            .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(result),
+                                    width, height,
+                                    SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                                    SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                                    (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+                                            ? SwingUtilities.WEST
+                                            : SwingUtilities.NORTH,
+                                    scheme);
                     return doubleArrowIcon;
                 }, new Dimension(arrowIconHeight, arrowIconWidth));
         result.setIcon(arrowIcon);
@@ -127,14 +128,15 @@ public class SubstanceScrollablePanelUI extends BasicScrollablePanelUI {
         ResizableIcon arrowIcon = new TransitionAwareResizableIcon(result,
                 () -> ((ActionPopupTransitionAwareUI) result.getUI()).getActionTransitionTracker(),
                 (SubstanceColorScheme scheme, int width, int height) -> {
-                    SubstanceIcon doubleArrowIcon = SubstanceImageCreator.getDoubleArrowIcon(
-                            SubstanceSizeUtils.getComponentFontSize(result), width, height,
-                            SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
-                            SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
-                            (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
-                                    ? SwingUtilities.EAST
-                                    : SwingUtilities.SOUTH,
-                            scheme);
+                    SubstanceIconUIResource doubleArrowIcon = SubstanceImageCreator
+                            .getDoubleArrowIcon(SubstanceSizeUtils.getComponentFontSize(result),
+                                    width, height,
+                                    SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize),
+                                    SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize),
+                                    (scrollablePanel.getScrollType() == ScrollType.HORIZONTALLY)
+                                            ? SwingUtilities.EAST
+                                            : SwingUtilities.SOUTH,
+                                    scheme);
                     return doubleArrowIcon;
                 }, new Dimension(arrowIconHeight, arrowIconWidth));
         result.setIcon(arrowIcon);
