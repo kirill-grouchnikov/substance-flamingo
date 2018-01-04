@@ -46,6 +46,7 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonRootPane;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuButton;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
+import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
 
 /**
  * UI delegate for root panes of {@link JRibbonFrame} under Substance
@@ -113,15 +114,8 @@ public class SubstanceRibbonRootPaneUI extends SubstanceRootPaneUI {
 		return new SubstanceRibbonRootLayout();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jvnet.substance.SubstanceRootPaneUI#createTitlePane(javax.swing.JRootPane
-	 * )
-	 */
 	@Override
-	protected JComponent createTitlePane(JRootPane root) {
+	protected SubstanceTitlePane createTitlePane(JRootPane root) {
 		return new SubstanceRibbonFrameTitlePane(root, this);
 	}
 
