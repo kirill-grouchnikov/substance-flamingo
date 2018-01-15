@@ -47,97 +47,95 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 
 /**
- * Implementation of a resizable icon of disabled controls based on the current
- * Substance skin.
+ * Implementation of a resizable icon of disabled controls based on the current Substance skin.
  * 
  * @author Kirill Grouchnikov
  */
 public class SubstanceDisabledResizableIcon implements ResizableIcon {
-	/**
-	 * Image cache to speed up rendering.
-	 */
-	protected LazyResettableHashMap<BufferedImage> cachedImages;
+    /**
+     * Image cache to speed up rendering.
+     */
+    protected LazyResettableHashMap<BufferedImage> cachedImages;
 
-	/**
-	 * The main (pre-filtered) icon.
-	 */
-	protected ResizableIcon delegate;
+    /**
+     * The main (pre-filtered) icon.
+     */
+    protected ResizableIcon delegate;
 
-	/**
-	 * Creates a new filtered icon.
-	 * 
-	 * @param delegate
-	 *            The main (pre-filtered) icon.
-	 */
-	public SubstanceDisabledResizableIcon(ResizableIcon delegate) {
-		super();
-		this.delegate = delegate;
-		this.cachedImages = new LazyResettableHashMap<BufferedImage>(
-				"FlamingoSubstanceDisabledIcons");
-	}
+    /**
+     * Creates a new filtered icon.
+     * 
+     * @param delegate
+     *            The main (pre-filtered) icon.
+     */
+    public SubstanceDisabledResizableIcon(ResizableIcon delegate) {
+        super();
+        this.delegate = delegate;
+        this.cachedImages = new LazyResettableHashMap<BufferedImage>(
+                "FlamingoSubstanceDisabledIcons");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#getIconHeight()
-	 */
-	public int getIconHeight() {
-		return delegate.getIconHeight();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.Icon#getIconHeight()
+     */
+    public int getIconHeight() {
+        return delegate.getIconHeight();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#getIconWidth()
-	 */
-	public int getIconWidth() {
-		return delegate.getIconWidth();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.Icon#getIconWidth()
+     */
+    public int getIconWidth() {
+        return delegate.getIconWidth();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jvnet.flamingo.common.icon.ResizableIcon#setDimension(java.awt
-	 * .Dimension )
-	 */
-	public void setDimension(Dimension newDimension) {
-		delegate.setDimension(newDimension);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jvnet.flamingo.common.icon.ResizableIcon#setDimension(java.awt .Dimension )
+     */
+    public void setDimension(Dimension newDimension) {
+        delegate.setDimension(newDimension);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
-	@Override
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-		// check if loading
-		if (this.delegate instanceof AsynchronousLoading) {
-			AsynchronousLoading asyncDelegate = (AsynchronousLoading) this.delegate;
-			// if the delegate is still loading - do nothing
-			if (asyncDelegate.isLoading())
-				return;
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
+     */
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        // check if loading
+        if (this.delegate instanceof AsynchronousLoading) {
+            AsynchronousLoading asyncDelegate = (AsynchronousLoading) this.delegate;
+            // if the delegate is still loading - do nothing
+            if (asyncDelegate.isLoading())
+                return;
+        }
 
-		SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-				.getColorScheme(c, ComponentState.DISABLED_UNSELECTED);
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(this.getIconWidth(),
-				this.getIconHeight(), scheme.getDisplayName());
+        SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(c,
+                ComponentState.DISABLED_UNSELECTED);
+        HashMapKey key = SubstanceCoreUtilities.getHashKey(this.getIconWidth(),
+                this.getIconHeight(), scheme.getDisplayName());
 
-		BufferedImage filtered = this.cachedImages.get(key);
-		if (filtered == null) {
-			BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(
-					this.getIconWidth(), this.getIconHeight());
-			Graphics2D g2d = offscreen.createGraphics();
-			this.delegate.paintIcon(c, g2d, 0, 0);
-			g2d.dispose();
-			filtered = SubstanceImageCreator.getColorSchemeImage(offscreen, scheme, 0.5f);
-			this.cachedImages.put(key, filtered);
-		}
-		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.getScaleFactor();
-		g2d.drawImage(filtered, x, y, filtered.getWidth() / scaleFactor, filtered.getHeight() / scaleFactor, null);
-		g2d.dispose();
-	}
+        BufferedImage filtered = this.cachedImages.get(key);
+        if (filtered == null) {
+            BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(this.getIconWidth(),
+                    this.getIconHeight());
+            Graphics2D g2d = offscreen.createGraphics();
+            this.delegate.paintIcon(c, g2d, 0, 0);
+            g2d.dispose();
+            filtered = SubstanceImageCreator.getColorSchemeImage(offscreen, scheme, 0.5f);
+            this.cachedImages.put(key, filtered);
+        }
+        Graphics2D g2d = (Graphics2D) g.create();
+        double scaleFactor = UIUtil.getScaleFactor();
+        g2d.drawImage(filtered, x, y, (int) (filtered.getWidth() / scaleFactor),
+                (int) (filtered.getHeight() / scaleFactor), null);
+        g2d.dispose();
+    }
 }

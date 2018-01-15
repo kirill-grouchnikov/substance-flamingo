@@ -136,10 +136,10 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2d = result.createGraphics();
-		int scaleFactor = UIUtil.getScaleFactor();
+		double scaleFactor = UIUtil.getScaleFactor();
 
-		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
-				baseLayer.getHeight() / scaleFactor, null);
+		g2d.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / scaleFactor),
+		        (int) (baseLayer.getHeight() / scaleFactor), null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -170,8 +170,8 @@ public class RibbonApplicationMenuButtonBackgroundDelegate {
 			}
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
-					layer.getHeight() / scaleFactor, null);
+			g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
+			        (int) (layer.getHeight() / scaleFactor), null);
 		}
 
 		g2d.dispose();

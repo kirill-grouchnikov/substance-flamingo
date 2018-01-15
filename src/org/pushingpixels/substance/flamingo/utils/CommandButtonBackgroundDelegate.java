@@ -148,16 +148,16 @@ public class CommandButtonBackgroundDelegate {
                     .getOrientation() == StripOrientation.VERTICAL)) {
                 isVertical = true;
                 switch (locationOrderKind) {
-                case FIRST:
-                    dh = commandButton.getHeight() / 2;
-                    break;
-                case MIDDLE:
-                    dy = -commandButton.getHeight() / 2;
-                    dh = commandButton.getHeight();
-                    break;
-                case LAST:
-                    dy = -commandButton.getHeight() / 2;
-                    dh = commandButton.getHeight() / 2;
+                    case FIRST:
+                        dh = commandButton.getHeight() / 2;
+                        break;
+                    case MIDDLE:
+                        dy = -commandButton.getHeight() / 2;
+                        dh = commandButton.getHeight();
+                        break;
+                    case LAST:
+                        dy = -commandButton.getHeight() / 2;
+                        dh = commandButton.getHeight() / 2;
                 }
             } else {
                 boolean ltr = commandButton.getComponentOrientation().isLeftToRight();
@@ -200,10 +200,10 @@ public class CommandButtonBackgroundDelegate {
 
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
         Graphics2D g2d = result.createGraphics();
-        int factor = UIUtil.getScaleFactor();
+        double factor = UIUtil.getScaleFactor();
 
-        g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / factor,
-                baseLayer.getHeight() / factor, null);
+        g2d.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / factor),
+                (int) (baseLayer.getHeight() / factor), null);
 
         for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
                 .entrySet()) {
@@ -237,7 +237,8 @@ public class CommandButtonBackgroundDelegate {
             }
 
             g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
-            g2d.drawImage(layer, 0, 0, layer.getWidth() / factor, layer.getHeight() / factor, null);
+            g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / factor),
+                    (int) (layer.getHeight() / factor), null);
         }
 
         g2d.dispose();
@@ -347,10 +348,10 @@ public class CommandButtonBackgroundDelegate {
         BufferedImage layers = SubstanceCoreUtilities.getBlankImage(fullAlphaBackground.getWidth(),
                 fullAlphaBackground.getHeight());
         Graphics2D combinedGraphics = layers.createGraphics();
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         combinedGraphics.drawImage(fullAlphaBackground, 0, 0,
-                fullAlphaBackground.getWidth() / scaleFactor,
-                fullAlphaBackground.getHeight() / scaleFactor, null);
+                (int) (fullAlphaBackground.getWidth() / scaleFactor),
+                (int) (fullAlphaBackground.getHeight() / scaleFactor), null);
 
         ActionPopupTransitionAwareUI ui = (ActionPopupTransitionAwareUI) commandButton.getUI();
 
@@ -368,8 +369,8 @@ public class CommandButtonBackgroundDelegate {
                             borderPainter, commandButton.getWidth(), commandButton.getHeight(),
                             ui.getTransitionTracker(), false);
             combinedGraphics.drawImage(rolloverBackground, 0, 0,
-                    rolloverBackground.getWidth() / scaleFactor,
-                    rolloverBackground.getHeight() / scaleFactor, null);
+                    (int) (rolloverBackground.getWidth() / scaleFactor),
+                    (int) (rolloverBackground.getHeight() / scaleFactor), null);
         }
 
         // Shape currClip = combinedGraphics.getClip();
@@ -391,8 +392,8 @@ public class CommandButtonBackgroundDelegate {
                             commandButton.getWidth(), commandButton.getHeight(),
                             ui.getActionTransitionTracker(), false);
             graphicsAction.drawImage(actionAreaBackground, 0, 0,
-                    actionAreaBackground.getWidth() / scaleFactor,
-                    actionAreaBackground.getHeight() / scaleFactor, null);
+                    (int) (actionAreaBackground.getWidth() / scaleFactor),
+                    (int) (actionAreaBackground.getHeight() / scaleFactor), null);
             // graphicsAction.setColor(Color.red);
             // graphicsAction.fill(toFill);
             graphicsAction.dispose();
@@ -418,8 +419,8 @@ public class CommandButtonBackgroundDelegate {
                             commandButton.getWidth(), commandButton.getHeight(),
                             ui.getPopupTransitionTracker(), false);
             graphicsPopup.drawImage(popupAreaBackground, 0, 0,
-                    popupAreaBackground.getWidth() / scaleFactor,
-                    popupAreaBackground.getHeight() / scaleFactor, null);
+                    (int) (popupAreaBackground.getWidth() / scaleFactor),
+                    (int) (popupAreaBackground.getHeight() / scaleFactor), null);
             // graphicsPopup.setColor(Color.blue);
             // graphicsPopup.fill(toFill);
             graphicsPopup.dispose();
@@ -466,17 +467,16 @@ public class CommandButtonBackgroundDelegate {
         if (useRegularVersion) {
             regular.paintIcon(commandButton, g2d, 0, 0);
         } else {
-            int scaleFactor = UIUtil.getScaleFactor();
+            double scaleFactor = UIUtil.getScaleFactor();
             if (alpha < 1.0f) {
                 // paint the themed image full opaque on a separate image
                 BufferedImage themedImage = SubstanceCoreUtilities
                         .getBlankImage(themed.getIconWidth(), themed.getIconHeight());
                 themed.paintIcon(commandButton, themedImage.createGraphics(), 0, 0);
                 // and paint that image translucently
-                g2d.setComposite(
-                        WidgetUtilities.getAlphaComposite(commandButton, 1.0f - alpha, g));
-                g2d.drawImage(themedImage, 0, 0, themedImage.getWidth() / scaleFactor,
-                        themedImage.getHeight() / scaleFactor, null);
+                g2d.setComposite(WidgetUtilities.getAlphaComposite(commandButton, 1.0f - alpha, g));
+                g2d.drawImage(themedImage, 0, 0, (int) (themedImage.getWidth() / scaleFactor),
+                        (int) (themedImage.getHeight() / scaleFactor), null);
             }
 
             if (alpha > 0.0f) {
@@ -486,8 +486,8 @@ public class CommandButtonBackgroundDelegate {
                 regular.paintIcon(commandButton, regularImage.createGraphics(), 0, 0);
                 // and paint that image translucently
                 g2d.setComposite(WidgetUtilities.getAlphaComposite(commandButton, alpha, g));
-                g2d.drawImage(regularImage, 0, 0, regularImage.getWidth() / scaleFactor,
-                        regularImage.getHeight() / scaleFactor, null);
+                g2d.drawImage(regularImage, 0, 0, (int) (regularImage.getWidth() / scaleFactor),
+                        (int) (regularImage.getHeight() / scaleFactor), null);
             }
         }
         g2d.dispose();

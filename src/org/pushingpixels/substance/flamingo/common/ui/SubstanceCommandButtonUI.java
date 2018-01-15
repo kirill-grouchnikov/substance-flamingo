@@ -365,9 +365,10 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
             Graphics2D g2d = (Graphics2D) graphics.create();
             g2d.setComposite(
                     WidgetUtilities.getAlphaComposite(this.commandButton, extraAlpha, graphics));
-            int factor = UIUtil.getScaleFactor();
-            g2d.drawImage(fullAlphaBackground, 0, 0, fullAlphaBackground.getWidth() / factor,
-                    fullAlphaBackground.getHeight() / factor, null);
+            double factor = UIUtil.getScaleFactor();
+            g2d.drawImage(fullAlphaBackground, 0, 0,
+                    (int) (fullAlphaBackground.getWidth() / factor),
+                    (int) (fullAlphaBackground.getHeight() / factor), null);
             g2d.dispose();
         }
     }
@@ -502,9 +503,9 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
                                     : SwingConstants.WEST);
                     // System.out.println(direction + ":" + width + ":"
                     // + height);
-                    SubstanceIconUIResource result = SubstanceImageCreator.getArrowIcon(width, height,
-                            SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f, direction,
-                            scheme);
+                    SubstanceIconUIResource result = SubstanceImageCreator.getArrowIcon(width,
+                            height, SubstanceSizeUtils.getArrowStrokeWidth(fontSize) - 0.5f,
+                            direction, scheme);
                     // System.out.println(" --> " + result.getIconWidth()
                     // + "*" + result.getIconHeight());
                     return result;
