@@ -191,7 +191,7 @@ public class WatermarkResizableIcon implements ResizableIcon {
 
 		graphics.translate(x, y);
 		graphics.clipRect(0, 0, this.currWidth, this.currHeight);
-		int scaleFactor = UIUtil.getScaleFactor();
+		double scaleFactor = UIUtil.getScaleFactor();
 		if (this.watermark != null) {
 			graphics.setColor(SubstanceCoreUtilities.getSkin(c)
 					.getEnabledColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c))
@@ -207,14 +207,14 @@ public class WatermarkResizableIcon implements ResizableIcon {
 			int waterSize = this.currHeight / 2;
 			BufferedImage watermarkSign = getWatermarkSign(waterSize);
 			graphics.drawImage(watermarkSign, this.currWidth - waterSize - 2,
-					this.currHeight - waterSize - 2, watermarkSign.getWidth() / scaleFactor,
-					watermarkSign.getHeight() / scaleFactor, null);
+					this.currHeight - waterSize - 2, (int) (watermarkSign.getWidth() / scaleFactor),
+					(int) (watermarkSign.getHeight() / scaleFactor), null);
 		} else {
 			int waterSize = Math.min(this.currHeight, this.currWidth) - 2;
 			BufferedImage watermarkSign = getWatermarkSign(waterSize);
 			graphics.drawImage(watermarkSign, (this.currWidth - waterSize) / 2,
-					(this.currHeight - waterSize) / 2, watermarkSign.getWidth() / scaleFactor,
-					watermarkSign.getHeight() / scaleFactor, null);
+					(this.currHeight - waterSize) / 2, (int) (watermarkSign.getWidth() / scaleFactor),
+					(int) (watermarkSign.getHeight() / scaleFactor), null);
 		}
 		graphics.setColor(Color.black);
 		graphics.draw(new Rectangle2D.Float(0, 0, 

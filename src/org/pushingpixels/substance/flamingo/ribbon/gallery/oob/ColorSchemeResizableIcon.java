@@ -155,7 +155,7 @@ public class ColorSchemeResizableIcon implements ResizableIcon {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
 				RenderingHints.VALUE_STROKE_PURE);
-		graphics.setStroke(new BasicStroke(UIUtil.isRetina() ? 0.5f : 1.0f, 
+		graphics.setStroke(new BasicStroke(1.0f / (float) UIUtil.getScaleFactor(), 
 				BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		this.paintCircle(graphics, cx, R, R, color1, true);
 		if (this.currHeight > 16)

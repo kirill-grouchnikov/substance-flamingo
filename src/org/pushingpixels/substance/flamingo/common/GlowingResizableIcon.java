@@ -141,12 +141,12 @@ public class GlowingResizableIcon implements ResizableIcon {
             }
             this.cachedImages.put(key, offscreen);
         }
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         BufferedImage toDraw = this.cachedImages.get(key);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.translate(x, y);
-        g2d.drawImage(toDraw, 0, 0, toDraw.getWidth(null) / scaleFactor, 
-                toDraw.getHeight(null) / scaleFactor, null);
+        g2d.drawImage(toDraw, 0, 0, (int) (toDraw.getWidth(null) / scaleFactor), 
+                (int) (toDraw.getHeight(null) / scaleFactor), null);
         g2d.dispose();
 	}
 }
