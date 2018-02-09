@@ -218,9 +218,7 @@ public class RibbonBackgroundDelegate {
         if (button.getActionModel().isSelected() && (button.getContextualGroupHueColor() == null)) {
             int fw = result.getWidth();
             int fh = result.getHeight();
-            double scaleFactor = UIUtil.getScaleFactor();
-            BufferedImage fade = SubstanceCoreUtilities.getBlankImage((int) (fw / scaleFactor),
-                    (int) (fh / scaleFactor));
+            BufferedImage fade = SubstanceCoreUtilities.getBlankUnscaledImage(result);
             Graphics2D fadeGraphics = fade.createGraphics();
             JRibbon parent = (JRibbon) SwingUtilities.getAncestorOfClass(JRibbon.class, button);
             RibbonTask selectedTask = parent.getSelectedTask();

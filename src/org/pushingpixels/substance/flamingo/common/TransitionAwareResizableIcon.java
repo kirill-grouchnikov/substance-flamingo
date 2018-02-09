@@ -34,6 +34,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -193,6 +194,9 @@ public class TransitionAwareResizableIcon implements ResizableIcon {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(layerBase
 				.getIconWidth(), layerBase.getIconHeight());
 		Graphics2D g2d = result.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
 		// draw the base layer
 		layerBase.paintIcon(this.comp, g2d, 0, 0);
 

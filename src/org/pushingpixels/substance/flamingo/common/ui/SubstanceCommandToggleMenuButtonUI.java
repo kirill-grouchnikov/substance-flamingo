@@ -114,6 +114,8 @@ public class SubstanceCommandToggleMenuButtonUI extends SubstanceCommandToggleBu
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             ComponentState currState = this.commandButton.getActionModel().isEnabled()
                     ? ComponentState.SELECTED
                     : ComponentState.DISABLED_SELECTED;

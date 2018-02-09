@@ -36,6 +36,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
@@ -254,6 +255,8 @@ public class SubstanceCommandToggleButtonUI extends BasicCommandToggleButtonUI
 
         if (regular != null) {
             Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
             GhostPaintingUtils.paintGhostIcon(g2d, jctb, regular, iconRect);
             g2d.setComposite(WidgetUtilities.getAlphaComposite(jctb, g));
