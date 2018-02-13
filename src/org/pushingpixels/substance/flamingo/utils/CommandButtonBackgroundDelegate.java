@@ -33,6 +33,7 @@ import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
@@ -464,6 +465,8 @@ public class CommandButtonBackgroundDelegate {
             return;
         }
 
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         if (useRegularVersion) {
             regular.paintIcon(commandButton, g2d, 0, 0);
         } else {
