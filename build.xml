@@ -54,11 +54,11 @@
     <property name="flamingo.basedir" value="${module.substance-flamingo.basedir}/../flamingo" />
     <property name="substance.basedir" value="${module.substance-flamingo.basedir}/../substance" />
 	
-    <property name="substance.version" value="8.0.00-dev" />
-    <property name="substance.versionKey" value="8.0.0dev Wyoming" />
-    <property name="flamingo.version" value="5.3.00-dev" />
-    <property name="flamingo.versionKey" value="5.3.00dev Liadan" />
-    <property name="trident.version" value="1.5.00-dev" />
+    <property name="substance.version" value="8.0.00-rc" />
+    <property name="substance.versionKey" value="8.0.0rc Wyoming" />
+    <property name="flamingo.version" value="5.3.00-rc" />
+    <property name="flamingo.versionKey" value="5.3.00rc Liadan" />
+    <property name="trident.version" value="1.5.00-rc" />
 
 	<path id="substance-flamingo.module.bootclasspath">
 		<!-- Paths to be included in compilation bootclasspath -->
