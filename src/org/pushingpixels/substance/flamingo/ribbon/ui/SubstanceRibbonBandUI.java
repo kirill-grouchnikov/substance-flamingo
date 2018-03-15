@@ -55,6 +55,7 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonBandUI;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -101,7 +102,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        SubstanceCortex.ComponentScope.setDecorationType(this.ribbonBand,
+        ComponentOrParentChainScope.setDecorationType(this.ribbonBand,
                 DecorationAreaType.GENERAL);
 
         Color backgr = this.ribbonBand.getBackground();
@@ -133,7 +134,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
     protected void installComponents() {
         super.installComponents();
 
-        SubstanceCortex.ComponentScope.setDecorationType(this.ribbonBand,
+        ComponentOrParentChainScope.setDecorationType(this.ribbonBand,
                 DecorationAreaType.GENERAL);
 
         if (this.expandButton != null) {
@@ -271,7 +272,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
 
         SubstanceSkin skin = SubstanceCoreUtilities.getSkin(comp);
         SubstanceColorScheme bgScheme = skin
-                .getBackgroundColorScheme(SubstanceCortex.ComponentScope.getDecorationType(comp));
+                .getBackgroundColorScheme(ComponentOrParentChainScope.getDecorationType(comp));
 
         int offset = 20 - dy;
         float bp = (float) offset / (float) comp.getHeight();
@@ -319,7 +320,7 @@ public class SubstanceRibbonBandUI extends BasicRibbonBandUI {
         RibbonBandExpandButton result = new RibbonBandExpandButton();
         // since paintBandTitleBackground uses HEADER, mark this button with
         // HEADER as well to sync the mark color
-        SubstanceCortex.ComponentScope.setDecorationType(result, DecorationAreaType.HEADER);
+        ComponentOrParentChainScope.setDecorationType(result, DecorationAreaType.HEADER);
         SubstanceSkin skin = SubstanceCoreUtilities.getSkin(this.ribbonBand);
         result.setIcon(getExpandButtonIcon(skin, result));
         return result;

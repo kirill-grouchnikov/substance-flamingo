@@ -39,7 +39,7 @@ import javax.swing.plaf.ComponentUI;
 import org.pushingpixels.flamingo.internal.ui.common.BasicRichTooltipPanelUI;
 import org.pushingpixels.flamingo.internal.ui.common.JRichTooltipPanel;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -58,7 +58,7 @@ public class SubstanceRichTooltipPanelUI extends BasicRichTooltipPanelUI {
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		SubstanceCortex.ComponentScope.setDecorationType(this.richTooltipPanel, DecorationAreaType.GENERAL);
+		ComponentOrParentChainScope.setDecorationType(this.richTooltipPanel, DecorationAreaType.GENERAL);
 	}
 
 	@Override

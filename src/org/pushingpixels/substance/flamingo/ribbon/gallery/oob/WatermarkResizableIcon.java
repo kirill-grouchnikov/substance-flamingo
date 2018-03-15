@@ -48,7 +48,7 @@ import java.util.Map;
 
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.internal.hidpi.UIUtil;
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -194,7 +194,7 @@ public class WatermarkResizableIcon implements ResizableIcon {
 		double scaleFactor = UIUtil.getScaleFactor();
 		if (this.watermark != null) {
 			graphics.setColor(SubstanceCoreUtilities.getSkin(c)
-					.getEnabledColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c))
+					.getEnabledColorScheme(ComponentOrParentChainScope.getDecorationType(c))
 					.getExtraLightColor());
 			graphics.fillRect(0, 0, this.currWidth, this.currHeight);
 			Composite oldComp = graphics.getComposite();

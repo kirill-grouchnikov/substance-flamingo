@@ -53,6 +53,7 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.BasicRibbonTaskToggleButton
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -123,7 +124,7 @@ public class SubstanceRibbonTaskToggleButtonUI extends
 					int width, int height) {
 			}
 		});
-		SubstanceCortex.ComponentScope.setDecorationType(this.commandButton,
+		ComponentOrParentChainScope.setDecorationType(this.commandButton,
 				DecorationAreaType.GENERAL);
         SubstanceCortex.ComponentOrParentChainScope.setColorizationFactor(this.commandButton, 
 				RibbonContextualTaskGroup.HUE_ALPHA);

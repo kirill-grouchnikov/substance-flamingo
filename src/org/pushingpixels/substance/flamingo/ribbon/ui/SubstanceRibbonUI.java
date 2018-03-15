@@ -61,7 +61,7 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonRootPane;
 import org.pushingpixels.flamingo.internal.ui.ribbon.JRibbonTaskToggleButton;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -182,7 +182,7 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        SubstanceCortex.ComponentScope.setDecorationType(this.ribbon, DecorationAreaType.HEADER);
+        ComponentOrParentChainScope.setDecorationType(this.ribbon, DecorationAreaType.HEADER);
         Color backgr = this.ribbon.getBackground();
         if (backgr == null || backgr instanceof UIResource) {
             Color toSet = SubstanceColorSchemeUtilities
@@ -210,10 +210,10 @@ public class SubstanceRibbonUI extends BasicRibbonUI {
     @Override
     protected void installComponents() {
         super.installComponents();
-        SubstanceCortex.ComponentScope.setDecorationType(this.taskBarPanel,
+        ComponentOrParentChainScope.setDecorationType(this.taskBarPanel,
                 DecorationAreaType.PRIMARY_TITLE_PANE);
-        SubstanceCortex.ComponentScope.setDecorationType(this.ribbon, DecorationAreaType.HEADER);
-        SubstanceCortex.ComponentScope.setDecorationType(this.bandScrollablePanel,
+        ComponentOrParentChainScope.setDecorationType(this.ribbon, DecorationAreaType.HEADER);
+        ComponentOrParentChainScope.setDecorationType(this.bandScrollablePanel,
                 DecorationAreaType.GENERAL);
     }
 

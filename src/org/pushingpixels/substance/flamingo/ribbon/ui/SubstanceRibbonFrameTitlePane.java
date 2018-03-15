@@ -68,6 +68,7 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationM
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -340,7 +341,7 @@ public class SubstanceRibbonFrameTitlePane extends SubstanceTitlePane {
                 SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING);
         // Mark this with HEADER decoration area type even though it is in the primary title pane.
         // Otherwise the background fill on the popup menu doesn't look good.
-        SubstanceCortex.ComponentScope.setDecorationType(this.taskbarPanel,
+        ComponentOrParentChainScope.setDecorationType(this.taskbarPanel,
                 DecorationAreaType.HEADER);
         this.add(this.taskbarPanel);
     }
