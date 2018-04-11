@@ -54,10 +54,10 @@
     <property name="flamingo.basedir" value="${module.substance-flamingo.basedir}/../flamingo" />
     <property name="substance.basedir" value="${module.substance-flamingo.basedir}/../substance" />
 	
-    <property name="substance.version" value="8.0.00" />
-    <property name="substance.versionKey" value="8.0.0 Wyoming" />
-    <property name="flamingo.version" value="5.3.00" />
-    <property name="flamingo.versionKey" value="5.3.00 Liadan" />
+    <property name="substance.version" value="8.1.00-dev" />
+    <property name="substance.versionKey" value="8.1.00dev Xanadu" />
+    <property name="flamingo.version" value="6.0.00-dev" />
+    <property name="flamingo.versionKey" value="6.0.00dev Muireann" />
     <property name="trident.version" value="1.5.00" />
 
 	<path id="substance-flamingo.module.bootclasspath">

@@ -69,7 +69,7 @@ import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonPopupOr
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.common.model.PopupButtonModel;
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
-import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 import org.pushingpixels.flamingo.internal.ui.common.BasicCommandButtonUI;
 import org.pushingpixels.flamingo.internal.ui.common.ResizableIconUIResource;
 import org.pushingpixels.flamingo.internal.utils.FlamingoUtilities;
@@ -669,7 +669,7 @@ public class SubstanceCommandButtonUI extends BasicCommandButtonUI
         // Additional fix - buttons in popup menus and breadcrumb bars should
         // not have min size enforced
         if ((button.getDisplayState() == CommandButtonDisplayState.MEDIUM)
-                && (SwingUtilities.getAncestorOfClass(AbstractRibbonBand.class, button) == null)
+                && (SwingUtilities.getAncestorOfClass(JRibbon.class, button) == null)
                 && (SwingUtilities.getAncestorOfClass(JBreadcrumbBar.class, button) == null)
                 && (SwingUtilities.getAncestorOfClass(JCommandPopupMenu.class, button) == null)) {
             JButton dummy = new JButton(button.getText(), button.getIcon());
