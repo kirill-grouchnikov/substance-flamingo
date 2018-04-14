@@ -37,10 +37,10 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.common.StringValuePair;
-import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.RibbonCommand;
+import org.pushingpixels.flamingo.api.ribbon.RibbonCommand.RibbonCommandBuilder;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
@@ -65,25 +65,29 @@ public class SubstanceSkinRibbonGallery {
         prefWidths.put(RibbonElementPriority.MEDIUM, 4);
         prefWidths.put(RibbonElementPriority.TOP, 8);
 
-        List<StringValuePair<List<JCommandToggleButton>>> skinGroups = new ArrayList<StringValuePair<List<JCommandToggleButton>>>();
-        List<JCommandToggleButton> skinButtons = new ArrayList<JCommandToggleButton>();
+        List<StringValuePair<List<RibbonCommand>>> skinGroups = new ArrayList<StringValuePair<List<RibbonCommand>>>();
+        List<RibbonCommand> skinCommands = new ArrayList<RibbonCommand>();
 
         Map<String, SkinInfo> skins = SubstanceCortex.GlobalScope.getAllSkins();
         for (Map.Entry<String, SkinInfo> entry : skins.entrySet()) {
             try {
                 final SubstanceSkin skin = (SubstanceSkin) Class
                         .forName(entry.getValue().getClassName()).newInstance();
-                ResizableIcon icon = new SkinResizableIcon(skin, 60, 40);
-                JCommandToggleButton skinButton = new JCommandToggleButton(skin.getDisplayName(),
-                        icon);
-                skinButton.addActionListener((ActionEvent e) -> SwingUtilities
-                        .invokeLater(() -> SubstanceCortex.GlobalScope.setSkin(skin)));
-                skinButtons.add(skinButton);
+                
+                RibbonCommand skinCommand = new RibbonCommandBuilder()
+                        .setTitle(skin.getDisplayName())
+                        .setIcon(new SkinResizableIcon(skin, 60, 40))
+                        .setAction((ActionEvent e) -> SwingUtilities
+                                .invokeLater(() -> SubstanceCortex.GlobalScope.setSkin(skin)))
+                        .setToggle()
+                        .build();
+
+                skinCommands.add(skinCommand);
             } catch (Exception exc) {
             }
         }
 
-        skinGroups.add(new StringValuePair<List<JCommandToggleButton>>("Skins", skinButtons));
+        skinGroups.add(new StringValuePair<List<RibbonCommand>>("Skins", skinCommands));
 
         ribbonBand.addRibbonGallery("Skins", skinGroups, prefWidths, 5, 3,
                 RibbonElementPriority.TOP);
