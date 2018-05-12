@@ -37,10 +37,10 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import org.pushingpixels.flamingo.api.common.FlamingoCommand;
 import org.pushingpixels.flamingo.api.common.StringValuePair;
+import org.pushingpixels.flamingo.api.common.FlamingoCommand.FlamingoCommandBuilder;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
-import org.pushingpixels.flamingo.api.ribbon.RibbonCommand;
-import org.pushingpixels.flamingo.api.ribbon.RibbonCommand.RibbonCommandBuilder;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
@@ -65,8 +65,8 @@ public class SubstanceSkinRibbonGallery {
         prefWidths.put(RibbonElementPriority.MEDIUM, 4);
         prefWidths.put(RibbonElementPriority.TOP, 8);
 
-        List<StringValuePair<List<RibbonCommand>>> skinGroups = new ArrayList<StringValuePair<List<RibbonCommand>>>();
-        List<RibbonCommand> skinCommands = new ArrayList<RibbonCommand>();
+        List<StringValuePair<List<FlamingoCommand>>> skinGroups = new ArrayList<StringValuePair<List<FlamingoCommand>>>();
+        List<FlamingoCommand> skinCommands = new ArrayList<FlamingoCommand>();
 
         Map<String, SkinInfo> skins = SubstanceCortex.GlobalScope.getAllSkins();
         for (Map.Entry<String, SkinInfo> entry : skins.entrySet()) {
@@ -74,7 +74,7 @@ public class SubstanceSkinRibbonGallery {
                 final SubstanceSkin skin = (SubstanceSkin) Class
                         .forName(entry.getValue().getClassName()).newInstance();
                 
-                RibbonCommand skinCommand = new RibbonCommandBuilder()
+                FlamingoCommand skinCommand = new FlamingoCommandBuilder()
                         .setTitle(skin.getDisplayName())
                         .setIcon(new SkinResizableIcon(skin, 60, 40))
                         .setAction((ActionEvent e) -> SwingUtilities
@@ -87,7 +87,7 @@ public class SubstanceSkinRibbonGallery {
             }
         }
 
-        skinGroups.add(new StringValuePair<List<RibbonCommand>>("Skins", skinCommands));
+        skinGroups.add(new StringValuePair<List<FlamingoCommand>>("Skins", skinCommands));
 
         ribbonBand.addRibbonGallery("Skins", skinGroups, prefWidths, 5, 3,
                 RibbonElementPriority.TOP);
