@@ -4,4 +4,8 @@
 
 This project provides a [Substance](https://github.com/kirill-grouchnikov/substance) plugin for the [Flamingo component suite](https://github.com/kirill-grouchnikov/flamingo).
 
-To use this plugin add the matching `substance-flamingo.jar` to the classpath of your application. Substance will pick up this jar at runtime and install the matching UI delegates on the Flamingo components used in the application.
+To use this plugin add the matching `substance-flamingo-X.Y.Z.jar` to the classpath of your application and add this call *before* creating any UI-related objects (frames, dialogs, components) in your initialization sequence:
+
+`SubstanceCortex.GlobalScope.registerComponentPlugin(new SubstanceFlamingoPlugin());`
+
+Substance will then install the matching UI delegates on the Flamingo components used in the application.
