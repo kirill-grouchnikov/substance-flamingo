@@ -1,11 +1,5 @@
-## Substance plugin for Flamingo component suite
+## Notice
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance-flamingo/master/www/images/ribbon-blue.png" width="720" height="408" border=0>
+Substance-Flamingo is now part of [Radiance](https://github.com/kirill-grouchnikov/radiance).
 
-This project provides a [Substance](https://github.com/kirill-grouchnikov/substance) plugin for the [Flamingo component suite](https://github.com/kirill-grouchnikov/flamingo).
-
-To use this plugin add the matching `substance-flamingo-X.Y.Z.jar` to the classpath of your application and add this call *before* creating any UI-related objects (frames, dialogs, components) in your initialization sequence:
-
-`SubstanceCortex.GlobalScope.registerComponentPlugin(new SubstanceFlamingoPlugin());`
-
-Substance will then install the matching UI delegates on the Flamingo components used in the application.
+Older Substance-Flamingo releases can be found [here](https://github.com/kirill-grouchnikov/radiance/tree/master/drop/archive). Follow new development and open bugs / feature requests under Radiance.
